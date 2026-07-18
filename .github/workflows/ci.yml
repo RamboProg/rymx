@@ -131,7 +131,7 @@ jobs:
         env:
           PLAYWRIGHT_BASE_URL: ${{ steps.wait-for-preview.outputs.url }}
       - name: OWASP ZAP baseline scan
-        uses: zaproxy/action-baseline@v0.14.0
+        uses: zaproxy/action-baseline@v0.15.0
         with:
           target: ${{ steps.wait-for-preview.outputs.url }}
           cmd_options: "-a"
