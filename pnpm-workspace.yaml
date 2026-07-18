@@ -4,6 +4,7 @@ overrides:
 
 allowBuilds:
   "@firebase/util": true
+  esbuild: true
   protobufjs: true
   re2: true
   sharp: true
@@ -14,3 +15,4 @@ onlyBuiltDependencies:
   - "@firebase/util"
   - protobufjs
   - re2
+  - esbuild

@@ -1,23 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-rymx-bg: #100d0a;
+  --color-rymx-card: #0a0908;
+  --color-rymx-gold: #e8c170;
+  --color-rymx-gold-hover: #f4d99a;
+  --color-rymx-cream: #f4f1ea;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
+  --color-rymx-bg: var(--color-rymx-bg);
+  --color-rymx-card: var(--color-rymx-card);
+  --color-rymx-gold: var(--color-rymx-gold);
+  --color-rymx-gold-hover: var(--color-rymx-gold-hover);
+  --color-rymx-cream: var(--color-rymx-cream);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-syne), sans-serif;
+  --font-sans: var(--font-archivo), sans-serif;
+  --font-shoulders: var(--font-big-shoulders), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-rymx-bg);
+  color: var(--color-rymx-cream);
 }

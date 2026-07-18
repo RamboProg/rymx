@@ -1,10 +1,59 @@
 rules_version = '2';
 
-// Deny-by-default baseline for Phase 0. Each feature module owns and documents
-// the rules it needs (see src/modules/<feature>/rules.md); those blocks are
-// composed into this file as each module is built.
+// Deny-by-default baseline. Each feature module owns and documents the rules
+// it needs (see src/modules/<feature>/rules.md); those blocks are composed
+// into this file as each module is built.
 service cloud.firestore {
   match /databases/{database}/documents {
+    // --- auth module (src/modules/auth/rules.md) ---
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // --- catalog module (src/modules/catalog/rules.md) ---
+    match /products/{productId} {
+      allow read: if resource.data.status == "active";
+      allow write: if false;
+
+      match /variants/{variantId} {
+        allow read: if get(/databases/$(database)/documents/products/$(productId)).data.status == "active";
+        allow write: if false;
+      }
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // --- collections module (src/modules/collections/rules.md) ---
+    match /collections/{collectionId} {
+      allow read: if resource.data.publishAt == null || resource.data.publishAt <= request.time;
+      allow write: if false;
+    }
+
+    // --- cart module (src/modules/cart/rules.md) ---
+    match /carts/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // --- orders module (src/modules/orders/rules.md) ---
+    match /orders/{orderId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow write: if false;
+    }
+
+    // --- discounts module (src/modules/discounts/rules.md) ---
+    match /discounts/{code} {
+      allow read, write: if false;
+    }
+
+    match /discountRedemptions/{redemptionId} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
