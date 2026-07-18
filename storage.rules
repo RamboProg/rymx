@@ -1,0 +1,11 @@
+rules_version = '2';
+
+// Deny-by-default baseline for Phase 0. The media module (Phase 6) adds
+// scoped read/write rules for product and collection assets.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

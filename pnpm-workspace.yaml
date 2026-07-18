@@ -1,0 +1,16 @@
+overrides:
+  postcss: ">=8.5.10"
+  uuid: ">=11.1.1"
+
+allowBuilds:
+  "@firebase/util": true
+  protobufjs: true
+  re2: true
+  sharp: true
+  unrs-resolver: true
+onlyBuiltDependencies:
+  - sharp
+  - unrs-resolver
+  - "@firebase/util"
+  - protobufjs
+  - re2

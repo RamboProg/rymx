@@ -1,0 +1,6 @@
+rules:
+  - p/security-audit
+  - p/secrets
+  - p/nextjs
+  - p/typescript
+  - p/react

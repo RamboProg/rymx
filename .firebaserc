@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "rymx-dev",
+    "dev": "rymx-dev",
+    "prod": "rymx-prod"
+  }
+}
