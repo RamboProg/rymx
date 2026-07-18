@@ -30,3 +30,10 @@ export async function getOrderById(orderId: string): Promise<Order | null> {
   if (!doc.exists) return null;
   return parseOrder(doc.id, doc.data()!);
 }
+
+// Admin-only, dashboard-scale: every order, unsorted. Fine for summing into
+// KPI tiles at MVP scale; a full admin order list/detail UI is Phase 7.
+export async function listAllOrders(): Promise<Order[]> {
+  const snap = await adminDb.collection("orders").get();
+  return snap.docs.map((d) => parseOrder(d.id, d.data()));
+}

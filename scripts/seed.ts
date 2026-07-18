@@ -1,5 +1,6 @@
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { DEFAULT_ROLE_PERMISSIONS } from "../src/modules/rbac/services/permissions";
 import { getScriptAdminApp } from "./lib/firebaseAdmin";
 
 const app = getScriptAdminApp();
@@ -8,6 +9,13 @@ const auth = getAuth(app);
 
 export const DEMO_CUSTOMER_EMAIL = "demo-customer@rymx.test";
 const DEMO_CUSTOMER_PASSWORD = "password123";
+
+// For admin e2e/manual testing: an owner (full permissions) and a staff
+// member with no permissions granted yet, so "non-permitted staff denied" is
+// exercisable without hand-rolling custom claims in every test run.
+export const DEMO_OWNER_EMAIL = "demo-owner@rymx.test";
+export const DEMO_RESTRICTED_STAFF_EMAIL = "demo-staff@rymx.test";
+const DEMO_ADMIN_PASSWORD = "password123";
 
 type SeedVariant = {
   sku: string;
@@ -234,6 +242,49 @@ async function seed() {
     active: true,
     assignedToUid: demoUser.uid,
   });
+
+  console.log("Seeding demo owner + restricted staff...");
+  const ownerUser = await auth.getUserByEmail(DEMO_OWNER_EMAIL).catch(() =>
+    auth.createUser({
+      email: DEMO_OWNER_EMAIL,
+      password: DEMO_ADMIN_PASSWORD,
+      displayName: "Demo Owner",
+    }),
+  );
+  await auth.setCustomUserClaims(ownerUser.uid, {
+    role: "owner",
+    permissions: DEFAULT_ROLE_PERMISSIONS.owner,
+  });
+  await db.doc(`users/${ownerUser.uid}`).set(
+    {
+      email: DEMO_OWNER_EMAIL,
+      displayName: "Demo Owner",
+      role: "owner",
+      createdAt: new Date().toISOString(),
+    },
+    { merge: true },
+  );
+
+  const staffUser = await auth.getUserByEmail(DEMO_RESTRICTED_STAFF_EMAIL).catch(() =>
+    auth.createUser({
+      email: DEMO_RESTRICTED_STAFF_EMAIL,
+      password: DEMO_ADMIN_PASSWORD,
+      displayName: "Demo Staff",
+    }),
+  );
+  await auth.setCustomUserClaims(staffUser.uid, {
+    role: "staff",
+    permissions: DEFAULT_ROLE_PERMISSIONS.staff,
+  });
+  await db.doc(`users/${staffUser.uid}`).set(
+    {
+      email: DEMO_RESTRICTED_STAFF_EMAIL,
+      displayName: "Demo Staff",
+      role: "staff",
+      createdAt: new Date().toISOString(),
+    },
+    { merge: true },
+  );
 
   console.log("Done.");
 }

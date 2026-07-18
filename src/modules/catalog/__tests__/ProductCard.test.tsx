@@ -15,6 +15,9 @@ const baseProduct: Product = {
   options: [],
   minPriceMinor: 285000,
   createdAt: new Date("2026-01-01"),
+  seoTitle: null,
+  seoDescription: null,
+  publishAt: null,
 };
 
 describe("ProductCard", () => {

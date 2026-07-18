@@ -9,3 +9,9 @@ which bypasses rules entirely.
 
 `categories/{categoryId}`: public read (plain taxonomy, nothing sensitive).
 Writes denied — admin-managed via the Admin SDK.
+
+Since the rules layer denies _all_ direct client writes regardless of role,
+the `products:write` permission check that actually matters lives in
+`src/modules/catalog/server/actions.ts` (each admin action calls
+`hasPermission(claims, "products:write")` before touching `admin.ts`), not
+in `firestore.rules` — there's nothing for a rule to gate here.

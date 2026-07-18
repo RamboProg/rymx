@@ -1,9 +1,17 @@
 rules_version = '2';
 
-// Deny-by-default baseline for Phase 0. The media module (Phase 6) adds
-// scoped read/write rules for product and collection assets.
+// --- media module (src/modules/media/rules.md) ---
+// Product/collection images live under media/** and are publicly readable
+// (they're storefront assets). All writes are denied at the rules layer —
+// uploads go through uploadMediaAction via the Admin SDK, which bypasses
+// rules and enforces MIME/size validation + staff auth server-side.
 service firebase.storage {
   match /b/{bucket}/o {
+    match /media/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

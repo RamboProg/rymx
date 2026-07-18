@@ -60,6 +60,11 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // --- inventory module (src/modules/inventory/rules.md) ---
+    match /inventoryAdjustments/{adjustmentId} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

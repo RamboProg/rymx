@@ -14,17 +14,22 @@ import {
   type Variant,
 } from "../schema";
 
-function toDate(value: unknown): Date | null {
+export function toDate(value: unknown): Date | null {
   if (value instanceof Timestamp) return value.toDate();
   if (value instanceof Date) return value;
   return null;
 }
 
-function parseProduct(id: string, data: DocumentData): Product {
-  return productSchema.parse({ id, ...data, createdAt: toDate(data.createdAt) });
+export function parseProduct(id: string, data: DocumentData): Product {
+  return productSchema.parse({
+    id,
+    ...data,
+    createdAt: toDate(data.createdAt),
+    publishAt: toDate(data.publishAt),
+  });
 }
 
-function parseVariant(id: string, data: DocumentData): Variant {
+export function parseVariant(id: string, data: DocumentData): Variant {
   return variantSchema.parse({ id, ...data });
 }
 

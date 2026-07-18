@@ -21,6 +21,14 @@ const nextConfig: NextConfig = {
         hostname: "firebasestorage.googleapis.com",
         pathname: "/v0/b/**",
       },
+      // Local Storage emulator only — unreachable in production, harmless to
+      // leave in the allowlist.
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "9199",
+        pathname: "/v0/b/**",
+      },
     ],
   },
   async headers() {

@@ -23,7 +23,12 @@ function getAdminApp(): App {
   if (process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true") {
     // Emulator mode: no real credentials needed, but env host vars must be set
     // (FIRESTORE_EMULATOR_HOST, FIREBASE_AUTH_EMULATOR_HOST, FIREBASE_STORAGE_EMULATOR_HOST).
-    return initializeApp({ projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID });
+    // storageBucket still needs to be set explicitly — adminStorage.bucket()
+    // has no other way to know the default bucket name.
+    return initializeApp({
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    });
   }
 
   return initializeApp({

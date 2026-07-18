@@ -5,13 +5,13 @@ import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
 import { collectionSchema, isCollectionLive, type Collection } from "../schema";
 
-function toDate(value: unknown): Date | null {
+export function toDate(value: unknown): Date | null {
   if (value instanceof Timestamp) return value.toDate();
   if (value instanceof Date) return value;
   return null;
 }
 
-function parseCollection(id: string, data: DocumentData): Collection {
+export function parseCollection(id: string, data: DocumentData): Collection {
   return collectionSchema.parse({ id, ...data, publishAt: toDate(data.publishAt) });
 }
 

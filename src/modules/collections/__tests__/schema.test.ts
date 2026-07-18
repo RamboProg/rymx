@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isCollectionLive } from "../schema";
+import { collectionInputSchema, isCollectionLive } from "../schema";
 
 describe("isCollectionLive", () => {
   it("is live when publishAt is null", () => {
@@ -12,5 +12,24 @@ describe("isCollectionLive", () => {
 
   it("is not live when publishAt is in the future", () => {
     expect(isCollectionLive(new Date(Date.now() + 1000 * 60 * 60))).toBe(false);
+  });
+});
+
+describe("collectionInputSchema", () => {
+  const valid = { title: "SS26 Launch", slug: "ss26-launch" };
+
+  it("accepts a minimal valid collection with defaults filled in", () => {
+    const parsed = collectionInputSchema.safeParse(valid);
+    expect(parsed.success).toBe(true);
+    expect(parsed.success && parsed.data.productIds).toEqual([]);
+    expect(parsed.success && parsed.data.publishAt).toBeNull();
+  });
+
+  it("rejects an empty title", () => {
+    expect(collectionInputSchema.safeParse({ ...valid, title: " " }).success).toBe(false);
+  });
+
+  it("rejects an invalid slug", () => {
+    expect(collectionInputSchema.safeParse({ ...valid, slug: "SS26 Launch" }).success).toBe(false);
   });
 });

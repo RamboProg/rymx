@@ -21,6 +21,9 @@ const product: Product = {
   options: [{ name: "Size", values: ["S", "M", "XL"] }],
   minPriceMinor: 65000,
   createdAt: new Date("2026-01-01"),
+  seoTitle: null,
+  seoDescription: null,
+  publishAt: null,
 };
 
 const variants: Variant[] = [
