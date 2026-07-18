@@ -119,6 +119,7 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
           redemptionCount,
           cartProductIds: new Set(orderItems.map((i) => i.productId)),
           collectionProductIds,
+          identity: discountIdentity,
         });
         if (!eligibility.ok) throw new CheckoutError(discountIneligibleMessage(eligibility.reason));
 

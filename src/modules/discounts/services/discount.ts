@@ -7,7 +7,8 @@ export type DiscountIneligibleReason =
   | "below-min-spend"
   | "usage-limit-reached"
   | "already-used"
-  | "not-applicable";
+  | "not-applicable"
+  | "not-assigned-to-you";
 
 export type DiscountEligibility = { ok: true } | { ok: false; reason: DiscountIneligibleReason };
 
@@ -56,6 +57,8 @@ export function discountIneligibleMessage(reason: DiscountIneligibleReason): str
       return "You've already used this promo code.";
     case "not-applicable":
       return "This promo code doesn't apply to the items in your cart.";
+    case "not-assigned-to-you":
+      return "This promo code was issued to a different customer.";
   }
 }
 
@@ -66,11 +69,24 @@ export function validateDiscountEligibility(params: {
   redemptionCount: number;
   cartProductIds: ReadonlySet<string>;
   collectionProductIds: ReadonlySet<string>;
+  // The signed-in uid, or the guest's checkout email — same identity used to
+  // key redemptionCount. Required to enforce assignedToUid (personal codes).
+  identity: string;
 }): DiscountEligibility {
-  const { discount, now, subtotalMinor, redemptionCount, cartProductIds, collectionProductIds } =
-    params;
+  const {
+    discount,
+    now,
+    subtotalMinor,
+    redemptionCount,
+    cartProductIds,
+    collectionProductIds,
+    identity,
+  } = params;
 
   if (!discount.active) return { ok: false, reason: "inactive" };
+  if (discount.assignedToUid && discount.assignedToUid !== identity) {
+    return { ok: false, reason: "not-assigned-to-you" };
+  }
   if (discount.startsAt && now < discount.startsAt) return { ok: false, reason: "not-started" };
   if (discount.endsAt && now > discount.endsAt) return { ok: false, reason: "expired" };
   if (subtotalMinor < discount.minSpendMinor) return { ok: false, reason: "below-min-spend" };

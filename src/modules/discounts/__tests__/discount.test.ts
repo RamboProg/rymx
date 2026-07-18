@@ -21,6 +21,7 @@ const baseDiscount: Discount = {
   productIds: [],
   collectionIds: [],
   active: true,
+  assignedToUid: null,
 };
 
 describe("normalizeDiscountCode / discountRedemptionId", () => {
@@ -90,7 +91,7 @@ describe("validateDiscountEligibility", () => {
   const cartProductIds = new Set(["p1"]);
   const collectionProductIds = new Set<string>();
 
-  function eligible(over: Partial<Discount> = {}, redemptionCount = 0) {
+  function eligible(over: Partial<Discount> = {}, redemptionCount = 0, identity = "user-1") {
     return validateDiscountEligibility({
       discount: { ...baseDiscount, ...over },
       now,
@@ -98,6 +99,7 @@ describe("validateDiscountEligibility", () => {
       redemptionCount,
       cartProductIds,
       collectionProductIds,
+      identity,
     });
   }
 
@@ -137,5 +139,16 @@ describe("validateDiscountEligibility", () => {
 
   it("rejects an out-of-scope discount", () => {
     expect(eligible({ productIds: ["other"] })).toEqual({ ok: false, reason: "not-applicable" });
+  });
+
+  it("rejects a personal code redeemed by someone other than the assigned customer", () => {
+    expect(eligible({ assignedToUid: "user-1" }, 0, "user-2")).toEqual({
+      ok: false,
+      reason: "not-assigned-to-you",
+    });
+  });
+
+  it("allows the assigned customer to redeem their own personal code", () => {
+    expect(eligible({ assignedToUid: "user-1" }, 0, "user-1")).toEqual({ ok: true });
   });
 });

@@ -40,6 +40,16 @@ export async function getDiscountByCode(code: string): Promise<Discount | null> 
   return parseDiscount(doc.id, doc.data()!);
 }
 
+// Personal codes issued to a specific customer, for display on /account.
+export async function listDiscountsForUid(uid: string): Promise<Discount[]> {
+  const snap = await adminDb
+    .collection("discounts")
+    .where("assignedToUid", "==", uid)
+    .where("active", "==", true)
+    .get();
+  return snap.docs.map((d) => parseDiscount(d.id, d.data()));
+}
+
 // Reads inside an already-open transaction so checkout re-validates the
 // authoritative doc atomically with the rest of the order write.
 export async function getDiscountInTransaction(

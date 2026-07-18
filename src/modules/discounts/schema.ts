@@ -22,6 +22,9 @@ export const discountSchema = z.object({
   productIds: z.array(z.string()).default([]),
   collectionIds: z.array(z.string()).default([]),
   active: z.boolean().default(true),
+  // Set = a personal code issued to exactly one customer (shown on their
+  // /account page); null = a public code anyone can redeem.
+  assignedToUid: z.string().nullable().default(null),
 });
 export type Discount = z.infer<typeof discountSchema>;
 

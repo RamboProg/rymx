@@ -1,7 +1,13 @@
+import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { getScriptAdminApp } from "./lib/firebaseAdmin";
 
-const db = getFirestore(getScriptAdminApp());
+const app = getScriptAdminApp();
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+export const DEMO_CUSTOMER_EMAIL = "demo-customer@rymx.test";
+const DEMO_CUSTOMER_PASSWORD = "password123";
 
 type SeedVariant = {
   sku: string;
@@ -175,6 +181,7 @@ async function seed() {
     productIds: [],
     collectionIds: [],
     active: true,
+    assignedToUid: null,
   });
   await db
     .collection("discounts")
@@ -192,7 +199,41 @@ async function seed() {
       productIds: [],
       collectionIds: [],
       active: true,
+      assignedToUid: null,
     });
+
+  console.log("Seeding demo customer + personal promo...");
+  const demoUser = await auth.getUserByEmail(DEMO_CUSTOMER_EMAIL).catch(() =>
+    auth.createUser({
+      email: DEMO_CUSTOMER_EMAIL,
+      password: DEMO_CUSTOMER_PASSWORD,
+      displayName: "Demo Customer",
+    }),
+  );
+  await db.doc(`users/${demoUser.uid}`).set(
+    {
+      email: DEMO_CUSTOMER_EMAIL,
+      displayName: "Demo Customer",
+      role: "customer",
+      createdAt: new Date().toISOString(),
+    },
+    { merge: true },
+  );
+  await db.collection("discounts").doc("VIP20").set({
+    code: "VIP20",
+    type: "percent",
+    value: 20,
+    minSpendMinor: 0,
+    startsAt: null,
+    endsAt: null,
+    usageLimit: null,
+    redeemedCount: 0,
+    perUserLimit: 1,
+    productIds: [],
+    collectionIds: [],
+    active: true,
+    assignedToUid: demoUser.uid,
+  });
 
   console.log("Done.");
 }

@@ -48,6 +48,7 @@ export async function previewDiscountAction(rawInput: unknown): Promise<PreviewD
     redemptionCount,
     cartProductIds: new Set(lines.map((l) => l.productId)),
     collectionProductIds,
+    identity,
   });
   if (!eligibility.ok) return { ok: false, error: discountIneligibleMessage(eligibility.reason) };
 
