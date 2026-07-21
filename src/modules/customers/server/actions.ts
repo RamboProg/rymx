@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
+import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { hasPermission } from "@/modules/rbac/services/permissions";
 import {
@@ -13,7 +14,8 @@ import { listCustomerNotes } from "./index";
 
 async function requireCustomersManage(): Promise<string | null> {
   const claims = await getSessionClaims();
-  return hasPermission(claims, "customers:manage") ? claims!.uid : null;
+  if (!hasPermission(claims, "customers:manage")) return null;
+  return checkAdminMutationRateLimit(claims!.uid) ? claims!.uid : null;
 }
 
 export type TagActionResult = { ok: true; tags: string[] } | { ok: false; error: string };

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { hasPermission } from "@/modules/rbac/services/permissions";
 import { collectionInputSchema, type Collection } from "../schema";
@@ -11,7 +12,8 @@ type VoidActionResult = { ok: true } | { ok: false; error: string };
 
 async function requireCollectionsWrite(): Promise<boolean> {
   const claims = await getSessionClaims();
-  return hasPermission(claims, "collections:write");
+  if (!hasPermission(claims, "collections:write")) return false;
+  return checkAdminMutationRateLimit(claims!.uid);
 }
 
 export async function createCollectionAction(rawInput: unknown): Promise<CollectionActionResult> {

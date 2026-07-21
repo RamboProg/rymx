@@ -1,7 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { z } from "zod";
+import { checkAdminMutationRateLimit, checkRateLimit } from "@/lib/security/rateLimit";
 import { resolveCartItems } from "@/modules/cart/server";
 import { cartItemSchema } from "@/modules/cart/schema";
 import { sendPromoCodeEmail } from "@/modules/notifications/server";
@@ -29,6 +31,13 @@ const previewInputSchema = z.object({
   guestEmail: z.email().optional(),
 });
 
+async function clientIp(): Promise<string> {
+  const h = await headers();
+  const forwardedFor = h.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0]!.trim();
+  return h.get("x-real-ip") ?? "unknown";
+}
+
 export type PreviewDiscountResult =
   { ok: true; code: string; discountMinor: number } | { ok: false; error: string };
 
@@ -42,6 +51,13 @@ export async function previewDiscountAction(rawInput: unknown): Promise<PreviewD
   const claims = await getSessionClaims();
   const identity = claims?.uid ?? parsed.data.guestEmail;
   if (!identity) return { ok: false, error: "Enter your email to use a promo code." };
+
+  // Promo codes are short, high-value secrets — without a rate limit this
+  // endpoint would let someone brute-force-enumerate valid codes.
+  const rateLimitKey = claims?.uid ?? (await clientIp());
+  if (!checkRateLimit(`promo-preview:${rateLimitKey}`, 20, 5 * 60 * 1000)) {
+    return { ok: false, error: "Too many promo code attempts. Try again shortly." };
+  }
 
   const discount = await getDiscountByCode(parsed.data.code);
   if (!discount) return { ok: false, error: "Invalid promo code." };
@@ -72,7 +88,8 @@ export async function previewDiscountAction(rawInput: unknown): Promise<PreviewD
 
 async function requireDiscountsManage(): Promise<boolean> {
   const claims = await getSessionClaims();
-  return hasPermission(claims, "discounts:manage");
+  if (!hasPermission(claims, "discounts:manage")) return false;
+  return checkAdminMutationRateLimit(claims!.uid);
 }
 
 export type DiscountActionResult = { ok: true; discount: Discount } | { ok: false; error: string };

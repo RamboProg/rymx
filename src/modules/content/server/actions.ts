@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
+import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { hasPermission } from "@/modules/rbac/services/permissions";
 import { contentSettingsSchema } from "../schema";
@@ -14,6 +15,9 @@ export async function updateContentSettingsAction(rawInput: unknown): Promise<Co
   // permission exists, and adding one would mean every prior staff invite's
   // permission set silently excludes it. Reuses settings:manage instead.
   if (!hasPermission(claims, "settings:manage")) return { ok: false, error: "Forbidden" };
+  if (!checkAdminMutationRateLimit(claims!.uid)) {
+    return { ok: false, error: "Too many requests. Try again shortly." };
+  }
 
   const parsed = contentSettingsSchema.safeParse(rawInput);
   if (!parsed.success)

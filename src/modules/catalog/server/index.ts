@@ -38,6 +38,13 @@ export async function listCategories(): Promise<Category[]> {
   return snap.docs.map((d) => categorySchema.parse({ id: d.id, ...d.data() }));
 }
 
+// Every live product, unpaginated/unfiltered — for the sitemap generator,
+// which needs every public URL, not a shop-page's worth.
+export async function listAllActiveProducts(): Promise<Product[]> {
+  const snap = await adminDb.collection("products").where("status", "==", "active").get();
+  return snap.docs.map((d) => parseProduct(d.id, d.data()));
+}
+
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const snap = await adminDb
     .collection("products")

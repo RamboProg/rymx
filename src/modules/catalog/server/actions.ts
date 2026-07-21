@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import {
   categoryInputSchema,
   productFormSchema,
@@ -28,7 +29,8 @@ type CategoryActionResult = { ok: true; category: Category } | { ok: false; erro
 
 async function requireProductsWrite(): Promise<boolean> {
   const claims = await getSessionClaims();
-  return hasPermission(claims, "products:write");
+  if (!hasPermission(claims, "products:write")) return false;
+  return checkAdminMutationRateLimit(claims!.uid);
 }
 
 export async function createProductAction(rawInput: unknown): Promise<ProductActionResult> {

@@ -21,3 +21,12 @@ export function requestIp(request: Request): string {
   if (forwardedFor) return forwardedFor.split(",")[0]!.trim();
   return request.headers.get("x-real-ip") ?? "unknown";
 }
+
+// Shared by every admin-mutation action's permission-gate helper (products,
+// collections, orders, shipments, returns, discounts, customers, settings,
+// staff, content). Generous on purpose — normal admin usage, even fast
+// clicking through a table, is nowhere near this; it's meant to catch a
+// compromised staff session or a runaway script, not a busy merchant.
+export function checkAdminMutationRateLimit(uid: string): boolean {
+  return checkRateLimit(`admin-mutation:${uid}`, 120, 60 * 1000);
+}

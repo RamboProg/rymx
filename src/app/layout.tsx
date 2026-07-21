@@ -3,6 +3,7 @@ import { Archivo, Big_Shoulders, JetBrains_Mono, Syne } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartProvider } from "@/modules/cart/components/CartProvider";
+import { getSiteUrl } from "@/lib/siteUrl";
 import "./globals.css";
 
 const syne = Syne({
@@ -30,6 +31,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: "RYMX — Cairo / SS26",
   description: "RYMX — Cairo-based clothing brand. Reveal your mistakes.",
   openGraph: {

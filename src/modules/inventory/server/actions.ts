@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
+import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { hasPermission } from "@/modules/rbac/services/permissions";
 import { adjustStockInputSchema } from "../schema";
@@ -12,6 +13,9 @@ export type AdjustStockResult = { ok: true; newStock: number } | { ok: false; er
 export async function adjustStockAction(rawInput: unknown): Promise<AdjustStockResult> {
   const claims = await getSessionClaims();
   if (!hasPermission(claims, "products:write")) return { ok: false, error: "Forbidden" };
+  if (!checkAdminMutationRateLimit(claims!.uid)) {
+    return { ok: false, error: "Too many requests. Try again shortly." };
+  }
 
   const parsed = adjustStockInputSchema.safeParse(rawInput);
   if (!parsed.success)

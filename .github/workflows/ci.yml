@@ -135,3 +135,10 @@ jobs:
         with:
           target: ${{ steps.wait-for-preview.outputs.url }}
           cmd_options: "-a"
+      - name: Lighthouse CI budgets
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            ${{ steps.wait-for-preview.outputs.url }}
+            ${{ steps.wait-for-preview.outputs.url }}/shop
+          configPath: ./.lighthouserc.json
