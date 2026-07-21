@@ -27,7 +27,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Cross-site request rejected" }, { status: 403 });
   }
 
-  if (!checkRateLimit(`session:${requestIp(request)}`, 10, 5 * 60 * 1000)) {
+  // Emulator-backed runs (local dev, e2e/CI) share one IP across dozens of
+  // legitimate test logins within minutes — a real brute-force concern in
+  // production, not here. This never relaxes the limit in production, since
+  // NEXT_PUBLIC_USE_FIREBASE_EMULATORS is never set on a deployed environment.
+  const isEmulator = process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true";
+  if (!checkRateLimit(`session:${requestIp(request)}`, isEmulator ? 60 : 10, 5 * 60 * 1000)) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 

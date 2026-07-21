@@ -8,7 +8,7 @@ test("home page loads without console errors", async ({ page }) => {
   });
 
   await page.goto("/");
-  await expect(page.getByText(/RYMX/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: "RYMX" })).toBeVisible();
   expect(consoleErrors).toEqual([]);
 });
 
