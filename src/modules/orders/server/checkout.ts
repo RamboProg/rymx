@@ -16,6 +16,7 @@ import {
   discountIneligibleMessage,
   validateDiscountEligibility,
 } from "@/modules/discounts/services/discount";
+import { sendOrderConfirmationEmail } from "@/modules/notifications/server";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { checkoutInputSchema, orderSchema, type Order, type OrderItem } from "../schema";
 import {
@@ -51,16 +52,19 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
   }
 
   try {
-    const order = await adminDb.runTransaction(async (tx) => {
+    const { order, isNew } = await adminDb.runTransaction(async (tx) => {
       const orderRef = adminDb.doc(`orders/${input.idempotencyKey}`);
       const existing = await tx.get(orderRef);
       if (existing.exists) {
         // Idempotent replay: same key already produced an order, no-op.
-        return orderSchema.parse({
-          ...existing.data(),
-          id: existing.id,
-          createdAt: existing.data()!.createdAt.toDate(),
-        });
+        return {
+          isNew: false,
+          order: orderSchema.parse({
+            ...existing.data(),
+            id: existing.id,
+            createdAt: existing.data()!.createdAt.toDate(),
+          }),
+        };
       }
 
       const productRefs = input.items.map((i) => adminDb.doc(`products/${i.productId}`));
@@ -141,7 +145,7 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
         discountCode: appliedCode,
         shippingFeeMinor,
         totalMinor,
-        status: "placed",
+        status: "pending",
         paymentMethod: "cod",
         createdAt: new Date(),
       });
@@ -163,9 +167,13 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
         tx.delete(adminDb.doc(`carts/${uid}`));
       }
 
-      return newOrder;
+      return { isNew: true, order: newOrder };
     });
 
+    // Awaited (not fire-and-forget) since sendEmail never throws internally,
+    // and a serverless function can be frozen/torn down before a detached
+    // promise resolves — this guarantees the send attempt actually happens.
+    if (isNew) await sendOrderConfirmationEmail(order);
     return { ok: true, order };
   } catch (err) {
     if (err instanceof CheckoutError) return { ok: false, error: err.message };

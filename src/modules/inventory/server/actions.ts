@@ -5,7 +5,7 @@ import { adminDb } from "@/lib/firebase/admin";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { hasPermission } from "@/modules/rbac/services/permissions";
 import { adjustStockInputSchema } from "../schema";
-import { computeAdjustedStock } from "../services/adjustment";
+import { applyStockDeltaInTransaction } from "./index";
 
 export type AdjustStockResult = { ok: true; newStock: number } | { ok: false; error: string };
 
@@ -19,36 +19,15 @@ export async function adjustStockAction(rawInput: unknown): Promise<AdjustStockR
   const { productId, variantId, delta, reason } = parsed.data;
 
   try {
-    const newStock = await adminDb.runTransaction(async (tx) => {
-      const productRef = adminDb.doc(`products/${productId}`);
-      const variantRef = adminDb.doc(`products/${productId}/variants/${variantId}`);
-      const [productSnap, variantSnap] = await Promise.all([
-        tx.get(productRef),
-        tx.get(variantRef),
-      ]);
-
-      if (!productSnap.exists || !variantSnap.exists) throw new Error("Variant not found.");
-
-      const currentStock = variantSnap.data()!.stock as number;
-      const adjusted = computeAdjustedStock(currentStock, delta);
-      if (!adjusted.ok) throw new Error(adjusted.error);
-      const next = adjusted.newStock;
-
-      tx.update(variantRef, { stock: next });
-      tx.set(adminDb.collection("inventoryAdjustments").doc(), {
+    const newStock = await adminDb.runTransaction((tx) =>
+      applyStockDeltaInTransaction(tx, {
         productId,
-        productTitle: productSnap.data()!.title as string,
         variantId,
-        sku: variantSnap.data()!.sku as string,
         delta,
-        newStock: next,
         reason,
         staffUid: claims!.uid,
-        createdAt: new Date(),
-      });
-
-      return next;
-    });
+      }),
+    );
 
     revalidatePath("/admin/inventory");
     revalidatePath(`/admin/products/${productId}`);

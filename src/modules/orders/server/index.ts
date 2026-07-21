@@ -3,7 +3,7 @@ import "server-only";
 import type { DocumentData } from "firebase-admin/firestore";
 import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
-import { orderSchema, type Order } from "../schema";
+import { orderNoteSchema, orderSchema, type Order, type OrderNote } from "../schema";
 
 function toDate(value: unknown): Date {
   if (value instanceof Timestamp) return value.toDate();
@@ -13,6 +13,16 @@ function toDate(value: unknown): Date {
 
 function parseOrder(id: string, data: DocumentData): Order {
   return orderSchema.parse({ ...data, id, createdAt: toDate(data.createdAt) });
+}
+
+export async function listOrderNotes(orderId: string): Promise<OrderNote[]> {
+  const snap = await adminDb
+    .collection(`orders/${orderId}/notes`)
+    .orderBy("createdAt", "desc")
+    .get();
+  return snap.docs.map((d) =>
+    orderNoteSchema.parse({ ...d.data(), id: d.id, createdAt: toDate(d.data().createdAt) }),
+  );
 }
 
 // Same MVP-scale simplification as catalog's listShopProducts: a single

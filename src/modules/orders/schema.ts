@@ -22,7 +22,19 @@ export const orderItemSchema = z.object({
 });
 export type OrderItem = z.infer<typeof orderItemSchema>;
 
-export const orderStatusSchema = z.enum(["placed", "fulfilled", "cancelled"]);
+// pending: just placed, awaiting admin confirmation.
+// confirmed: reviewed, ready to fulfill (also set automatically once the
+// first shipment is created — see shipments/server/actions.ts).
+// shipped: at least one shipment has left the building.
+// delivered: every shipment for the order has been marked delivered.
+// cancelled: terminal; cancelOrderAction restocks everything first.
+export const orderStatusSchema = z.enum([
+  "pending",
+  "confirmed",
+  "shipped",
+  "delivered",
+  "cancelled",
+]);
 export type OrderStatus = z.infer<typeof orderStatusSchema>;
 
 export const orderSchema = z.object({
@@ -36,7 +48,7 @@ export const orderSchema = z.object({
   discountCode: z.string().nullable().default(null),
   shippingFeeMinor: z.number().int().nonnegative().default(0),
   totalMinor: z.number().int().nonnegative(),
-  status: orderStatusSchema.default("placed"),
+  status: orderStatusSchema.default("pending"),
   paymentMethod: z.literal("cod").default("cod"),
   createdAt: z.date(),
 });
@@ -54,3 +66,17 @@ export const checkoutInputSchema = z.object({
   guestEmail: z.email().optional(),
 });
 export type CheckoutInput = z.infer<typeof checkoutInputSchema>;
+
+export const orderNoteSchema = z.object({
+  id: z.string(),
+  body: z.string().min(1),
+  staffUid: z.string(),
+  createdAt: z.date(),
+});
+export type OrderNote = z.infer<typeof orderNoteSchema>;
+
+export const addOrderNoteInputSchema = z.object({
+  orderId: z.string().min(1),
+  body: z.string().trim().min(1, "Note can't be empty"),
+});
+export type AddOrderNoteInput = z.infer<typeof addOrderNoteInputSchema>;

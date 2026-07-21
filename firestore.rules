@@ -49,6 +49,25 @@ service cloud.firestore {
     match /orders/{orderId} {
       allow read: if request.auth != null && request.auth.uid == resource.data.uid;
       allow write: if false;
+
+      // Internal staff-only notes — never customer-visible, even on their own order.
+      match /notes/{noteId} {
+        allow read, write: if false;
+      }
+    }
+
+    // --- shipments module (src/modules/shipments/rules.md) ---
+    match /shipments/{shipmentId} {
+      allow read: if request.auth != null &&
+        request.auth.uid == get(/databases/$(database)/documents/orders/$(resource.data.orderId)).data.uid;
+      allow write: if false;
+    }
+
+    // --- returns module (src/modules/returns/rules.md) ---
+    match /returns/{returnId} {
+      allow read: if request.auth != null &&
+        request.auth.uid == get(/databases/$(database)/documents/orders/$(resource.data.orderId)).data.uid;
+      allow write: if false;
     }
 
     // --- discounts module (src/modules/discounts/rules.md) ---
