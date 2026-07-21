@@ -4,7 +4,7 @@ overrides:
 
 allowBuilds:
   "@firebase/util": true
-  '@sentry/cli': true
+  "@sentry/cli": true
   esbuild: true
   protobufjs: true
   re2: true
