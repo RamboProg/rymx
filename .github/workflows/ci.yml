@@ -18,7 +18,7 @@ jobs:
     name: Lint, typecheck, unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -41,7 +41,7 @@ jobs:
     name: Firestore/Storage rules tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -80,7 +80,7 @@ jobs:
       FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199
       CRON_SECRET: ci-build-dummy-secret
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -95,7 +95,7 @@ jobs:
     name: SAST, secret scan, dependency audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
@@ -125,7 +125,7 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: [lint-typecheck-unit, rules-tests, build]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Wait for Vercel preview deployment
         id: wait-for-preview
         uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
