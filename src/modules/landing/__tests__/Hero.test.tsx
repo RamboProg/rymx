@@ -7,7 +7,7 @@ describe("Hero", () => {
     render(<Hero />);
 
     expect(screen.getByText("RYMX — CAIRO / SS26")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Reveal yourmistakes.");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Reveal your mistakes.");
 
     const cta = screen.getByRole("link", { name: /reveal the collection/i });
     expect(cta).toHaveAttribute("href", "/shop");

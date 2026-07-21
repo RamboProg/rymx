@@ -3,7 +3,14 @@ import type { Order } from "../schema";
 
 type OrderTotals = Pick<
   Order,
-  "items" | "subtotalMinor" | "discountMinor" | "discountCode" | "shippingFeeMinor" | "totalMinor"
+  | "items"
+  | "subtotalMinor"
+  | "discountMinor"
+  | "discountCode"
+  | "shippingFeeMinor"
+  | "taxMinor"
+  | "codFeeMinor"
+  | "totalMinor"
 >;
 
 export function OrderSummary({ order }: { order: OrderTotals }) {
@@ -38,6 +45,18 @@ export function OrderSummary({ order }: { order: OrderTotals }) {
           <span>Shipping</span>
           <span>{order.shippingFeeMinor === 0 ? "Free" : formatEGP(order.shippingFeeMinor)}</span>
         </div>
+        {order.taxMinor > 0 && (
+          <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
+            <span>Tax</span>
+            <span>{formatEGP(order.taxMinor)}</span>
+          </div>
+        )}
+        {order.codFeeMinor > 0 && (
+          <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
+            <span>COD fee</span>
+            <span>{formatEGP(order.codFeeMinor)}</span>
+          </div>
+        )}
         <div className="text-rymx-cream flex justify-between font-mono text-sm font-semibold">
           <span>Total</span>
           <span>{formatEGP(order.totalMinor)}</span>

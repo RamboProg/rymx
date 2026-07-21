@@ -47,6 +47,8 @@ export const orderSchema = z.object({
   discountMinor: z.number().int().nonnegative().default(0),
   discountCode: z.string().nullable().default(null),
   shippingFeeMinor: z.number().int().nonnegative().default(0),
+  taxMinor: z.number().int().nonnegative().default(0),
+  codFeeMinor: z.number().int().nonnegative().default(0),
   totalMinor: z.number().int().nonnegative(),
   status: orderStatusSchema.default("pending"),
   paymentMethod: z.literal("cod").default("cod"),

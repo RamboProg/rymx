@@ -18,12 +18,10 @@ import {
 } from "@/modules/discounts/services/discount";
 import { sendOrderConfirmationEmail } from "@/modules/notifications/server";
 import { getSessionClaims } from "@/modules/rbac/server";
+import { getShippingSettings, getStoreSettings } from "@/modules/settings/server";
+import { resolveShippingFeeMinor } from "@/modules/settings/services/shipping";
 import { checkoutInputSchema, orderSchema, type Order, type OrderItem } from "../schema";
-import {
-  computeShippingFeeMinor,
-  computeSubtotalMinor,
-  computeTotalMinor,
-} from "../services/pricing";
+import { computeSubtotalMinor, computeTaxMinor, computeTotalMinor } from "../services/pricing";
 
 export type CheckoutResult = { ok: true; order: Order } | { ok: false; error: string };
 
@@ -49,6 +47,14 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
   const rateLimitKey = uid ?? (await clientIp());
   if (!checkRateLimit(`checkout:${rateLimitKey}`, 10, 60 * 1000)) {
     return { ok: false, error: "Too many checkout attempts. Try again shortly." };
+  }
+
+  const [shippingSettings, storeSettings] = await Promise.all([
+    getShippingSettings(),
+    getStoreSettings(),
+  ]);
+  if (!storeSettings.codEnabled) {
+    return { ok: false, error: "Cash on delivery is currently unavailable." };
   }
 
   try {
@@ -131,8 +137,32 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
         appliedCode = discount.code;
       }
 
-      const shippingFeeMinor = computeShippingFeeMinor(subtotalMinor);
-      const totalMinor = computeTotalMinor({ subtotalMinor, discountMinor, shippingFeeMinor });
+      const shippingFeeMinor = resolveShippingFeeMinor(
+        subtotalMinor,
+        input.shipping.governorate,
+        shippingSettings,
+      );
+      const taxMinor = computeTaxMinor(
+        Math.max(0, subtotalMinor - discountMinor),
+        storeSettings.taxPercent,
+      );
+      const codFeeMinor = storeSettings.codFeeMinor;
+      const totalMinor = computeTotalMinor({
+        subtotalMinor,
+        discountMinor,
+        shippingFeeMinor,
+        taxMinor,
+        codFeeMinor,
+      });
+
+      if (
+        storeSettings.maxOrderValueMinor !== null &&
+        totalMinor > storeSettings.maxOrderValueMinor
+      ) {
+        throw new CheckoutError(
+          "This order exceeds our maximum order value for cash on delivery. Please contact us to arrange this order.",
+        );
+      }
 
       const newOrder = orderSchema.parse({
         id: orderRef.id,
@@ -144,6 +174,8 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
         discountMinor,
         discountCode: appliedCode,
         shippingFeeMinor,
+        taxMinor,
+        codFeeMinor,
         totalMinor,
         status: "pending",
         paymentMethod: "cod",

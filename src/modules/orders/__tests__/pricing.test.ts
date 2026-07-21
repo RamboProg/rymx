@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  computeShippingFeeMinor,
-  computeSubtotalMinor,
-  computeTotalMinor,
-  FLAT_SHIPPING_FEE_MINOR,
-  FREE_SHIPPING_THRESHOLD_MINOR,
-} from "../services/pricing";
+import { computeSubtotalMinor, computeTaxMinor, computeTotalMinor } from "../services/pricing";
 
 describe("computeSubtotalMinor", () => {
   it("sums unit price times quantity across lines", () => {
@@ -21,26 +15,27 @@ describe("computeSubtotalMinor", () => {
   });
 });
 
-describe("computeShippingFeeMinor", () => {
-  it("charges the flat fee below the free-shipping threshold", () => {
-    expect(computeShippingFeeMinor(FREE_SHIPPING_THRESHOLD_MINOR - 1)).toBe(
-      FLAT_SHIPPING_FEE_MINOR,
-    );
+describe("computeTaxMinor", () => {
+  it("computes a percentage of the amount, rounding to the nearest piastre", () => {
+    expect(computeTaxMinor(10000, 14)).toBe(1400);
+    expect(computeTaxMinor(999, 10)).toBe(100);
   });
 
-  it("is free at or above the threshold", () => {
-    expect(computeShippingFeeMinor(FREE_SHIPPING_THRESHOLD_MINOR)).toBe(0);
+  it("is zero at a 0% rate", () => {
+    expect(computeTaxMinor(10000, 0)).toBe(0);
   });
 });
 
 describe("computeTotalMinor", () => {
-  it("adds shipping after subtracting the discount", () => {
+  it("adds shipping, tax, and COD fee after subtracting the discount", () => {
     const total = computeTotalMinor({
       subtotalMinor: 10000,
       discountMinor: 1000,
       shippingFeeMinor: 5000,
+      taxMinor: 1000,
+      codFeeMinor: 500,
     });
-    expect(total).toBe(14000);
+    expect(total).toBe(15500);
   });
 
   it("never goes negative when the discount exceeds the subtotal", () => {
@@ -48,6 +43,8 @@ describe("computeTotalMinor", () => {
       subtotalMinor: 500,
       discountMinor: 5000,
       shippingFeeMinor: 5000,
+      taxMinor: 0,
+      codFeeMinor: 0,
     });
     expect(total).toBe(5000);
   });

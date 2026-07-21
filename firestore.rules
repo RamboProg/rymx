@@ -15,6 +15,16 @@ service cloud.firestore {
         allow read: if request.auth != null && request.auth.uid == uid;
         allow write: if false;
       }
+
+      // --- customers module (src/modules/customers/rules.md) ---
+      match /notes/{noteId} {
+        allow read, write: if false;
+      }
+    }
+
+    // --- customers module (src/modules/customers/rules.md) ---
+    match /customerTags/{uid} {
+      allow read, write: if false;
     }
 
     // --- catalog module (src/modules/catalog/rules.md) ---
@@ -82,6 +92,23 @@ service cloud.firestore {
     // --- inventory module (src/modules/inventory/rules.md) ---
     match /inventoryAdjustments/{adjustmentId} {
       allow read, write: if false;
+    }
+
+    // --- settings module (src/modules/settings/rules.md) ---
+    match /settings/{settingsId} {
+      allow read: if settingsId in ["shipping", "store", "policies"];
+      allow write: if false;
+    }
+
+    // --- rbac module (src/modules/rbac/rules.md) ---
+    match /auditLog/{entryId} {
+      allow read, write: if false;
+    }
+
+    // --- content module (src/modules/content/rules.md) ---
+    match /content/homepage {
+      allow read: if true;
+      allow write: if false;
     }
 
     match /{document=**} {

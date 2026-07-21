@@ -7,7 +7,9 @@ import { Field } from "@/components/ui/Input";
 import { formatEGP } from "@/lib/money";
 import { useCart } from "@/modules/cart/hooks/useCart";
 import { previewDiscountAction } from "@/modules/discounts/server/actions";
-import { computeShippingFeeMinor, computeTotalMinor } from "../services/pricing";
+import type { ShippingSettings, StoreSettings } from "@/modules/settings/schema";
+import { resolveShippingFeeMinor } from "@/modules/settings/services/shipping";
+import { computeTaxMinor, computeTotalMinor } from "../services/pricing";
 import { checkoutAction } from "../server/checkout";
 import { shippingAddressSchema, type ShippingAddress } from "../schema";
 
@@ -20,7 +22,13 @@ const EMPTY_SHIPPING: ShippingAddress = {
   notes: "",
 };
 
-export function CheckoutView() {
+export function CheckoutView({
+  shippingSettings,
+  storeSettings,
+}: {
+  shippingSettings: ShippingSettings;
+  storeSettings: StoreSettings;
+}) {
   const router = useRouter();
   const { cart, loading, signedIn, clear } = useCart();
   const [shipping, setShipping] = useState<ShippingAddress>(EMPTY_SHIPPING);
@@ -37,15 +45,27 @@ export function CheckoutView() {
   const [submitting, setSubmitting] = useState(false);
   const idempotencyKey = useRef(crypto.randomUUID());
 
-  const shippingFeeMinor = computeShippingFeeMinor(cart.subtotalMinor);
+  const shippingFeeMinor = useMemo(
+    () => resolveShippingFeeMinor(cart.subtotalMinor, shipping.governorate, shippingSettings),
+    [cart.subtotalMinor, shipping.governorate, shippingSettings],
+  );
+  const discountMinor = appliedDiscount?.discountMinor ?? 0;
+  const taxMinor = useMemo(
+    () =>
+      computeTaxMinor(Math.max(0, cart.subtotalMinor - discountMinor), storeSettings.taxPercent),
+    [cart.subtotalMinor, discountMinor, storeSettings.taxPercent],
+  );
+  const codFeeMinor = storeSettings.codFeeMinor;
   const totalMinor = useMemo(
     () =>
       computeTotalMinor({
         subtotalMinor: cart.subtotalMinor,
-        discountMinor: appliedDiscount?.discountMinor ?? 0,
+        discountMinor,
         shippingFeeMinor,
+        taxMinor,
+        codFeeMinor,
       }),
-    [cart.subtotalMinor, appliedDiscount, shippingFeeMinor],
+    [cart.subtotalMinor, discountMinor, shippingFeeMinor, taxMinor, codFeeMinor],
   );
 
   async function onApplyPromo() {
@@ -189,13 +209,23 @@ export function CheckoutView() {
           Payment: Cash on delivery
         </p>
 
+        {!storeSettings.codEnabled && (
+          <p role="alert" className="font-mono text-sm text-red-400">
+            We&rsquo;re not accepting new orders right now. Please check back soon.
+          </p>
+        )}
+
         {submitError && (
           <p role="alert" className="font-mono text-sm text-red-400">
             {submitError}
           </p>
         )}
 
-        <Button type="submit" disabled={submitting} className="justify-center">
+        <Button
+          type="submit"
+          disabled={submitting || !storeSettings.codEnabled}
+          className="justify-center"
+        >
           {submitting ? "Placing order…" : "Place order (COD)"}
         </Button>
       </form>
@@ -248,6 +278,18 @@ export function CheckoutView() {
           <span>Shipping</span>
           <span>{shippingFeeMinor === 0 ? "Free" : formatEGP(shippingFeeMinor)}</span>
         </div>
+        {taxMinor > 0 && (
+          <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
+            <span>Tax ({storeSettings.taxPercent}%)</span>
+            <span>{formatEGP(taxMinor)}</span>
+          </div>
+        )}
+        {codFeeMinor > 0 && (
+          <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
+            <span>COD fee</span>
+            <span>{formatEGP(codFeeMinor)}</span>
+          </div>
+        )}
         <div className="border-rymx-cream/10 text-rymx-cream flex justify-between border-t pt-4 font-mono text-sm font-semibold">
           <span>Total</span>
           <span>{formatEGP(totalMinor)}</span>

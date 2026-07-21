@@ -4,13 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { formatEGP } from "@/lib/money";
-import {
-  computeShippingFeeMinor,
-  FREE_SHIPPING_THRESHOLD_MINOR,
-} from "@/modules/orders/services/pricing";
+import type { ShippingSettings } from "@/modules/settings/schema";
+import { computeShippingFeeMinor } from "@/modules/settings/services/shipping";
 import { useCart } from "../hooks/useCart";
 
-export function CartView() {
+export function CartView({ shippingSettings }: { shippingSettings: ShippingSettings }) {
   const { cart, loading, pending, updateQuantity, remove } = useCart();
 
   if (loading) {
@@ -26,7 +24,7 @@ export function CartView() {
     );
   }
 
-  const shippingFeeMinor = computeShippingFeeMinor(cart.subtotalMinor);
+  const shippingFeeMinor = computeShippingFeeMinor(cart.subtotalMinor, shippingSettings);
 
   return (
     <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px]">
@@ -104,9 +102,9 @@ export function CartView() {
           <span>Shipping</span>
           <span>{shippingFeeMinor === 0 ? "Free" : formatEGP(shippingFeeMinor)}</span>
         </div>
-        {shippingFeeMinor > 0 && (
+        {shippingFeeMinor > 0 && shippingSettings.freeShippingThresholdMinor !== null && (
           <p className="text-rymx-cream/40 font-mono text-xs">
-            Free shipping over {formatEGP(FREE_SHIPPING_THRESHOLD_MINOR)}
+            Free shipping over {formatEGP(shippingSettings.freeShippingThresholdMinor)}
           </p>
         )}
         <Button href="/checkout" className="justify-center">

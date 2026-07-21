@@ -39,6 +39,7 @@ export async function listVariantsAcrossProducts(): Promise<VariantStockRow[]> {
           sku: data.sku as string,
           optionValues: (data.optionValues as Record<string, string>) ?? {},
           stock: data.stock as number,
+          priceMinor: data.priceMinor as number,
         };
       });
     }),

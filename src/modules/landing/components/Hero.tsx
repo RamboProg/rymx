@@ -9,7 +9,15 @@ const RymxScene = dynamic(() => import("./RymxScene").then((m) => m.RymxScene), 
   ssr: false,
 });
 
-export function Hero() {
+export function Hero({
+  eyebrow = "RYMX — CAIRO / SS26",
+  headline = "Reveal your mistakes.",
+  cta = "Reveal the collection",
+}: {
+  eyebrow?: string;
+  headline?: string;
+  cta?: string;
+}) {
   const sceneRef = useRef<RymxSceneHandle>(null);
 
   return (
@@ -23,18 +31,16 @@ export function Hero() {
 
       <div className="absolute top-8 left-6 max-w-[80%] sm:top-11 sm:left-11 sm:max-w-[62%]">
         <p className="text-rymx-gold font-mono text-[11px] font-medium tracking-[0.32em]">
-          RYMX — CAIRO / SS26
+          {eyebrow}
         </p>
         <h1 className="font-shoulders text-rymx-cream mt-4 text-[13vw] leading-[0.92] font-extrabold tracking-[-0.005em] uppercase sm:text-6xl lg:text-7xl">
-          Reveal your
-          <br />
-          mistakes.
+          {headline}
         </h1>
       </div>
 
       <div className="absolute right-6 bottom-8 sm:right-11 sm:bottom-11">
         <Button href="/shop" onClick={() => sceneRef.current?.reveal()}>
-          Reveal the collection <span aria-hidden="true">→</span>
+          {cta} <span aria-hidden="true">→</span>
         </Button>
       </div>
     </section>

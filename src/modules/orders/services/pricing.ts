@@ -1,25 +1,25 @@
 import type { OrderItem } from "../schema";
 
-// Flat COD shipping fee, EGP 50. Revisit with rate tables per governorate
-// once carrier integration exists.
-export const FLAT_SHIPPING_FEE_MINOR = 5000;
-export const FREE_SHIPPING_THRESHOLD_MINOR = 300000;
-
 export function computeSubtotalMinor(
   items: readonly Pick<OrderItem, "unitPriceMinor" | "quantity">[],
 ): number {
   return items.reduce((sum, i) => sum + i.unitPriceMinor * i.quantity, 0);
 }
 
-export function computeShippingFeeMinor(subtotalMinor: number): number {
-  return subtotalMinor >= FREE_SHIPPING_THRESHOLD_MINOR ? 0 : FLAT_SHIPPING_FEE_MINOR;
+// Taxed on the discounted subtotal, before shipping/COD fee — the simplest
+// defensible base for a single flat store-wide rate (settings module owns
+// `taxPercent`; this just does the rounding).
+export function computeTaxMinor(discountedSubtotalMinor: number, taxPercent: number): number {
+  return Math.round((discountedSubtotalMinor * taxPercent) / 100);
 }
 
 export function computeTotalMinor(params: {
   subtotalMinor: number;
   discountMinor: number;
   shippingFeeMinor: number;
+  taxMinor: number;
+  codFeeMinor: number;
 }): number {
   const discounted = Math.max(0, params.subtotalMinor - params.discountMinor);
-  return discounted + params.shippingFeeMinor;
+  return discounted + params.shippingFeeMinor + params.taxMinor + params.codFeeMinor;
 }

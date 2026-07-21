@@ -77,6 +77,18 @@ export default async function AdminOrderDetailPage({
             <span>Shipping</span>
             <span>{formatEGP(order.shippingFeeMinor)}</span>
           </div>
+          {order.taxMinor > 0 && (
+            <div className="flex justify-between gap-8">
+              <span>Tax</span>
+              <span>{formatEGP(order.taxMinor)}</span>
+            </div>
+          )}
+          {order.codFeeMinor > 0 && (
+            <div className="flex justify-between gap-8">
+              <span>COD fee</span>
+              <span>{formatEGP(order.codFeeMinor)}</span>
+            </div>
+          )}
           <div className="text-rymx-cream flex justify-between gap-8 font-bold">
             <span>Total</span>
             <span>{formatEGP(order.totalMinor)}</span>

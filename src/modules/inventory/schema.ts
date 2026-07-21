@@ -34,4 +34,5 @@ export type VariantStockRow = {
   sku: string;
   optionValues: Record<string, string>;
   stock: number;
+  priceMinor: number;
 };
