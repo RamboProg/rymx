@@ -54,9 +54,16 @@ const nextConfig: NextConfig = {
 // wrapper itself is always safe to apply. disableLogger/automaticVercelMonitors
 // are webpack-only options unsupported under this project's Turbopack build,
 // left off rather than left silently ignored.
+//
+// tunnelRoute proxies the client SDK's error/replay reports through our own
+// /monitoring route instead of talking to *.ingest.de.sentry.io directly —
+// avoids needing to add Sentry's ingest host to the strict CSP's connect-src
+// (it'd otherwise be silently blocked) and is Sentry's own recommended
+// pattern for ad-blocker resilience too.
 export default withSentryConfig(nextConfig, {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   silent: true,
   widenClientFileUpload: true,
+  tunnelRoute: "/monitoring",
 });
