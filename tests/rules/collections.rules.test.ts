@@ -17,7 +17,11 @@ describe("collections module rules", () => {
   it("allows reading a collection with no publishAt", async () => {
     const env = await getRulesTestEnv();
     await env.withSecurityRulesDisabled(async (ctx) => {
-      await setDoc(doc(ctx.firestore(), "collections/c1"), { title: "Launch", publishAt: null });
+      await setDoc(doc(ctx.firestore(), "collections/c1"), {
+        title: "Launch",
+        publishAt: null,
+        active: true,
+      });
     });
     const unauthed = env.unauthenticatedContext();
     await assertSucceeds(getDoc(doc(unauthed.firestore(), "collections/c1")));
@@ -29,6 +33,7 @@ describe("collections module rules", () => {
       await setDoc(doc(ctx.firestore(), "collections/c1"), {
         title: "Launch",
         publishAt: new Date(Date.now() - 60_000),
+        active: true,
       });
     });
     const unauthed = env.unauthenticatedContext();
@@ -41,6 +46,20 @@ describe("collections module rules", () => {
       await setDoc(doc(ctx.firestore(), "collections/c1"), {
         title: "Launch",
         publishAt: new Date(Date.now() + 60 * 60 * 1000),
+        active: true,
+      });
+    });
+    const unauthed = env.unauthenticatedContext();
+    await assertFails(getDoc(doc(unauthed.firestore(), "collections/c1")));
+  });
+
+  it("denies reading an inactive collection even when otherwise live", async () => {
+    const env = await getRulesTestEnv();
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "collections/c1"), {
+        title: "Launch",
+        publishAt: new Date(Date.now() - 60_000),
+        active: false,
       });
     });
     const unauthed = env.unauthenticatedContext();

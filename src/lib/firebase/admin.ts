@@ -42,4 +42,4 @@ const adminAuth = getAuth(adminApp);
 const adminDb = getFirestore(adminApp);
 const adminStorage = getStorage(adminApp);
 
-export { adminApp, adminAuth, adminDb, adminStorage };
+export { adminAuth, adminDb, adminStorage };

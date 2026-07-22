@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Table, Td, Th } from "@/components/admin/Table";
+import { Select } from "@/components/ui/Select";
 import { ROLES, type Permission, type Role, type StaffMember } from "../../schema";
 import { revokeStaffAction, updateStaffRoleAction } from "../../server/actions";
 import { PermissionCheckboxes } from "./PermissionCheckboxes";
@@ -78,17 +79,13 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
         <tr>
           <td colSpan={5} className="border-rymx-cream/10 bg-rymx-card border-b p-4">
             <div className="flex flex-col gap-3">
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value as Role)}
-                className="border-rymx-cream/20 bg-rymx-bg text-rymx-cream focus:border-rymx-gold w-fit rounded-md border px-3 py-2 text-sm outline-none"
-              >
-                {ASSIGNABLE_ROLES.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
+              <div className="w-fit min-w-[10rem]">
+                <Select
+                  value={role}
+                  onValueChange={(v) => setRole(v as Role)}
+                  options={ASSIGNABLE_ROLES.map((r) => ({ value: r, label: r }))}
+                />
+              </div>
               <PermissionCheckboxes selected={permissions} onChange={setPermissions} />
               {error && (
                 <p role="alert" className="font-mono text-sm text-red-400">

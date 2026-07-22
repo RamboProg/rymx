@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { NumberField, Field } from "@/components/ui/Input";
 import { storeSettingsSchema, type StoreSettings } from "../../schema";
 import { updateStoreSettingsAction } from "../../server/actions";
 
@@ -68,35 +69,30 @@ export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
         />
       </div>
 
-      <label className="text-rymx-cream/80 flex items-center gap-2 font-mono text-sm">
-        <input
-          type="checkbox"
-          checked={codEnabled}
-          onChange={(e) => setCodEnabled(e.target.checked)}
-        />
-        Accepting cash-on-delivery orders
-      </label>
+      <Checkbox
+        id="codEnabled"
+        label="Accepting cash-on-delivery orders"
+        checked={codEnabled}
+        onChange={setCodEnabled}
+      />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Field
+        <NumberField
           id="codFee"
           label="COD handling fee (EGP)"
-          type="number"
           step="0.01"
           value={codFee}
           onChange={(e) => setCodFee(e.target.value)}
         />
-        <Field
+        <NumberField
           id="maxOrderValue"
           label="Max COD order value (EGP, blank = no cap)"
-          type="number"
           value={maxOrderValue}
           onChange={(e) => setMaxOrderValue(e.target.value)}
         />
-        <Field
+        <NumberField
           id="taxPercent"
           label="Tax rate (%)"
-          type="number"
           step="0.01"
           value={taxPercent}
           onChange={(e) => setTaxPercent(e.target.value)}

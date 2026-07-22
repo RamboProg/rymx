@@ -2,7 +2,8 @@
 
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { NumberField, Field } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import type { DiscountType } from "../../schema";
 import { bulkGenerateCodesAction } from "../../server/actions";
 
@@ -50,34 +51,25 @@ export function BulkGenerateForm() {
           value={prefix}
           onChange={(e) => setPrefix(e.target.value)}
         />
-        <Field
+        <NumberField
           id="bulk-count"
           label="How many"
-          type="number"
           value={count}
           onChange={(e) => setCount(e.target.value)}
         />
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="bulk-type"
-            className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-          >
-            Type
-          </label>
-          <select
-            id="bulk-type"
-            value={type}
-            onChange={(e) => setType(e.target.value as DiscountType)}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-          >
-            <option value="percent">Percent off</option>
-            <option value="fixed">Fixed amount off (EGP)</option>
-          </select>
-        </div>
-        <Field
+        <Select
+          id="bulk-type"
+          label="Type"
+          value={type}
+          onValueChange={(v) => setType(v as DiscountType)}
+          options={[
+            { value: "percent", label: "Percent off" },
+            { value: "fixed", label: "Fixed amount off (EGP)" },
+          ]}
+        />
+        <NumberField
           id="bulk-value"
           label={type === "percent" ? "Value (%)" : "Value (EGP)"}
-          type="number"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />

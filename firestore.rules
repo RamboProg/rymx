@@ -45,7 +45,8 @@ service cloud.firestore {
 
     // --- collections module (src/modules/collections/rules.md) ---
     match /collections/{collectionId} {
-      allow read: if resource.data.publishAt == null || resource.data.publishAt <= request.time;
+      allow read: if resource.data.active == true &&
+        (resource.data.publishAt == null || resource.data.publishAt <= request.time);
       allow write: if false;
     }
 

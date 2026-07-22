@@ -5,9 +5,14 @@ import { formatEGP } from "@/lib/money";
 import {
   getDiscountPerformanceReport,
   getInventoryValueMinor,
+  getMostReturnedItemsReport,
+  getReturnReasonsReport,
   getSalesReport,
   getTopProductsReport,
+  getTrendingCollectionsReport,
+  getTrendingProductsReport,
 } from "@/modules/analytics/server";
+import { RETURN_REASONS } from "@/modules/returns/schema";
 import { listLowStock } from "@/modules/inventory/server";
 
 export const metadata: Metadata = { title: "Analytics — Admin — RYMX" };
@@ -24,14 +29,27 @@ function ExportLink({ report }: { report: string }) {
 }
 
 export default async function AdminAnalyticsPage() {
-  const [sales, topProducts, discountPerformance, inventoryValueMinor, lowStock] =
-    await Promise.all([
-      getSalesReport(30),
-      getTopProductsReport(10),
-      getDiscountPerformanceReport(),
-      getInventoryValueMinor(),
-      listLowStock(),
-    ]);
+  const [
+    sales,
+    topProducts,
+    discountPerformance,
+    inventoryValueMinor,
+    lowStock,
+    trendingProducts,
+    trendingCollections,
+    mostReturnedItems,
+    returnReasons,
+  ] = await Promise.all([
+    getSalesReport(30),
+    getTopProductsReport(10),
+    getDiscountPerformanceReport(),
+    getInventoryValueMinor(),
+    listLowStock(),
+    getTrendingProductsReport(10, 30),
+    getTrendingCollectionsReport(10, 30),
+    getMostReturnedItemsReport(10),
+    getReturnReasonsReport(),
+  ]);
 
   const totalRevenueMinor = sales.reduce((sum, d) => sum + d.revenueMinor, 0);
   const totalOrders = sales.reduce((sum, d) => sum + d.orderCount, 0);
@@ -144,6 +162,113 @@ export default async function AdminAnalyticsPage() {
                   <Td>{row.productTitle}</Td>
                   <Td>{row.sku}</Td>
                   <Td>{row.stock}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-display text-rymx-cream text-lg font-bold">
+          Trending products — last 30 days
+        </h2>
+        {trendingProducts.length === 0 ? (
+          <p className="text-rymx-cream/50 font-mono text-sm">No sales in this window yet.</p>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <Th>Product</Th>
+                <Th>Quantity sold</Th>
+                <Th>Revenue</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {trendingProducts.map((p) => (
+                <tr key={p.productId}>
+                  <Td>{p.title}</Td>
+                  <Td>{p.quantitySold}</Td>
+                  <Td>{formatEGP(p.revenueMinor)}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-display text-rymx-cream text-lg font-bold">
+          Trending collections — last 30 days
+        </h2>
+        {trendingCollections.length === 0 ? (
+          <p className="text-rymx-cream/50 font-mono text-sm">No sales in this window yet.</p>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <Th>Collection</Th>
+                <Th>Quantity sold</Th>
+                <Th>Revenue</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {trendingCollections.map((c) => (
+                <tr key={c.collectionId}>
+                  <Td>{c.title}</Td>
+                  <Td>{c.quantitySold}</Td>
+                  <Td>{formatEGP(c.revenueMinor)}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-display text-rymx-cream text-lg font-bold">Most returned items</h2>
+        {mostReturnedItems.length === 0 ? (
+          <p className="text-rymx-cream/50 font-mono text-sm">No returns yet.</p>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <Th>Product</Th>
+                <Th>Quantity returned</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {mostReturnedItems.map((item) => (
+                <tr key={item.productId}>
+                  <Td>{item.title}</Td>
+                  <Td>{item.quantityReturned}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-display text-rymx-cream text-lg font-bold">Return reasons</h2>
+        {returnReasons.length === 0 ? (
+          <p className="text-rymx-cream/50 font-mono text-sm">No returns yet.</p>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <Th>Reason</Th>
+                <Th>Count</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {returnReasons.map((r) => (
+                <tr key={r.reasonCategory}>
+                  <Td>
+                    {RETURN_REASONS.find((reason) => reason.value === r.reasonCategory)?.label ??
+                      r.reasonCategory}
+                  </Td>
+                  <Td>{r.count}</Td>
                 </tr>
               ))}
             </tbody>

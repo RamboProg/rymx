@@ -3,17 +3,13 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { DateTimePicker } from "@/components/ui/DateTimePicker";
 import { Field } from "@/components/ui/Input";
 import type { MediaAsset, Product } from "@/modules/catalog/schema";
 import { MediaManager } from "@/modules/media/components/MediaManager";
 import { collectionInputSchema, type Collection } from "../../schema";
 import { createCollectionAction, updateCollectionAction } from "../../server/actions";
-
-function toDateTimeLocal(date: Date | null): string {
-  if (!date) return "";
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
 
 export function CollectionForm({
   collection,
@@ -26,7 +22,8 @@ export function CollectionForm({
   const [title, setTitle] = useState(collection?.title ?? "");
   const [slug, setSlug] = useState(collection?.slug ?? "");
   const [description, setDescription] = useState(collection?.description ?? "");
-  const [publishAt, setPublishAt] = useState(toDateTimeLocal(collection?.publishAt ?? null));
+  const [publishAt, setPublishAt] = useState<Date | null>(collection?.publishAt ?? null);
+  const [active, setActive] = useState(collection?.active ?? true);
   const [media, setMedia] = useState<MediaAsset[]>(collection?.media ?? []);
   const [productIds, setProductIds] = useState<string[]>(collection?.productIds ?? []);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +45,8 @@ export function CollectionForm({
       description,
       media,
       productIds,
-      publishAt: publishAt ? new Date(publishAt) : null,
+      publishAt,
+      active,
     });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Invalid input");
@@ -96,21 +94,16 @@ export function CollectionForm({
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label
-          htmlFor="publishAt"
-          className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-        >
-          Publish at (optional — leave blank to go live immediately)
-        </label>
-        <input
+      <div className="w-fit">
+        <DateTimePicker
           id="publishAt"
-          type="datetime-local"
+          label="Publish at (optional — leave blank to go live immediately)"
           value={publishAt}
-          onChange={(e) => setPublishAt(e.target.value)}
-          className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold w-fit rounded-md border px-4 py-3 text-sm outline-none"
+          onChange={setPublishAt}
         />
       </div>
+
+      <Checkbox id="active" label="Active" checked={active} onChange={setActive} />
 
       <div className="flex flex-col gap-2">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
@@ -118,17 +111,13 @@ export function CollectionForm({
         </span>
         <div className="border-rymx-cream/10 flex max-h-64 flex-col gap-1 overflow-y-auto rounded-md border p-3">
           {products.map((product) => (
-            <label
+            <Checkbox
               key={product.id}
-              className="text-rymx-cream/80 flex items-center gap-2 font-mono text-sm"
-            >
-              <input
-                type="checkbox"
-                checked={productIds.includes(product.id)}
-                onChange={() => toggleProduct(product.id)}
-              />
-              {product.title}
-            </label>
+              id={`product-${product.id}`}
+              label={product.title}
+              checked={productIds.includes(product.id)}
+              onChange={() => toggleProduct(product.id)}
+            />
           ))}
         </div>
       </div>

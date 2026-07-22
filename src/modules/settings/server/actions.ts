@@ -2,9 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
-import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
-import { getSessionClaims } from "@/modules/rbac/server";
-import { hasPermission } from "@/modules/rbac/services/permissions";
+import { requireAdminPermission } from "@/modules/rbac/server";
 import {
   emailTemplatesSchema,
   policiesSchema,
@@ -13,9 +11,7 @@ import {
 } from "../schema";
 
 async function requireSettingsManage(): Promise<boolean> {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "settings:manage")) return false;
-  return checkAdminMutationRateLimit(claims!.uid);
+  return (await requireAdminPermission("settings:manage")) !== null;
 }
 
 export type SettingsActionResult = { ok: true } | { ok: false; error: string };

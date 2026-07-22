@@ -25,3 +25,37 @@ body {
   background: var(--color-rymx-bg);
   color: var(--color-rymx-cream);
 }
+
+* {
+  scrollbar-color: var(--color-rymx-gold) var(--color-rymx-card);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-rymx-card);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-rymx-gold);
+  border-radius: 9999px;
+  border: 2px solid var(--color-rymx-card);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-rymx-gold-hover);
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

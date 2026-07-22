@@ -1,15 +1,9 @@
 import "server-only";
 
 import type { DocumentData } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import { returnSchema, type Return } from "../schema";
-
-function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
 
 function parseReturn(id: string, data: DocumentData): Return {
   return returnSchema.parse({
@@ -31,4 +25,11 @@ export async function getReturnById(returnId: string): Promise<Return | null> {
   const doc = await adminDb.doc(`returns/${returnId}`).get();
   if (!doc.exists) return null;
   return parseReturn(doc.id, doc.data()!);
+}
+
+// Admin-only, dashboard-scale: every return, unsorted — mirrors
+// orders/server/index.ts's listAllOrders exactly. Callers aggregate.
+export async function listAllReturns(): Promise<Return[]> {
+  const snap = await adminDb.collection("returns").get();
+  return snap.docs.map((d) => parseReturn(d.id, d.data()));
 }

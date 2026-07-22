@@ -1,19 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
-import { getSessionClaims } from "@/modules/rbac/server";
-import { hasPermission } from "@/modules/rbac/services/permissions";
+import { requireAdminPermission } from "@/modules/rbac/server";
 import { collectionInputSchema, type Collection } from "../schema";
-import { createCollection, deleteCollection, updateCollection } from "./admin";
+import { createCollection, deleteCollection, updateCollection, updateCollectionDoc } from "./admin";
 
 type CollectionActionResult = { ok: true; collection: Collection } | { ok: false; error: string };
 type VoidActionResult = { ok: true } | { ok: false; error: string };
 
 async function requireCollectionsWrite(): Promise<boolean> {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "collections:write")) return false;
-  return checkAdminMutationRateLimit(claims!.uid);
+  return (await requireAdminPermission("collections:write")) !== null;
 }
 
 export async function createCollectionAction(rawInput: unknown): Promise<CollectionActionResult> {
@@ -58,6 +54,18 @@ export async function updateCollectionAction(
 export async function deleteCollectionAction(collectionId: string): Promise<VoidActionResult> {
   if (!(await requireCollectionsWrite())) return { ok: false, error: "Forbidden" };
   await deleteCollection(collectionId);
+  revalidatePath("/admin/collections");
+  revalidatePath("/collections");
+  return { ok: true };
+}
+
+export async function setCollectionActiveAction(
+  id: string,
+  active: boolean,
+): Promise<VoidActionResult> {
+  if (!(await requireCollectionsWrite())) return { ok: false, error: "Forbidden" };
+
+  await updateCollectionDoc(id, { active });
   revalidatePath("/admin/collections");
   revalidatePath("/collections");
   return { ok: true };

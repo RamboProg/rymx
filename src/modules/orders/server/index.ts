@@ -1,18 +1,12 @@
 import "server-only";
 
 import type { DocumentData } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDateFallback } from "@/lib/firebase/toDate";
 import { orderNoteSchema, orderSchema, type Order, type OrderNote } from "../schema";
 
-function toDate(value: unknown): Date {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return new Date(value as string);
-}
-
 function parseOrder(id: string, data: DocumentData): Order {
-  return orderSchema.parse({ ...data, id, createdAt: toDate(data.createdAt) });
+  return orderSchema.parse({ ...data, id, createdAt: toDateFallback(data.createdAt) });
 }
 
 export async function listOrderNotes(orderId: string): Promise<OrderNote[]> {
@@ -21,7 +15,11 @@ export async function listOrderNotes(orderId: string): Promise<OrderNote[]> {
     .orderBy("createdAt", "desc")
     .get();
   return snap.docs.map((d) =>
-    orderNoteSchema.parse({ ...d.data(), id: d.id, createdAt: toDate(d.data().createdAt) }),
+    orderNoteSchema.parse({
+      ...d.data(),
+      id: d.id,
+      createdAt: toDateFallback(d.data().createdAt),
+    }),
   );
 }
 

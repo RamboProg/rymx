@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Select } from "@/components/ui/Select";
 import type { Category } from "../schema";
 
 export function ShopFilters({ categories }: { categories: Category[] }) {
@@ -18,29 +19,35 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
 
   return (
     <div className="flex flex-wrap items-center gap-4">
-      <select
-        aria-label="Filter by category"
-        value={searchParams.get("category") ?? ""}
-        onChange={(e) => updateParam("category", e.target.value)}
-        className="border-rymx-cream/20 bg-rymx-card text-rymx-cream rounded-md border px-3 py-2 font-mono text-xs uppercase"
-      >
-        <option value="">All categories</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.slug}>
-            {c.title}
-          </option>
-        ))}
-      </select>
-      <select
-        aria-label="Sort products"
-        value={searchParams.get("sort") ?? "newest"}
-        onChange={(e) => updateParam("sort", e.target.value)}
-        className="border-rymx-cream/20 bg-rymx-card text-rymx-cream rounded-md border px-3 py-2 font-mono text-xs uppercase"
-      >
-        <option value="newest">Newest</option>
-        <option value="price-asc">Price: low to high</option>
-        <option value="price-desc">Price: high to low</option>
-      </select>
+      <div className="w-48">
+        <label htmlFor="shop-filter-category" className="sr-only">
+          Filter by category
+        </label>
+        <Select
+          id="shop-filter-category"
+          value={searchParams.get("category") || "all"}
+          onValueChange={(value) => updateParam("category", value === "all" ? "" : value)}
+          options={[
+            { value: "all", label: "All categories" },
+            ...categories.map((c) => ({ value: c.slug, label: c.title })),
+          ]}
+        />
+      </div>
+      <div className="w-48">
+        <label htmlFor="shop-filter-sort" className="sr-only">
+          Sort products
+        </label>
+        <Select
+          id="shop-filter-sort"
+          value={searchParams.get("sort") ?? "newest"}
+          onValueChange={(value) => updateParam("sort", value)}
+          options={[
+            { value: "newest", label: "Newest" },
+            { value: "price-asc", label: "Price: low to high" },
+            { value: "price-desc", label: "Price: high to low" },
+          ]}
+        />
+      </div>
     </div>
   );
 }

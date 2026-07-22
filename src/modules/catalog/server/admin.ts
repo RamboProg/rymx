@@ -1,6 +1,7 @@
 import "server-only";
 
 import { adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import {
   categorySchema,
   type Category,
@@ -11,13 +12,26 @@ import {
   type VariantInput,
 } from "../schema";
 import { isDueToPublish } from "../services/publish";
-import { parseProduct, parseVariant, toDate } from "./index";
+import { parseProduct, parseVariant } from "./index";
 
 export async function listAllProducts(): Promise<Product[]> {
   const snap = await adminDb.collection("products").get();
   return snap.docs
     .map((d) => parseProduct(d.id, d.data()))
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+}
+
+export async function listAllOptions(): Promise<Record<string, string[]>> {
+  const products = await listAllProducts();
+  const result: Record<string, string[]> = {};
+  for (const product of products) {
+    for (const option of product.options) {
+      const values = result[option.name] ?? [];
+      for (const v of option.values) if (!values.includes(v)) values.push(v);
+      result[option.name] = values;
+    }
+  }
+  return result;
 }
 
 export async function getProductForAdmin(id: string): Promise<Product | null> {
@@ -75,10 +89,6 @@ export async function updateProduct(id: string, input: ProductFormInput): Promis
 
   const updated = await ref.get();
   return parseProduct(updated.id, updated.data()!);
-}
-
-export async function archiveProduct(id: string): Promise<void> {
-  await adminDb.doc(`products/${id}`).update({ status: "archived" });
 }
 
 async function recomputeMinPrice(productId: string): Promise<void> {

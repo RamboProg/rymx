@@ -30,6 +30,7 @@ export type AdjustStockInput = z.infer<typeof adjustStockInputSchema>;
 export type VariantStockRow = {
   productId: string;
   productTitle: string;
+  category: string | null;
   variantId: string;
   sku: string;
   optionValues: Record<string, string>;

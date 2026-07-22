@@ -1,15 +1,9 @@
 import "server-only";
 
 import type { DocumentData } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
-import { collectionSchema, isCollectionLive, type Collection } from "../schema";
-
-export function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
+import { toDate } from "@/lib/firebase/toDate";
+import { collectionSchema, isCollectionVisible, type Collection } from "../schema";
 
 export function parseCollection(id: string, data: DocumentData): Collection {
   return collectionSchema.parse({ id, ...data, publishAt: toDate(data.publishAt) });
@@ -19,7 +13,7 @@ export async function listLiveCollections(): Promise<Collection[]> {
   const snap = await adminDb.collection("collections").get();
   return snap.docs
     .map((d) => parseCollection(d.id, d.data()))
-    .filter((c) => isCollectionLive(c.publishAt));
+    .filter((c) => isCollectionVisible(c));
 }
 
 export async function getLiveCollectionBySlug(slug: string): Promise<Collection | null> {

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { NumberField } from "@/components/ui/Input";
 import { shippingSettingsSchema, type ShippingSettings, type ShippingZone } from "../../schema";
 import { updateShippingSettingsAction } from "../../server/actions";
 
@@ -70,18 +70,16 @@ export function ShippingSettingsForm({ settings }: { settings: ShippingSettings 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field
+        <NumberField
           id="defaultFee"
           label="Default shipping fee (EGP)"
-          type="number"
           step="0.01"
           value={defaultFee}
           onChange={(e) => setDefaultFee(e.target.value)}
         />
-        <Field
+        <NumberField
           id="freeThreshold"
           label="Free shipping over (EGP, blank = never)"
-          type="number"
           step="0.01"
           value={freeThreshold}
           onChange={(e) => setFreeThreshold(e.target.value)}

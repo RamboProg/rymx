@@ -1,15 +1,9 @@
 import "server-only";
 
 import type { DocumentData } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import { shipmentSchema, type Shipment } from "../schema";
-
-function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
 
 function parseShipment(id: string, data: DocumentData): Shipment {
   return shipmentSchema.parse({

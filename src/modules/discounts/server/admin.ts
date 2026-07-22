@@ -1,15 +1,9 @@
 import "server-only";
 
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import { discountSchema, type Discount } from "../schema";
 import { discountRef } from "./index";
-
-function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
 
 // Admin-scale: every discount, unsorted — fine while the code list is small
 // (same MVP-scale tradeoff as catalog/orders admin listings).

@@ -1,8 +1,8 @@
 import "server-only";
 
 import type { DocumentData, Transaction } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDateFallback } from "@/lib/firebase/toDate";
 import { listAllProducts } from "@/modules/catalog/server/admin";
 import {
   LOW_STOCK_THRESHOLD,
@@ -12,14 +12,8 @@ import {
 } from "../schema";
 import { computeAdjustedStock } from "../services/adjustment";
 
-function toDate(value: unknown): Date {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return new Date(value as string);
-}
-
 function parseAdjustment(id: string, data: DocumentData): StockAdjustment {
-  return stockAdjustmentSchema.parse({ ...data, id, createdAt: toDate(data.createdAt) });
+  return stockAdjustmentSchema.parse({ ...data, id, createdAt: toDateFallback(data.createdAt) });
 }
 
 // Joins every product's variants with its title, for the admin stock table.
@@ -35,6 +29,7 @@ export async function listVariantsAcrossProducts(): Promise<VariantStockRow[]> {
         return {
           productId: product.id,
           productTitle: product.title,
+          category: product.category,
           variantId: d.id,
           sku: data.sku as string,
           optionValues: (data.optionValues as Record<string, string>) ?? {},

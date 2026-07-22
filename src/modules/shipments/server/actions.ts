@@ -2,10 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
-import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getOrderById } from "@/modules/orders/server";
-import { getSessionClaims } from "@/modules/rbac/server";
-import { hasPermission } from "@/modules/rbac/services/permissions";
+import { requireAdminPermission } from "@/modules/rbac/server";
 import {
   createShipmentInputSchema,
   markShippedInputSchema,
@@ -23,9 +21,7 @@ import { getShipmentById, listShipmentsByOrder } from "./index";
 type ShipmentActionResult = { ok: true; shipment: Shipment } | { ok: false; error: string };
 
 async function requireOrdersFulfill(): Promise<boolean> {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "orders:fulfill")) return false;
-  return checkAdminMutationRateLimit(claims!.uid);
+  return (await requireAdminPermission("orders:fulfill")) !== null;
 }
 
 export async function createShipmentAction(rawInput: unknown): Promise<ShipmentActionResult> {

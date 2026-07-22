@@ -1,4 +1,11 @@
-import type { DailySales, DiscountPerformance, TopProduct } from "../schema";
+import type {
+  DailySales,
+  DiscountPerformance,
+  MostReturnedItem,
+  ReturnReasonCount,
+  TopCollection,
+  TopProduct,
+} from "../schema";
 
 type OrderLike = {
   createdAt: Date;
@@ -7,6 +14,15 @@ type OrderLike = {
   discountMinor: number;
   discountCode: string | null;
   items: readonly { productId: string; title: string; quantity: number; unitPriceMinor: number }[];
+};
+
+type ReturnLike = {
+  items: readonly {
+    productId: string;
+    title: string;
+    quantity: number;
+    reasonCategory: string;
+  }[];
 };
 
 function dateKey(date: Date): string {
@@ -45,10 +61,15 @@ export function aggregateDailySales(orders: readonly OrderLike[], days: number):
   return Array.from(buckets.values());
 }
 
-export function aggregateTopProducts(orders: readonly OrderLike[], limit: number): TopProduct[] {
+export function aggregateTopProducts(
+  orders: readonly OrderLike[],
+  limit: number,
+  since?: Date,
+): TopProduct[] {
   const byProduct = new Map<string, TopProduct>();
   for (const order of orders) {
     if (!isCounted(order)) continue;
+    if (since && order.createdAt < since) continue;
     for (const item of order.items) {
       const existing = byProduct.get(item.productId) ?? {
         productId: item.productId,
@@ -64,6 +85,91 @@ export function aggregateTopProducts(orders: readonly OrderLike[], limit: number
   return Array.from(byProduct.values())
     .sort((a, b) => b.revenueMinor - a.revenueMinor)
     .slice(0, limit);
+}
+
+// Attributes each order line item's quantity/revenue to every collection its
+// product belongs to (a product can live in more than one collection, so a
+// single line item can count toward multiple rows here).
+export function aggregateTopCollections(
+  orders: readonly OrderLike[],
+  collections: readonly { id: string; title: string; productIds: readonly string[] }[],
+  limit: number,
+  since?: Date,
+): TopCollection[] {
+  const collectionIdsByProduct = new Map<string, string[]>();
+  const titleById = new Map<string, string>();
+  for (const collection of collections) {
+    titleById.set(collection.id, collection.title);
+    for (const productId of collection.productIds) {
+      const existing = collectionIdsByProduct.get(productId) ?? [];
+      existing.push(collection.id);
+      collectionIdsByProduct.set(productId, existing);
+    }
+  }
+
+  const byCollection = new Map<string, TopCollection>();
+  for (const order of orders) {
+    if (!isCounted(order)) continue;
+    if (since && order.createdAt < since) continue;
+    for (const item of order.items) {
+      const collectionIds = collectionIdsByProduct.get(item.productId) ?? [];
+      for (const collectionId of collectionIds) {
+        const existing = byCollection.get(collectionId) ?? {
+          collectionId,
+          title: titleById.get(collectionId) ?? collectionId,
+          quantitySold: 0,
+          revenueMinor: 0,
+        };
+        existing.quantitySold += item.quantity;
+        existing.revenueMinor += item.unitPriceMinor * item.quantity;
+        byCollection.set(collectionId, existing);
+      }
+    }
+  }
+  return Array.from(byCollection.values())
+    .sort((a, b) => b.revenueMinor - a.revenueMinor)
+    .slice(0, limit);
+}
+
+// Every return regardless of status counts here — a request itself is the
+// operational signal this report exists to surface, whether or not staff
+// later approved it (unlike orders, there's no "cancelled" analog to
+// exclude).
+export function aggregateMostReturnedItems(
+  returns: readonly ReturnLike[],
+  limit: number,
+): MostReturnedItem[] {
+  const byProduct = new Map<string, MostReturnedItem>();
+  for (const ret of returns) {
+    for (const item of ret.items) {
+      const existing = byProduct.get(item.productId) ?? {
+        productId: item.productId,
+        title: item.title,
+        quantityReturned: 0,
+      };
+      existing.quantityReturned += item.quantity;
+      byProduct.set(item.productId, existing);
+    }
+  }
+  return Array.from(byProduct.values())
+    .sort((a, b) => b.quantityReturned - a.quantityReturned)
+    .slice(0, limit);
+}
+
+// Same no-status-filter reasoning as aggregateMostReturnedItems. Weighted by
+// returned quantity (not just line-item count) so a single line covering
+// several units counts proportionally, matching how aggregateMostReturnedItems
+// weighs by quantity too.
+export function aggregateReturnReasons(returns: readonly ReturnLike[]): ReturnReasonCount[] {
+  const counts = new Map<string, number>();
+  for (const ret of returns) {
+    for (const item of ret.items) {
+      counts.set(item.reasonCategory, (counts.get(item.reasonCategory) ?? 0) + item.quantity);
+    }
+  }
+  return Array.from(counts.entries())
+    .map(([reasonCategory, count]) => ({ reasonCategory, count }))
+    .sort((a, b) => b.count - a.count);
 }
 
 export function aggregateDiscountPerformance(

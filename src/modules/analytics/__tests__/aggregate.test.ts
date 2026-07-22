@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   aggregateDailySales,
   aggregateDiscountPerformance,
+  aggregateMostReturnedItems,
+  aggregateReturnReasons,
+  aggregateTopCollections,
   aggregateTopProducts,
 } from "../services/aggregate";
 
@@ -118,6 +121,164 @@ describe("aggregateTopProducts", () => {
       items: [{ productId: `p${i}`, title: `Item ${i}`, quantity: 1, unitPriceMinor: i * 100 }],
     }));
     expect(aggregateTopProducts(orders, 2)).toHaveLength(2);
+  });
+
+  it("excludes orders before the since cutoff when provided", () => {
+    const old = new Date(today);
+    old.setDate(old.getDate() - 100);
+    const orders = [
+      {
+        createdAt: old,
+        status: "delivered",
+        totalMinor: 0,
+        discountMinor: 0,
+        discountCode: null,
+        items: [{ productId: "p1", title: "Old Tee", quantity: 3, unitPriceMinor: 500 }],
+      },
+      {
+        createdAt: today,
+        status: "delivered",
+        totalMinor: 0,
+        discountMinor: 0,
+        discountCode: null,
+        items: [{ productId: "p2", title: "New Tee", quantity: 1, unitPriceMinor: 500 }],
+      },
+    ];
+    const since = new Date(today);
+    since.setDate(since.getDate() - 7);
+    const result = aggregateTopProducts(orders, 10, since);
+    expect(result).toHaveLength(1);
+    expect(result[0]?.productId).toBe("p2");
+  });
+
+  it("preserves all-time behavior when since is omitted", () => {
+    const old = new Date(today);
+    old.setDate(old.getDate() - 100);
+    const orders = [
+      {
+        createdAt: old,
+        status: "delivered",
+        totalMinor: 0,
+        discountMinor: 0,
+        discountCode: null,
+        items: [{ productId: "p1", title: "Old Tee", quantity: 3, unitPriceMinor: 500 }],
+      },
+    ];
+    expect(aggregateTopProducts(orders, 10)).toHaveLength(1);
+  });
+});
+
+describe("aggregateTopCollections", () => {
+  it("returns an empty array for no orders", () => {
+    expect(
+      aggregateTopCollections([], [{ id: "c1", title: "Summer", productIds: ["p1"] }], 10),
+    ).toEqual([]);
+  });
+
+  it("attributes a line item's quantity/revenue to every collection its product belongs to, sorted by revenue desc", () => {
+    const collections = [
+      { id: "c1", title: "Summer", productIds: ["p1"] },
+      { id: "c2", title: "Sale", productIds: ["p1", "p2"] },
+    ];
+    const orders = [
+      {
+        createdAt: today,
+        status: "delivered",
+        totalMinor: 0,
+        discountMinor: 0,
+        discountCode: null,
+        items: [
+          { productId: "p1", title: "Tee", quantity: 2, unitPriceMinor: 500 },
+          { productId: "p2", title: "Jacket", quantity: 1, unitPriceMinor: 3000 },
+        ],
+      },
+    ];
+    const result = aggregateTopCollections(orders, collections, 10);
+    expect(result[0]).toEqual({
+      collectionId: "c2",
+      title: "Sale",
+      quantitySold: 3,
+      revenueMinor: 4000,
+    });
+    expect(result[1]).toEqual({
+      collectionId: "c1",
+      title: "Summer",
+      quantitySold: 2,
+      revenueMinor: 1000,
+    });
+  });
+
+  it("excludes orders before the since cutoff when provided", () => {
+    const old = new Date(today);
+    old.setDate(old.getDate() - 100);
+    const collections = [{ id: "c1", title: "Summer", productIds: ["p1"] }];
+    const orders = [
+      {
+        createdAt: old,
+        status: "delivered",
+        totalMinor: 0,
+        discountMinor: 0,
+        discountCode: null,
+        items: [{ productId: "p1", title: "Tee", quantity: 5, unitPriceMinor: 500 }],
+      },
+    ];
+    const since = new Date(today);
+    since.setDate(since.getDate() - 7);
+    expect(aggregateTopCollections(orders, collections, 10, since)).toEqual([]);
+  });
+});
+
+describe("aggregateMostReturnedItems", () => {
+  it("returns an empty array for no returns", () => {
+    expect(aggregateMostReturnedItems([], 10)).toEqual([]);
+  });
+
+  it("sums returned quantity per product across every return regardless of status, sorted desc", () => {
+    const returns = [
+      {
+        items: [
+          { productId: "p1", title: "Tee", quantity: 2, reasonCategory: "wrong_size" },
+          { productId: "p2", title: "Jacket", quantity: 1, reasonCategory: "defective" },
+        ],
+      },
+      {
+        items: [{ productId: "p1", title: "Tee", quantity: 4, reasonCategory: "changed_mind" }],
+      },
+    ];
+    const result = aggregateMostReturnedItems(returns, 10);
+    expect(result[0]).toEqual({ productId: "p1", title: "Tee", quantityReturned: 6 });
+    expect(result[1]).toEqual({ productId: "p2", title: "Jacket", quantityReturned: 1 });
+  });
+
+  it("respects the limit", () => {
+    const returns = Array.from({ length: 5 }, (_, i) => ({
+      items: [{ productId: `p${i}`, title: `Item ${i}`, quantity: 1, reasonCategory: "other" }],
+    }));
+    expect(aggregateMostReturnedItems(returns, 2)).toHaveLength(2);
+  });
+});
+
+describe("aggregateReturnReasons", () => {
+  it("returns an empty array for no returns", () => {
+    expect(aggregateReturnReasons([])).toEqual([]);
+  });
+
+  it("counts returned quantity per reason category across every return regardless of status, sorted desc", () => {
+    const returns = [
+      {
+        items: [
+          { productId: "p1", title: "Tee", quantity: 2, reasonCategory: "wrong_size" },
+          { productId: "p2", title: "Jacket", quantity: 1, reasonCategory: "defective" },
+        ],
+      },
+      {
+        items: [{ productId: "p1", title: "Tee", quantity: 3, reasonCategory: "wrong_size" }],
+      },
+    ];
+    expect(aggregateReturnReasons(returns)).toEqual([
+      { reasonCategory: "wrong_size", count: 5 },
+      { reasonCategory: "defective", count: 1 },
+    ]);
   });
 });
 

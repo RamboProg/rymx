@@ -1,8 +1,8 @@
 import "server-only";
 
 import type { DocumentData } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import {
   categorySchema,
   productSchema,
@@ -13,12 +13,6 @@ import {
   type ShopSearchParams,
   type Variant,
 } from "../schema";
-
-export function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
 
 export function parseProduct(id: string, data: DocumentData): Product {
   return productSchema.parse({

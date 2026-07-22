@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, MouseEvent } from "react";
 
 const baseClasses =
   "group relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-rymx-gold px-7.5 py-4 font-mono text-xs font-semibold tracking-[0.15em] text-rymx-gold uppercase transition-colors duration-350 hover:text-[#12100a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rymx-gold disabled:pointer-events-none disabled:opacity-50";
@@ -16,7 +16,7 @@ export function Button({
 }: {
   href?: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 } & Omit<ComponentPropsWithoutRef<"button">, "onClick">) {
   const content = (
     <>

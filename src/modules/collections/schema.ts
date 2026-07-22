@@ -9,6 +9,7 @@ export const collectionSchema = z.object({
   media: z.array(mediaAssetSchema).default([]),
   productIds: z.array(z.string()).default([]),
   publishAt: z.date().nullable().default(null),
+  active: z.boolean().default(true),
 });
 export type Collection = z.infer<typeof collectionSchema>;
 
@@ -19,9 +20,17 @@ export const collectionInputSchema = z.object({
   media: z.array(mediaAssetSchema).default([]),
   productIds: z.array(z.string()).default([]),
   publishAt: z.date().nullable().default(null),
+  active: z.boolean().default(true),
 });
 export type CollectionInput = z.infer<typeof collectionInputSchema>;
 
 export function isCollectionLive(publishAt: Date | null): boolean {
   return !publishAt || publishAt.getTime() <= Date.now();
+}
+
+export function isCollectionVisible(collection: {
+  active: boolean;
+  publishAt: Date | null;
+}): boolean {
+  return collection.active && isCollectionLive(collection.publishAt);
 }

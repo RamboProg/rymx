@@ -21,3 +21,24 @@ export const discountPerformanceSchema = z.object({
   discountGivenMinor: z.number().int().nonnegative(),
 });
 export type DiscountPerformance = z.infer<typeof discountPerformanceSchema>;
+
+export const topCollectionSchema = z.object({
+  collectionId: z.string(),
+  title: z.string(),
+  quantitySold: z.number().int().nonnegative(),
+  revenueMinor: z.number().int().nonnegative(),
+});
+export type TopCollection = z.infer<typeof topCollectionSchema>;
+
+export const mostReturnedItemSchema = z.object({
+  productId: z.string(),
+  title: z.string(),
+  quantityReturned: z.number().int().nonnegative(),
+});
+export type MostReturnedItem = z.infer<typeof mostReturnedItemSchema>;
+
+export const returnReasonCountSchema = z.object({
+  reasonCategory: z.string(),
+  count: z.number().int().nonnegative(),
+});
+export type ReturnReasonCount = z.infer<typeof returnReasonCountSchema>;

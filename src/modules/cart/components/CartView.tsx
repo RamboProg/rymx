@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { Select } from "@/components/ui/Select";
 import { formatEGP } from "@/lib/money";
 import type { ShippingSettings } from "@/modules/settings/schema";
 import { computeShippingFeeMinor } from "@/modules/settings/services/shipping";
@@ -66,19 +67,17 @@ export function CartView({ shippingSettings }: { shippingSettings: ShippingSetti
                 <label className="sr-only" htmlFor={`qty-${line.variantId}`}>
                   Quantity for {line.title}
                 </label>
-                <select
-                  id={`qty-${line.variantId}`}
-                  value={line.quantity}
-                  disabled={pending}
-                  onChange={(e) => updateQuantity(line.variantId, Number(e.target.value))}
-                  className="border-rymx-cream/20 bg-rymx-card text-rymx-cream rounded-md border px-2 py-1 font-mono text-xs"
-                >
-                  {Array.from({ length: Math.min(line.stock, 10) }, (_, i) => i + 1).map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
+                <div className="w-20">
+                  <Select
+                    id={`qty-${line.variantId}`}
+                    value={String(line.quantity)}
+                    disabled={pending}
+                    onValueChange={(v) => updateQuantity(line.variantId, Number(v))}
+                    options={Array.from({ length: Math.min(line.stock, 10) }, (_, i) => i + 1).map(
+                      (n) => ({ value: String(n), label: String(n) }),
+                    )}
+                  />
+                </div>
                 <button
                   type="button"
                   disabled={pending}

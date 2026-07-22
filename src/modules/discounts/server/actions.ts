@@ -3,12 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
-import { checkAdminMutationRateLimit, checkRateLimit } from "@/lib/security/rateLimit";
+import { checkRateLimit } from "@/lib/security/rateLimit";
 import { resolveCartItems } from "@/modules/cart/server";
 import { cartItemSchema } from "@/modules/cart/schema";
 import { sendPromoCodeEmail } from "@/modules/notifications/server";
-import { getSessionClaims } from "@/modules/rbac/server";
-import { hasPermission } from "@/modules/rbac/services/permissions";
+import { getSessionClaims, requireAdminPermission } from "@/modules/rbac/server";
 import {
   bulkGenerateCodesInputSchema,
   discountInputSchema,
@@ -87,9 +86,7 @@ export async function previewDiscountAction(rawInput: unknown): Promise<PreviewD
 }
 
 async function requireDiscountsManage(): Promise<boolean> {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "discounts:manage")) return false;
-  return checkAdminMutationRateLimit(claims!.uid);
+  return (await requireAdminPermission("discounts:manage")) !== null;
 }
 
 export type DiscountActionResult = { ok: true; discount: Discount } | { ok: false; error: string };

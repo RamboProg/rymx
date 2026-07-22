@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Field } from "@/components/ui/Input";
 import { contentSettingsSchema, type ContentSettings } from "../../schema";
 import { updateContentSettingsAction } from "../../server/actions";
@@ -50,14 +51,12 @@ export function ContentSettingsForm({ settings }: { settings: ContentSettings })
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
-      <label className="text-rymx-cream/80 flex items-center gap-2 font-mono text-sm">
-        <input
-          type="checkbox"
-          checked={announcementEnabled}
-          onChange={(e) => setAnnouncementEnabled(e.target.checked)}
-        />
-        Show announcement bar
-      </label>
+      <Checkbox
+        id="announcementEnabled"
+        label="Show announcement bar"
+        checked={announcementEnabled}
+        onChange={setAnnouncementEnabled}
+      />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field
           id="announcementText"

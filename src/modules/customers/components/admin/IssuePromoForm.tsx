@@ -2,7 +2,9 @@
 
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { NumberField, Field } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { discountInputSchema, type DiscountType } from "@/modules/discounts/schema";
 import { createDiscountAction } from "@/modules/discounts/server/actions";
 
@@ -64,36 +66,30 @@ export function IssuePromoForm({ uid, email }: { uid: string; email: string | nu
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="promo-type"
-            className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-          >
-            Type
-          </label>
-          <select
-            id="promo-type"
-            value={type}
-            onChange={(e) => setType(e.target.value as DiscountType)}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-          >
-            <option value="percent">Percent off</option>
-            <option value="fixed">Fixed amount off (EGP)</option>
-          </select>
-        </div>
-        <Field
+        <Select
+          id="promo-type"
+          label="Type"
+          value={type}
+          onValueChange={(v) => setType(v as DiscountType)}
+          options={[
+            { value: "percent", label: "Percent off" },
+            { value: "fixed", label: "Fixed amount off (EGP)" },
+          ]}
+        />
+        <NumberField
           id="promo-value"
           label={type === "percent" ? "Value (%)" : "Value (EGP)"}
-          type="number"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
       </div>
       {email && (
-        <label className="text-rymx-cream/80 flex items-center gap-2 font-mono text-sm">
-          <input type="checkbox" checked={notify} onChange={(e) => setNotify(e.target.checked)} />
-          Email the code to {email}
-        </label>
+        <Checkbox
+          id="promo-notify"
+          label={`Email the code to ${email}`}
+          checked={notify}
+          onChange={setNotify}
+        />
       )}
       {error && (
         <p role="alert" className="font-mono text-sm text-red-400">

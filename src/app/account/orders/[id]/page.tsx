@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { OrderDetail } from "@/modules/orders/components/OrderDetail";
 import { getOrderById } from "@/modules/orders/server";
 import { getSessionClaims } from "@/modules/rbac/server";
+import { listReturnsByOrder } from "@/modules/returns/server";
 
 export const metadata: Metadata = { title: "Order — RYMX" };
 
@@ -18,5 +19,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     notFound();
   }
 
-  return <OrderDetail order={order} />;
+  const returns = await listReturnsByOrder(order.id);
+
+  return <OrderDetail order={order} returns={returns} />;
 }

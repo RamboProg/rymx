@@ -1,15 +1,9 @@
 import "server-only";
 
-import { Timestamp } from "firebase-admin/firestore";
 import { adminAuth, adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import { listAllOrders } from "@/modules/orders/server";
 import { customerNoteSchema, customerSchema, type Customer, type CustomerNote } from "../schema";
-
-function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
 
 // A user counts as "staff" (excluded from the customer directory) once any
 // role other than the default "customer" has been set via custom claims —

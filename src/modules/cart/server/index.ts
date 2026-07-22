@@ -15,10 +15,6 @@ export async function saveCart(uid: string, items: readonly CartItem[]): Promise
   await adminDb.doc(`carts/${uid}`).set({ items, updatedAt: new Date() });
 }
 
-export async function clearCart(uid: string): Promise<void> {
-  await adminDb.doc(`carts/${uid}`).delete();
-}
-
 // The source of truth for cart pricing/availability. Never trust a client-sent
 // price — every line is re-priced against the live product/variant on every
 // call, and unavailable lines are dropped (with a reported issue) rather than

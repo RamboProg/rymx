@@ -1,8 +1,8 @@
 import "server-only";
 
 import type { DocumentData, DocumentReference, Transaction } from "firebase-admin/firestore";
-import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
+import { toDate } from "@/lib/firebase/toDate";
 import { getCollectionsByIds } from "@/modules/collections/server";
 import {
   discountRedemptionId,
@@ -10,12 +10,6 @@ import {
   normalizeDiscountCode,
   type Discount,
 } from "../schema";
-
-function toDate(value: unknown): Date | null {
-  if (value instanceof Timestamp) return value.toDate();
-  if (value instanceof Date) return value;
-  return null;
-}
 
 function parseDiscount(code: string, data: DocumentData): Discount {
   return discountSchema.parse({

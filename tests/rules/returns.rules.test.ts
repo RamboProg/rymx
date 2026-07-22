@@ -41,4 +41,15 @@ describe("returns module: returns/{returnId} rules", () => {
       setDoc(doc(asUser.firestore(), "returns/r1"), { orderId: "o1", status: "requested" }),
     );
   });
+
+  it("denies a signed-in customer directly writing a return for an order that belongs to someone else", async () => {
+    const env = await getRulesTestEnv();
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "orders/o1"), { uid: "user-1", totalMinor: 1000 });
+    });
+    const asOther = env.authenticatedContext("user-2");
+    await assertFails(
+      setDoc(doc(asOther.firestore(), "returns/r1"), { orderId: "o1", status: "requested" }),
+    );
+  });
 });

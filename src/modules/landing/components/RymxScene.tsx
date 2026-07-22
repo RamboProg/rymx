@@ -15,6 +15,8 @@ export type RymxSceneHandle = {
   reveal: () => void;
 };
 
+const REVEAL_DURATION_MS = 1300;
+
 let geomPromise: Promise<THREE.BufferGeometry> | undefined;
 function loadGeom(): Promise<THREE.BufferGeometry> {
   if (geomPromise) return geomPromise;
@@ -141,12 +143,12 @@ export const RymxScene = forwardRef<RymxSceneHandle, { className?: string }>(fun
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const flashRef = useRef(0);
+  const revealRef = useRef({ active: false, start: 0 });
   const [fallback, setFallback] = useState(false);
 
   useImperativeHandle(ref, () => ({
     reveal: () => {
-      flashRef.current = 1.7;
+      revealRef.current = { active: true, start: performance.now() };
     },
   }));
 
@@ -174,6 +176,21 @@ export const RymxScene = forwardRef<RymxSceneHandle, { className?: string }>(fun
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, w / h, 0.1, 100);
     camera.position.set(0, 0, 7.6);
+    scene.add(camera);
+
+    const flashMat = new THREE.MeshBasicMaterial({
+      color: GOLD,
+      transparent: true,
+      opacity: 0,
+      depthTest: false,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    const flashPlane = new THREE.Mesh(new THREE.PlaneGeometry(9, 6.5), flashMat);
+    flashPlane.position.set(0, 0, -2);
+    flashPlane.renderOrder = 999;
+    flashPlane.frustumCulled = false;
+    camera.add(flashPlane);
 
     scene.environment = makeEnv(renderer, mood);
     scene.add(new THREE.AmbientLight(0xffffff, 0.22));
@@ -257,10 +274,32 @@ export const RymxScene = forwardRef<RymxSceneHandle, { className?: string }>(fun
       px += (tx - px) * 0.06;
       py += (ty - py) * 0.06;
 
+      let burst = 0;
+      let revBloom = 0;
+      const reveal = revealRef.current;
+      if (reveal.active) {
+        let rp = (now - reveal.start) / REVEAL_DURATION_MS;
+        if (rp >= 1) {
+          rp = 1;
+          reveal.active = false;
+        }
+        burst = Math.sin(rp * Math.PI);
+        let fo: number;
+        if (rp < 0.38) fo = 0;
+        else if (rp < 0.6) fo = (rp - 0.38) / 0.22;
+        else if (rp < 0.72) fo = 1;
+        else fo = Math.max(0, 1 - (rp - 0.72) / 0.28);
+        flashMat.opacity = fo;
+        revBloom = Math.sin(rp * Math.PI) * 2.6;
+      } else {
+        flashMat.opacity = 0;
+      }
+
       const introSpin = (1 - ease) * Math.PI * 1.4;
-      group.rotation.y = t * 0.32 + px * 0.55 + introSpin;
+      group.rotation.y = t * 0.32 + px * 0.55 + introSpin + burst * 6.0;
       group.rotation.x = -py * 0.32;
-      group.scale.setScalar(0.05 + 0.95 * back);
+      group.scale.setScalar((0.05 + 0.95 * back) * (1 + burst * 2.4));
+      group.position.z = burst * 3.2;
 
       goldPt.position.set(
         Math.cos(t * 0.6) * 3.6,
@@ -268,9 +307,9 @@ export const RymxScene = forwardRef<RymxSceneHandle, { className?: string }>(fun
         3.2 + Math.sin(t * 0.5) * 1.3,
       );
 
+      rings.group.scale.setScalar(1 + burst * 1.8);
       rings.update(t, ease);
-      bloom.strength = bloomTarget * ease + flashRef.current;
-      flashRef.current *= 0.9;
+      bloom.strength = bloomTarget * ease + revBloom;
       composer.render();
     };
     raf = requestAnimationFrame(loop);

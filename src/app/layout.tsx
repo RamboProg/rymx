@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Archivo, Big_Shoulders, JetBrains_Mono, Syne } from "next/font/google";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { HideOnLanding } from "@/components/layout/HideOnLanding";
 import { CartProvider } from "@/modules/cart/components/CartProvider";
 import { getSiteUrl } from "@/lib/siteUrl";
 import "./globals.css";
@@ -51,11 +53,16 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased ${syne.variable} ${archivo.variable} ${bigShouldersDisplay.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="flex min-h-full flex-col font-sans">
+      <body className="flex min-h-svh flex-col font-sans">
         <CartProvider>
-          <Header />
+          <AnnouncementBar />
+          <HideOnLanding>
+            <Header />
+          </HideOnLanding>
           <main className="flex flex-1 flex-col">{children}</main>
-          <Footer />
+          <HideOnLanding>
+            <Footer />
+          </HideOnLanding>
         </CartProvider>
       </body>
     </html>

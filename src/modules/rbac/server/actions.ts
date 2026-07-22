@@ -2,19 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { adminAuth, adminDb } from "@/lib/firebase/admin";
-import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { sendStaffInviteEmail } from "@/modules/notifications/server";
 import { inviteStaffInputSchema, updateStaffRoleInputSchema, type StaffMember } from "../schema";
 import { generateTempPassword, getStaffMember, setStaffClaims } from "./admin";
 import { logAdminAction } from "./audit";
-import { hasPermission } from "../services/permissions";
-import { getSessionClaims } from "./index";
+import { requireAdminPermission } from "./index";
 
 async function requireStaffManage() {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "staff:manage")) return null;
-  if (!checkAdminMutationRateLimit(claims!.uid)) return null;
-  return claims!;
+  return requireAdminPermission("staff:manage");
 }
 
 export type StaffActionResult = { ok: true; member: StaffMember } | { ok: false; error: string };

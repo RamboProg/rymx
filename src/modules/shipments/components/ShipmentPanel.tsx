@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { NumberField, Field } from "@/components/ui/Input";
 import type { Order } from "@/modules/orders/schema";
 import { createShipmentAction, markDeliveredAction, markShippedAction } from "../server/actions";
 import { remainingToFulfill } from "../services/fulfillment";
@@ -196,19 +196,19 @@ export function ShipmentPanel({
                 <span className="text-rymx-cream/80 font-mono text-sm">
                   {item.title} ({max} unfulfilled)
                 </span>
-                <input
-                  type="number"
-                  min={0}
-                  max={max}
-                  value={quantities[item.variantId] ?? 0}
-                  onChange={(e) =>
-                    setQuantities((prev) => ({
-                      ...prev,
-                      [item.variantId]: Math.max(0, Math.min(max, Number(e.target.value))),
-                    }))
-                  }
-                  className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold w-20 rounded-md border px-3 py-2 text-sm outline-none"
-                />
+                <div className="w-20">
+                  <NumberField
+                    min={0}
+                    max={max}
+                    value={String(quantities[item.variantId] ?? 0)}
+                    onChange={(e) =>
+                      setQuantities((prev) => ({
+                        ...prev,
+                        [item.variantId]: Math.max(0, Math.min(max, Number(e.target.value))),
+                      }))
+                    }
+                  />
+                </div>
               </div>
             );
           })}

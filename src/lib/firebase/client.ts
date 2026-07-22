@@ -32,4 +32,7 @@ if (process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true") {
   }
 }
 
-export { app, auth, db, storage };
+// Only `auth` is consumed outside this file — every Firestore/Storage read
+// goes through the Admin SDK server-side. `db`/`storage` still need to exist
+// so the emulator-connection wiring above runs against them.
+export { auth };

@@ -173,6 +173,7 @@ async function seed() {
       media: [],
       productIds: [productIds.get("cairo-bomber-jacket")!, productIds.get("nile-tee")!],
       publishAt: null,
+      active: true,
     });
 
   console.log("Seeding discount codes...");

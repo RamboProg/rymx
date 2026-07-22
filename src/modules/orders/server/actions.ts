@@ -2,11 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
-import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { applyStockDeltasInTransaction } from "@/modules/inventory/server";
 import { sendOrderConfirmationEmail } from "@/modules/notifications/server";
-import { getSessionClaims } from "@/modules/rbac/server";
-import { hasPermission } from "@/modules/rbac/services/permissions";
+import { requireAdminPermission } from "@/modules/rbac/server";
 import { addOrderNoteInputSchema, type Order } from "../schema";
 import { getOrderById, listOrderNotes } from "./index";
 
@@ -14,9 +12,7 @@ type OrderActionResult = { ok: true; order: Order } | { ok: false; error: string
 type VoidActionResult = { ok: true } | { ok: false; error: string };
 
 async function requireOrdersFulfill(): Promise<string | null> {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "orders:fulfill")) return null;
-  return checkAdminMutationRateLimit(claims!.uid) ? claims!.uid : null;
+  return (await requireAdminPermission("orders:fulfill"))?.uid ?? null;
 }
 
 export async function confirmOrderAction(orderId: string): Promise<OrderActionResult> {

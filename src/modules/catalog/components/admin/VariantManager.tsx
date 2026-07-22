@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { Field, NumberField } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { formatEGP } from "@/lib/money";
 import { variantInputSchema, type ProductOption, type Variant } from "../../schema";
 import {
@@ -158,47 +159,35 @@ export function VariantManager({
             onChange={(e) => setSku(e.target.value)}
           />
           {options.map((option) => (
-            <div key={option.name} className="flex flex-col gap-1.5">
-              <label className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-                {option.name}
-              </label>
-              <select
-                value={optionValues[option.name] ?? ""}
-                onChange={(e) =>
-                  setOptionValues((prev) => ({ ...prev, [option.name]: e.target.value }))
-                }
-                className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-              >
-                {option.values.map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              key={option.name}
+              label={option.name}
+              value={optionValues[option.name] ?? ""}
+              onValueChange={(value) =>
+                setOptionValues((prev) => ({ ...prev, [option.name]: value }))
+              }
+              options={option.values.map((value) => ({ value, label: value }))}
+            />
           ))}
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <Field
+          <NumberField
             id="variant-price"
             label="Price (EGP)"
-            type="number"
             step="0.01"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
-          <Field
+          <NumberField
             id="variant-compareAt"
             label="Compare-at (EGP, optional)"
-            type="number"
             step="0.01"
             value={compareAt}
             onChange={(e) => setCompareAt(e.target.value)}
           />
-          <Field
+          <NumberField
             id="variant-stock"
             label="Stock"
-            type="number"
             value={stock}
             onChange={(e) => setStock(e.target.value)}
           />

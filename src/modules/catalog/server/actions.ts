@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import {
   categoryInputSchema,
   productFormSchema,
@@ -10,10 +9,8 @@ import {
   type Product,
   type Variant,
 } from "../schema";
-import { getSessionClaims } from "@/modules/rbac/server";
-import { hasPermission } from "@/modules/rbac/services/permissions";
+import { requireAdminPermission } from "@/modules/rbac/server";
 import {
-  archiveProduct,
   createCategory,
   createProduct,
   createVariant,
@@ -28,9 +25,7 @@ type VoidActionResult = { ok: true } | { ok: false; error: string };
 type CategoryActionResult = { ok: true; category: Category } | { ok: false; error: string };
 
 async function requireProductsWrite(): Promise<boolean> {
-  const claims = await getSessionClaims();
-  if (!hasPermission(claims, "products:write")) return false;
-  return checkAdminMutationRateLimit(claims!.uid);
+  return (await requireAdminPermission("products:write")) !== null;
 }
 
 export async function createProductAction(rawInput: unknown): Promise<ProductActionResult> {
@@ -70,14 +65,6 @@ export async function updateProductAction(
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Failed to update product" };
   }
-}
-
-export async function archiveProductAction(productId: string): Promise<VoidActionResult> {
-  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
-  await archiveProduct(productId);
-  revalidatePath("/admin/products");
-  revalidatePath("/shop");
-  return { ok: true };
 }
 
 export async function createVariantAction(

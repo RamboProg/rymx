@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
+import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { SESSION_COOKIE, verifySessionCookie } from "@/modules/auth/server/session";
 import { claimsSchema, type Permission } from "../schema";
 import { hasPermission } from "../services/permissions";
@@ -27,10 +28,14 @@ export async function getSessionClaims(): Promise<SessionClaims | null> {
   return { uid: decoded.uid, email: decoded.email ?? null, ...parsed.data };
 }
 
-export async function requirePermission(permission: Permission): Promise<SessionClaims> {
+// Shared by every module's per-action gate (`requireXxxWrite`, `requireXxxManage`,
+// etc.): checks the caller holds `permission`, then rate-limits the mutation.
+// Each module keeps its own thin, named wrapper around this so call sites read
+// `requireCollectionsWrite()` rather than `requireAdminPermission("collections:write")`.
+export async function requireAdminPermission(
+  permission: Permission,
+): Promise<SessionClaims | null> {
   const claims = await getSessionClaims();
-  if (!hasPermission(claims, permission)) {
-    throw new Error("Forbidden");
-  }
-  return claims!;
+  if (!hasPermission(claims, permission)) return null;
+  return checkAdminMutationRateLimit(claims!.uid) ? claims : null;
 }

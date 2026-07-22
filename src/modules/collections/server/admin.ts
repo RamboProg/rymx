@@ -34,3 +34,10 @@ export async function updateCollection(id: string, input: CollectionInput): Prom
 export async function deleteCollection(id: string): Promise<void> {
   await adminDb.doc(`collections/${id}`).delete();
 }
+
+export async function updateCollectionDoc(
+  id: string,
+  data: Partial<Omit<Collection, "id">>,
+): Promise<void> {
+  await adminDb.doc(`collections/${id}`).update(data);
+}

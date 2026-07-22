@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { Button } from "@/components/ui/Button";
+import { CollectionActiveToggle } from "@/modules/collections/components/admin/CollectionActiveToggle";
+import { CollectionDeleteButton } from "@/modules/collections/components/admin/CollectionDeleteButton";
 import { isCollectionLive } from "@/modules/collections/schema";
 import { listAllCollectionsAdmin } from "@/modules/collections/server/admin";
 
@@ -26,6 +28,7 @@ export default async function AdminCollectionsPage() {
               <Th>Title</Th>
               <Th>Products</Th>
               <Th>Status</Th>
+              <Th>Actions</Th>
             </tr>
           </thead>
           <tbody>
@@ -41,9 +44,17 @@ export default async function AdminCollectionsPage() {
                 </Td>
                 <Td>{collection.productIds.length}</Td>
                 <Td>
-                  {isCollectionLive(collection.publishAt)
-                    ? "Live"
-                    : `Scheduled — ${collection.publishAt!.toLocaleString()}`}
+                  {!collection.active
+                    ? "Inactive"
+                    : isCollectionLive(collection.publishAt)
+                      ? "Live"
+                      : `Scheduled — ${collection.publishAt!.toLocaleString()}`}
+                </Td>
+                <Td>
+                  <div className="flex items-center gap-4">
+                    <CollectionActiveToggle id={collection.id} active={collection.active} />
+                    <CollectionDeleteButton id={collection.id} />
+                  </div>
                 </Td>
               </tr>
             ))}

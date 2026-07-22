@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { inviteStaffInputSchema, type Permission } from "../../schema";
 import { DEFAULT_ROLE_PERMISSIONS } from "../../services/permissions";
 import { inviteStaffAction } from "../../server/actions";
@@ -67,23 +68,16 @@ export function InviteStaffForm() {
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="staff-role"
-            className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-          >
-            Role
-          </label>
-          <select
-            id="staff-role"
-            value={role}
-            onChange={(e) => onRoleChange(e.target.value as InvitableRole)}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-          >
-            <option value="staff">Staff</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
+        <Select
+          id="staff-role"
+          label="Role"
+          value={role}
+          onValueChange={(v) => onRoleChange(v as InvitableRole)}
+          options={[
+            { value: "staff", label: "Staff" },
+            { value: "admin", label: "Admin" },
+          ]}
+        />
       </div>
 
       <PermissionCheckboxes selected={permissions} onChange={setPermissions} />

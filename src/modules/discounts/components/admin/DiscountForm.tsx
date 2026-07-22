@@ -3,15 +3,12 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Input";
+import { Checkbox } from "@/components/ui/Checkbox";
+import { DateTimePicker } from "@/components/ui/DateTimePicker";
+import { NumberField, Field } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { discountInputSchema, type Discount, type DiscountType } from "../../schema";
 import { createDiscountAction, updateDiscountAction } from "../../server/actions";
-
-function toDateTimeLocal(date: Date | null): string {
-  if (!date) return "";
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
 
 function parseIdsText(text: string): string[] {
   return text
@@ -26,8 +23,8 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
   const [type, setType] = useState<DiscountType>(discount?.type ?? "percent");
   const [value, setValue] = useState(discount ? String(discount.value) : "");
   const [minSpend, setMinSpend] = useState(discount ? String(discount.minSpendMinor / 100) : "0");
-  const [startsAt, setStartsAt] = useState(toDateTimeLocal(discount?.startsAt ?? null));
-  const [endsAt, setEndsAt] = useState(toDateTimeLocal(discount?.endsAt ?? null));
+  const [startsAt, setStartsAt] = useState<Date | null>(discount?.startsAt ?? null);
+  const [endsAt, setEndsAt] = useState<Date | null>(discount?.endsAt ?? null);
   const [usageLimit, setUsageLimit] = useState(
     discount?.usageLimit ? String(discount.usageLimit) : "",
   );
@@ -54,8 +51,8 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
       type,
       value: Math.round(Number(value)),
       minSpendMinor: Math.round(Number(minSpend) * 100),
-      startsAt: startsAt ? new Date(startsAt) : null,
-      endsAt: endsAt ? new Date(endsAt) : null,
+      startsAt,
+      endsAt,
       usageLimit: usageLimit ? Math.round(Number(usageLimit)) : null,
       perUserLimit: Math.round(Number(perUserLimit)),
       productIds: parseIdsText(productIdsText),
@@ -97,88 +94,59 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
           onChange={(e) => setCode(e.target.value)}
           disabled={!!discount}
         />
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="type"
-            className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-          >
-            Type
-          </label>
-          <select
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value as DiscountType)}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-          >
-            <option value="percent">Percent off</option>
-            <option value="fixed">Fixed amount off (EGP)</option>
-          </select>
-        </div>
-        <Field
+        <Select
+          id="type"
+          label="Type"
+          value={type}
+          onValueChange={(v) => setType(v as DiscountType)}
+          options={[
+            { value: "percent", label: "Percent off" },
+            { value: "fixed", label: "Fixed amount off (EGP)" },
+          ]}
+        />
+        <NumberField
           id="value"
           label={type === "percent" ? "Value (%)" : "Value (EGP)"}
-          type="number"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Field
+        <NumberField
           id="minSpend"
           label="Minimum spend (EGP)"
-          type="number"
           step="0.01"
           value={minSpend}
           onChange={(e) => setMinSpend(e.target.value)}
         />
-        <Field
+        <NumberField
           id="usageLimit"
           label="Total usage limit (blank = unlimited)"
-          type="number"
           value={usageLimit}
           onChange={(e) => setUsageLimit(e.target.value)}
         />
-        <Field
+        <NumberField
           id="perUserLimit"
           label="Per-customer limit"
-          type="number"
           value={perUserLimit}
           onChange={(e) => setPerUserLimit(e.target.value)}
         />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="startsAt"
-            className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-          >
-            Starts at (optional)
-          </label>
-          <input
-            id="startsAt"
-            type="datetime-local"
-            value={startsAt}
-            onChange={(e) => setStartsAt(e.target.value)}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="endsAt"
-            className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
-          >
-            Ends at (optional)
-          </label>
-          <input
-            id="endsAt"
-            type="datetime-local"
-            value={endsAt}
-            onChange={(e) => setEndsAt(e.target.value)}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
-          />
-        </div>
+        <DateTimePicker
+          id="startsAt"
+          label="Starts at (optional)"
+          value={startsAt}
+          onChange={setStartsAt}
+        />
+        <DateTimePicker
+          id="endsAt"
+          label="Ends at (optional)"
+          value={endsAt}
+          onChange={setEndsAt}
+        />
       </div>
 
       <Field
@@ -212,10 +180,7 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
         )}
       </div>
 
-      <label className="text-rymx-cream/80 flex items-center gap-2 font-mono text-sm">
-        <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} />
-        Active
-      </label>
+      <Checkbox id="active" label="Active" checked={active} onChange={setActive} />
 
       {error && (
         <p role="alert" className="font-mono text-sm text-red-400">
