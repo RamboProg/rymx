@@ -8,6 +8,7 @@ import {
   SESSION_COOKIE,
   SESSION_MAX_AGE_MS,
 } from "@/modules/auth/server/session";
+import { roleSchema } from "@/modules/rbac/schema";
 
 export const runtime = "nodejs";
 
@@ -52,7 +53,12 @@ export async function POST(request: Request) {
   await ensureUserProfile({ uid: decoded.uid, email: decoded.email, name: decoded.name });
   const sessionCookie = await createSessionCookie(parsed.data.idToken);
 
-  const response = NextResponse.json({ ok: true });
+  // Echo the caller's role so the sign-in form can send staff straight to
+  // /admin and customers to /account. Authoritative gating still happens
+  // server-side in each layout — this is only a routing hint.
+  const role = roleSchema.catch("customer").parse(decoded.role);
+
+  const response = NextResponse.json({ ok: true, role });
   response.cookies.set(SESSION_COOKIE, sessionCookie, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

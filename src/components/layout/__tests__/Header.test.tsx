@@ -38,4 +38,18 @@ describe("HeaderNav", () => {
     expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Sign in" })).not.toBeInTheDocument();
   });
+
+  it("shows a Dashboard link for staff", () => {
+    render(<HeaderNav signedIn={true} staff={true} />);
+
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("href", "/admin");
+  });
+
+  it("hides the Dashboard link from customers and signed-out visitors", () => {
+    const { rerender } = render(<HeaderNav signedIn={true} staff={false} />);
+    expect(screen.queryByRole("link", { name: "Dashboard" })).not.toBeInTheDocument();
+
+    rerender(<HeaderNav signedIn={false} />);
+    expect(screen.queryByRole("link", { name: "Dashboard" })).not.toBeInTheDocument();
+  });
 });
