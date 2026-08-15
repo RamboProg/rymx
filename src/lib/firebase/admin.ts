@@ -3,7 +3,6 @@ import "server-only";
 import { type App, cert, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
-import { getStorage } from "firebase-admin/storage";
 
 // Node-only. Never import this file from `middleware.ts` or any Edge runtime —
 // the Admin SDK does not run on the Edge runtime Vercel uses for middleware.
@@ -22,24 +21,19 @@ function getAdminApp(): App {
 
   if (process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true") {
     // Emulator mode: no real credentials needed, but env host vars must be set
-    // (FIRESTORE_EMULATOR_HOST, FIREBASE_AUTH_EMULATOR_HOST, FIREBASE_STORAGE_EMULATOR_HOST).
-    // storageBucket still needs to be set explicitly — adminStorage.bucket()
-    // has no other way to know the default bucket name.
+    // (FIRESTORE_EMULATOR_HOST, FIREBASE_AUTH_EMULATOR_HOST).
     return initializeApp({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
     });
   }
 
   return initializeApp({
     credential: cert(loadServiceAccount()),
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   });
 }
 
 const adminApp = getAdminApp();
 const adminAuth = getAuth(adminApp);
 const adminDb = getFirestore(adminApp);
-const adminStorage = getStorage(adminApp);
 
-export { adminAuth, adminDb, adminStorage };
+export { adminAuth, adminDb };

@@ -97,15 +97,20 @@ test.describe("admin", () => {
     await expect(page).toHaveURL(new RegExp(`/admin/products/${slug}$`));
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
 
-    // Upload a valid image via MediaManager, then persist it onto the product.
-    await page.locator('input[type="file"]').setInputFiles({
-      name: "swatch.png",
-      mimeType: "image/png",
-      buffer: PNG_1X1,
-    });
-    await expect(page.getByPlaceholder("Alt text")).toBeVisible();
-    await page.getByRole("button", { name: "Save product" }).click();
-    await expect(page.getByText("Saved")).toBeVisible();
+    // Media is uploaded to Cloudinary (signed, server-side), so this portion
+    // only runs when CLOUDINARY_* creds are present — offline/CI without creds
+    // still exercises the rest of the create → variant → shop flow.
+    const cloudinaryConfigured = Boolean(process.env.CLOUDINARY_CLOUD_NAME);
+    if (cloudinaryConfigured) {
+      await page.locator('input[type="file"]').setInputFiles({
+        name: "swatch.png",
+        mimeType: "image/png",
+        buffer: PNG_1X1,
+      });
+      await expect(page.getByPlaceholder("Alt text")).toBeVisible();
+      await page.getByRole("button", { name: "Save product" }).click();
+      await expect(page.getByText("Saved")).toBeVisible();
+    }
 
     // Add a variant.
     await page.getByLabel("SKU").fill("E2E-TEE-S");
@@ -117,7 +122,9 @@ test.describe("admin", () => {
     await page.goto(`/shop/${slug}`);
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
     await expect(page.getByText("EGP 500.00")).toBeVisible();
-    await expect(page.getByAltText(title)).toBeVisible();
+    if (cloudinaryConfigured) {
+      await expect(page.getByAltText(title)).toBeVisible();
+    }
 
     // The description contains a <script> tag; it must render as inert text,
     // never execute or get injected as a real element.

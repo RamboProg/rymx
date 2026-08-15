@@ -7,8 +7,9 @@ One-time steps to take `rymx-prod` from "code is ready" to "real customers can o
 `rymx-dev` and `rymx-prod` are referenced in `.firebaserc` but may not exist yet as real Firebase projects.
 
 - Create both in the [Firebase console](https://console.firebase.google.com) (or `firebase projects:create`).
-- Enable Authentication (Email/Password + Google providers), Firestore (production mode, region close to Vercel's function region), and Storage on each.
-- `firebase use prod` then `firebase deploy --only firestore:rules,firestore:indexes,storage` to push `firestore.rules`, `firestore.indexes.json`, and `storage.rules` to `rymx-prod`. Repeat with `firebase use dev` for `rymx-dev` (used by Preview deployments).
+- Enable Authentication (Email/Password + Google providers) and Firestore (production mode, region close to Vercel's function region) on each. Media is hosted on Cloudinary, not Firebase Storage — no Storage bucket needed.
+- `firebase use prod` then `firebase deploy --only firestore:rules,firestore:indexes` to push `firestore.rules` and `firestore.indexes.json` to `rymx-prod`. Repeat with `firebase use dev` for `rymx-dev` (used by Preview deployments).
+- Create a [Cloudinary](https://cloudinary.com) account and set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` (server-only) in each Vercel environment.
 
 ## 2. Google Sign-In authorized domains
 

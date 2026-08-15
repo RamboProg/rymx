@@ -30,18 +30,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
+      // Product/collection imagery is served from Cloudinary.
       {
         protocol: "https",
-        hostname: "firebasestorage.googleapis.com",
-        pathname: "/v0/b/**",
-      },
-      // Local Storage emulator only — unreachable in production, harmless to
-      // leave in the allowlist.
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-        port: "9199",
-        pathname: "/v0/b/**",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
       },
     ],
   },
