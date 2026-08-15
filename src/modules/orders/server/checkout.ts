@@ -185,7 +185,24 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
       tx.set(orderRef, newOrder);
       variantRefs.forEach((ref, idx) => {
         // eslint-disable-next-line security/detect-object-injection -- idx is this forEach's own index, not user input
-        tx.update(ref, { stock: FieldValue.increment(-orderItems[idx]!.quantity) });
+        const item = orderItems[idx]!;
+        tx.update(ref, { stock: FieldValue.increment(-item.quantity) });
+        // Record the sale in the same ledger as manual adjustments/restocks so
+        // the admin stock history is complete. staffUid "system" marks it as an
+        // automated (non-staff) movement.
+        // eslint-disable-next-line security/detect-object-injection -- idx is this forEach's own index, not user input
+        const preSaleStock = variantSnaps[idx]!.data()!.stock as number;
+        tx.set(adminDb.collection("inventoryAdjustments").doc(), {
+          productId: item.productId,
+          productTitle: item.title,
+          variantId: item.variantId,
+          sku: item.sku,
+          delta: -item.quantity,
+          newStock: preSaleStock - item.quantity,
+          reason: `sale ${orderRef.id}`,
+          staffUid: "system",
+          createdAt: new Date(),
+        });
       });
       if (appliedCode) {
         tx.set(

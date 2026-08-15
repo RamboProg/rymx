@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { formatEGP } from "@/lib/money";
@@ -26,7 +27,7 @@ export default async function AdminOrdersPage({
     ? (rawStatus as OrderStatus)
     : "all";
 
-  const allOrders = await listAllOrders();
+  const [allOrders, t] = await Promise.all([listAllOrders(), getTranslations("pages.orders")]);
   const filtered = allOrders
     .filter((order) => status === "all" || order.status === status)
     .filter((order) => {
@@ -42,7 +43,10 @@ export default async function AdminOrdersPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="font-display text-rymx-cream text-2xl font-bold">Orders</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
+        <p className="text-rymx-cream/50 font-sans text-sm">{t("description")}</p>
+      </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex flex-wrap gap-2">

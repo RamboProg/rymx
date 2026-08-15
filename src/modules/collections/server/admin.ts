@@ -1,6 +1,7 @@
 import "server-only";
 
 import { adminDb } from "@/lib/firebase/admin";
+import { uniqueSlug } from "@/lib/firebase/uniqueSlug";
 import type { Collection, CollectionInput } from "../schema";
 import { parseCollection } from "./index";
 
@@ -16,19 +17,23 @@ export async function getCollectionForAdmin(id: string): Promise<Collection | nu
 }
 
 export async function createCollection(input: CollectionInput): Promise<Collection> {
-  const ref = adminDb.collection("collections").doc(input.slug);
-  if ((await ref.get()).exists) {
-    throw new Error(`A collection with slug "${input.slug}" already exists.`);
-  }
-  await ref.set(input);
-  return parseCollection(ref.id, input);
+  // Slug derived from the title and frozen; it doubles as the doc id.
+  const slug = await uniqueSlug("collections", input.title);
+  const data = { ...input, slug };
+  await adminDb.collection("collections").doc(slug).set(data);
+  return parseCollection(slug, data);
 }
 
 export async function updateCollection(id: string, input: CollectionInput): Promise<Collection> {
   const ref = adminDb.doc(`collections/${id}`);
-  if (!(await ref.get()).exists) throw new Error("Collection not found.");
-  await ref.set(input);
-  return parseCollection(id, input);
+  const existing = await ref.get();
+  if (!existing.exists) throw new Error("Collection not found.");
+  // Preserve the frozen slug (input no longer carries one) so a title rename
+  // can't drop or desync it from the doc id.
+  const slug = (existing.data()!.slug as string) ?? id;
+  const data = { ...input, slug };
+  await ref.set(data);
+  return parseCollection(id, data);
 }
 
 export async function deleteCollection(id: string): Promise<void> {

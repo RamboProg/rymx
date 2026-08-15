@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { DateTimePicker } from "@/components/ui/DateTimePicker";
 import { Field } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { slugify } from "@/lib/slug";
 import { MediaManager } from "@/modules/media/components/MediaManager";
 import {
   PRODUCT_STATUSES,
@@ -23,7 +25,6 @@ import {
 } from "../../server/actions";
 
 const NEW_OPTION_VALUE = "__new__";
-const NO_CATEGORY_VALUE = "__none__";
 
 type OptionRow = ProductOption & { isNewName: boolean };
 
@@ -49,6 +50,7 @@ function OptionValuesEditor({
   onChange: (values: string[]) => void;
 }) {
   const [draft, setDraft] = useState("");
+  const t = useTranslations("productForm");
 
   function addValue() {
     const trimmed = draft.trim();
@@ -81,7 +83,7 @@ function OptionValuesEditor({
           </span>
         ))}
         {values.length === 0 && (
-          <span className="text-rymx-cream/40 font-mono text-xs">No values yet.</span>
+          <span className="text-rymx-cream/40 font-mono text-xs">{t("fields.noValues")}</span>
         )}
       </div>
       <div className="flex gap-2">
@@ -95,7 +97,7 @@ function OptionValuesEditor({
               addValue();
             }
           }}
-          placeholder="Add a value…"
+          placeholder={t("fields.addValue")}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-3 py-2 text-sm outline-none"
         />
         <button
@@ -103,7 +105,7 @@ function OptionValuesEditor({
           onClick={addValue}
           className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-4 py-2 font-mono text-xs uppercase hover:text-[#12100a]"
         >
-          Add
+          {t("add")}
         </button>
       </div>
     </div>
@@ -123,9 +125,10 @@ function OptionRowEditor({
   onChange: (row: OptionRow) => void;
   onRemove: () => void;
 }) {
+  const t = useTranslations("productForm");
   const nameOptions = [
     ...Object.keys(existingOptions).map((name) => ({ value: name, label: name })),
-    { value: NEW_OPTION_VALUE, label: "+ New option" },
+    { value: NEW_OPTION_VALUE, label: t("fields.newOption") },
   ];
 
   function onNameSelect(value: string) {
@@ -144,7 +147,7 @@ function OptionRowEditor({
           {row.isNewName ? (
             <Field
               id={`option-name-${index}`}
-              label="Option name"
+              label={t("fields.optionName")}
               value={row.name}
               onChange={(e) => onChange({ ...row, name: e.target.value })}
               placeholder="e.g. Size"
@@ -152,11 +155,11 @@ function OptionRowEditor({
           ) : (
             <Select
               id={`option-name-${index}`}
-              label="Option name"
+              label={t("fields.optionName")}
               value={row.name}
               onValueChange={onNameSelect}
               options={nameOptions}
-              placeholder="Select an option"
+              placeholder={t("fields.selectOption")}
             />
           )}
         </div>
@@ -165,12 +168,12 @@ function OptionRowEditor({
           onClick={onRemove}
           className="text-rymx-cream/50 mt-6 font-mono text-xs uppercase hover:text-red-400"
         >
-          Remove
+          {t("remove")}
         </button>
       </div>
       <div className="flex flex-col gap-1.5">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Values
+          {t("fields.values")}
         </span>
         <OptionValuesEditor
           values={row.values}
@@ -192,10 +195,9 @@ export function ProductForm({
 }) {
   const router = useRouter();
   const [title, setTitle] = useState(product?.title ?? "");
-  const [slug, setSlug] = useState(product?.slug ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [status, setStatus] = useState<ProductStatus>(product?.status ?? "draft");
-  const [category, setCategory] = useState(product?.category ?? NO_CATEGORY_VALUE);
+  const [category, setCategory] = useState(product?.category ?? "");
   const [newCategoryTitle, setNewCategoryTitle] = useState("");
   const [tagsText, setTagsText] = useState((product?.tags ?? []).join(", "));
   const [options, setOptions] = useState<OptionRow[]>(() =>
@@ -210,12 +212,15 @@ export function ProductForm({
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const t = useTranslations("productForm");
+
+  // Slug is derived from the title and frozen once the product exists — never
+  // editable. On create it previews live from the title; on edit it's the
+  // stored slug (renaming the title won't change it).
+  const slug = product ? product.slug : slugify(title);
 
   const statusOptions = PRODUCT_STATUSES.map((s) => ({ value: s, label: s }));
-  const categoryOptions = [
-    { value: NO_CATEGORY_VALUE, label: "None" },
-    ...categoryList.map((c) => ({ value: c.slug, label: c.title })),
-  ];
+  const categoryOptions = categoryList.map((c) => ({ value: c.slug, label: c.title }));
 
   function updateOption(index: number, row: OptionRow) {
     setOptions((prev) => prev.map((o, i) => (i === index ? row : o)));
@@ -236,12 +241,7 @@ export function ProductForm({
 
   async function onAddCategory() {
     if (!newCategoryTitle.trim()) return;
-    const slugified = newCategoryTitle
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-    const result = await createCategoryAction({ title: newCategoryTitle.trim(), slug: slugified });
+    const result = await createCategoryAction({ title: newCategoryTitle.trim() });
     if (result.ok) {
       setCategoryList((c) => [...c, result.category]);
       setCategory(result.category.slug);
@@ -258,10 +258,9 @@ export function ProductForm({
 
     const parsed = productFormSchema.safeParse({
       title,
-      slug,
       description,
       status,
-      category: category === NO_CATEGORY_VALUE ? null : category,
+      category,
       tags: tagsText
         .split(",")
         .map((t) => t.trim())
@@ -300,8 +299,20 @@ export function ProductForm({
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field id="title" label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <Field id="slug" label="Slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
+        <Field
+          id="title"
+          label={t("fields.title")}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          description={t("fields.titleHelp")}
+        />
+        <Field
+          id="slug"
+          label={t("fields.slug")}
+          value={slug}
+          readOnly
+          description={t("fields.slugHelp")}
+        />
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -309,7 +320,7 @@ export function ProductForm({
           htmlFor="description"
           className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
         >
-          Description
+          {t("fields.description")}
         </label>
         <textarea
           id="description"
@@ -318,28 +329,32 @@ export function ProductForm({
           onChange={(e) => setDescription(e.target.value)}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
         />
+        <p className="text-rymx-cream/40 font-sans text-xs">{t("fields.descriptionHelp")}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Select
           id="status"
-          label="Status"
+          label={t("fields.status")}
           value={status}
           onValueChange={(value) => setStatus(value as ProductStatus)}
           options={statusOptions}
+          description={t("fields.statusHelp")}
         />
 
         <Select
           id="category"
-          label="Category"
+          label={t("fields.category")}
           value={category}
           onValueChange={setCategory}
           options={categoryOptions}
+          placeholder={t("selectCategory")}
+          description={t("fields.categoryHelp")}
         />
 
         <DateTimePicker
           id="publishAt"
-          label="Publish at (optional)"
+          label={t("fields.publishAt")}
           value={publishAt}
           onChange={setPublishAt}
         />
@@ -348,30 +363,33 @@ export function ProductForm({
       <div className="flex items-end gap-2">
         <Field
           id="newCategory"
-          label="Add a category"
+          label={t("fields.addCategory")}
           value={newCategoryTitle}
           onChange={(e) => setNewCategoryTitle(e.target.value)}
+          description={t("fields.addCategoryHelp")}
         />
         <button
           type="button"
           onClick={onAddCategory}
-          className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-4 py-3 font-mono text-xs uppercase hover:text-[#12100a]"
+          className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold mb-6 rounded-md border px-4 py-3 font-mono text-xs uppercase hover:text-[#12100a]"
         >
-          Add
+          {t("add")}
         </button>
       </div>
 
       <Field
         id="tags"
-        label="Tags (comma-separated)"
+        label={t("fields.tags")}
         value={tagsText}
         onChange={(e) => setTagsText(e.target.value)}
+        description={t("fields.tagsHelp")}
       />
 
       <div className="flex flex-col gap-3">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Options
+          {t("fields.options")}
         </span>
+        <p className="text-rymx-cream/40 -mt-2 font-sans text-xs">{t("fields.optionsHelp")}</p>
         {options.map((row, index) => (
           <OptionRowEditor
             key={index}
@@ -387,28 +405,30 @@ export function ProductForm({
           onClick={addOption}
           className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold w-fit rounded-md border px-4 py-2 font-mono text-xs uppercase hover:text-[#12100a]"
         >
-          Add option
+          {t("addOption")}
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field
           id="seoTitle"
-          label="SEO title"
+          label={t("fields.seoTitle")}
           value={seoTitle}
           onChange={(e) => setSeoTitle(e.target.value)}
+          description={t("fields.seoTitleHelp")}
         />
         <Field
           id="seoDescription"
-          label="SEO description"
+          label={t("fields.seoDescription")}
           value={seoDescription}
           onChange={(e) => setSeoDescription(e.target.value)}
+          description={t("fields.seoDescriptionHelp")}
         />
       </div>
 
       <div className="flex flex-col gap-2">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Media
+          {t("fields.media")}
         </span>
         <MediaManager media={media} onChange={setMedia} />
       </div>
@@ -418,10 +438,10 @@ export function ProductForm({
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{t("saved")}</p>}
 
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : product ? "Save product" : "Create product"}
+        {saving ? t("saving") : product ? t("save") : t("create")}
       </Button>
     </form>
   );

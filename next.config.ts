@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import createNextIntlPlugin from "next-intl/plugin";
+
+// Cookie-based i18n (no [locale] URL segment). The request config resolves the
+// active locale from the `locale` cookie — see src/i18n/request.ts.
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 // Static OWASP baseline headers. Content-Security-Policy is NOT here — it
 // needs a fresh nonce per request (for the strict script-src), so it's built
@@ -60,7 +65,7 @@ const nextConfig: NextConfig = {
 // avoids needing to add Sentry's ingest host to the strict CSP's connect-src
 // (it'd otherwise be silently blocked) and is Sentry's own recommended
 // pattern for ad-blocker resilience too.
-export default withSentryConfig(nextConfig, {
+export default withSentryConfig(withNextIntl(nextConfig), {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   silent: true,

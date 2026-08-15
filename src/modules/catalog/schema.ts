@@ -48,13 +48,16 @@ export const productSchema = z.object({
 });
 export type Product = z.infer<typeof productSchema>;
 
+// Note: `slug` is intentionally absent — it's never client-supplied. The server
+// derives it from `title` on create and freezes it thereafter (see
+// createProduct in server/admin.ts). `category` is required: every product must
+// belong to a category (the shop groups by category, admin manages them).
 export const productInputSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
-  slug: z.string().trim().min(1, "Slug is required").regex(SLUG_REGEX, SLUG_MESSAGE),
   description: z.string().default(""),
   status: productStatusSchema.default("draft"),
   tags: z.array(z.string()).default([]),
-  category: z.string().nullable().default(null),
+  category: z.string().trim().min(1, "Category is required"),
   seoTitle: z.string().trim().default(""),
   seoDescription: z.string().trim().default(""),
   publishAt: z.date().nullable().default(null),
@@ -93,14 +96,25 @@ export const categorySchema = z.object({
   id: z.string(),
   title: z.string().min(1),
   slug: z.string().min(1),
+  // Controls the order categories appear as sections on /shop and rows in the
+  // admin Categories page. Assigned server-side (append to end on create).
+  order: z.number().int().nonnegative().default(0),
 });
 export type Category = z.infer<typeof categorySchema>;
 
+// Only the title is client-supplied; slug is derived from it and frozen, and
+// order is assigned server-side. Rename reuses this same shape.
 export const categoryInputSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
-  slug: z.string().trim().min(1, "Slug is required").regex(SLUG_REGEX, SLUG_MESSAGE),
 });
 export type CategoryInput = z.infer<typeof categoryInputSchema>;
+
+// Payload for the admin Categories reorder control: the full list of category
+// ids in the desired display order.
+export const categoryReorderSchema = z.object({
+  orderedIds: z.array(z.string().min(1)).min(1),
+});
+export type CategoryReorderInput = z.infer<typeof categoryReorderSchema>;
 
 export const shopSortSchema = z.enum(["newest", "price-asc", "price-desc"]);
 export type ShopSort = z.infer<typeof shopSortSchema>;

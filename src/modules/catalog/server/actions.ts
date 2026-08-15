@@ -3,18 +3,22 @@
 import { revalidatePath } from "next/cache";
 import {
   categoryInputSchema,
+  categoryReorderSchema,
   productFormSchema,
   variantInputSchema,
   type Category,
   type Product,
   type Variant,
 } from "../schema";
-import { requireAdminPermission } from "@/modules/rbac/server";
+import { requireAdminPermission, type SessionClaims } from "@/modules/rbac/server";
 import {
   createCategory,
   createProduct,
   createVariant,
+  deleteCategory,
   deleteVariant,
+  reorderCategories,
+  updateCategory,
   updateProduct,
   updateVariant,
 } from "./admin";
@@ -24,8 +28,10 @@ type VariantActionResult = { ok: true; variant: Variant } | { ok: false; error: 
 type VoidActionResult = { ok: true } | { ok: false; error: string };
 type CategoryActionResult = { ok: true; category: Category } | { ok: false; error: string };
 
-async function requireProductsWrite(): Promise<boolean> {
-  return (await requireAdminPermission("products:write")) !== null;
+// Returns the caller's claims when they may write products (and passes the
+// rate-limit), else null — so actions can both authorize and read staffUid.
+async function requireProductsWrite(): Promise<SessionClaims | null> {
+  return requireAdminPermission("products:write");
 }
 
 export async function createProductAction(rawInput: unknown): Promise<ProductActionResult> {
@@ -71,15 +77,17 @@ export async function createVariantAction(
   productId: string,
   rawInput: unknown,
 ): Promise<VariantActionResult> {
-  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+  const claims = await requireProductsWrite();
+  if (!claims) return { ok: false, error: "Forbidden" };
 
   const parsed = variantInputSchema.safeParse(rawInput);
   if (!parsed.success)
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
 
   try {
-    const variant = await createVariant(productId, parsed.data);
+    const variant = await createVariant(productId, parsed.data, claims.uid);
     revalidatePath(`/admin/products/${productId}`);
+    revalidatePath("/admin/inventory");
     revalidatePath("/shop");
     return { ok: true, variant };
   } catch (err) {
@@ -92,15 +100,17 @@ export async function updateVariantAction(
   variantId: string,
   rawInput: unknown,
 ): Promise<VariantActionResult> {
-  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+  const claims = await requireProductsWrite();
+  if (!claims) return { ok: false, error: "Forbidden" };
 
   const parsed = variantInputSchema.safeParse(rawInput);
   if (!parsed.success)
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
 
   try {
-    const variant = await updateVariant(productId, variantId, parsed.data);
+    const variant = await updateVariant(productId, variantId, parsed.data, claims.uid);
     revalidatePath(`/admin/products/${productId}`);
+    revalidatePath("/admin/inventory");
     revalidatePath("/shop");
     return { ok: true, variant };
   } catch (err) {
@@ -115,6 +125,7 @@ export async function deleteVariantAction(
   if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
   await deleteVariant(productId, variantId);
   revalidatePath(`/admin/products/${productId}`);
+  revalidatePath("/admin/inventory");
   revalidatePath("/shop");
   return { ok: true };
 }
@@ -129,8 +140,62 @@ export async function createCategoryAction(rawInput: unknown): Promise<CategoryA
   try {
     const category = await createCategory(parsed.data);
     revalidatePath("/admin/products");
+    revalidatePath("/admin/categories");
+    revalidatePath("/shop");
     return { ok: true, category };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Failed to create category" };
+  }
+}
+
+export async function updateCategoryAction(
+  id: string,
+  rawInput: unknown,
+): Promise<CategoryActionResult> {
+  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+
+  const parsed = categoryInputSchema.safeParse(rawInput);
+  if (!parsed.success)
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+
+  try {
+    const category = await updateCategory(id, parsed.data);
+    revalidatePath("/admin/categories");
+    revalidatePath("/shop");
+    return { ok: true, category };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Failed to update category" };
+  }
+}
+
+export async function deleteCategoryAction(id: string): Promise<VoidActionResult> {
+  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+  try {
+    await deleteCategory(id);
+    revalidatePath("/admin/categories");
+    revalidatePath("/shop");
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Failed to delete category" };
+  }
+}
+
+export async function reorderCategoriesAction(rawInput: unknown): Promise<VoidActionResult> {
+  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+
+  const parsed = categoryReorderSchema.safeParse(rawInput);
+  if (!parsed.success)
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+
+  try {
+    await reorderCategories(parsed.data.orderedIds);
+    revalidatePath("/admin/categories");
+    revalidatePath("/shop");
+    return { ok: true };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Failed to reorder categories",
+    };
   }
 }

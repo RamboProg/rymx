@@ -10,6 +10,7 @@ export function Select({
   options,
   placeholder,
   error,
+  description,
   disabled,
 }: {
   id?: string;
@@ -19,6 +20,7 @@ export function Select({
   options: { value: string; label: string }[];
   placeholder?: string;
   error?: string;
+  description?: string;
   disabled?: boolean;
 }) {
   return (
@@ -61,6 +63,11 @@ export function Select({
           </RadixSelect.Content>
         </RadixSelect.Portal>
       </RadixSelect.Root>
+      {description && !error && (
+        <p id={id ? `${id}-desc` : undefined} className="text-rymx-cream/40 font-sans text-xs">
+          {description}
+        </p>
+      )}
       {error && (
         <p id={id ? `${id}-error` : undefined} role="alert" className="text-sm text-red-400">
           {error}

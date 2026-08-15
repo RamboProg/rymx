@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { InviteStaffForm } from "@/modules/rbac/components/admin/InviteStaffForm";
 import { StaffTable } from "@/modules/rbac/components/admin/StaffTable";
@@ -9,15 +10,19 @@ import { getSessionClaims } from "@/modules/rbac/server";
 export const metadata: Metadata = { title: "Staff — Admin — RYMX" };
 
 export default async function AdminStaffPage() {
-  const [staff, auditLog, claims] = await Promise.all([
+  const [staff, auditLog, claims, t] = await Promise.all([
     listStaffUsers(),
     listAuditLog(50),
     getSessionClaims(),
+    getTranslations("pages.staff"),
   ]);
 
   return (
     <div className="flex flex-col gap-10">
-      <h1 className="font-display text-rymx-cream text-2xl font-bold">Staff</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
+        <p className="text-rymx-cream/50 font-sans text-sm">{t("description")}</p>
+      </div>
 
       <section className="flex flex-col gap-4">
         <StaffTable staff={staff} currentUid={claims!.uid} />

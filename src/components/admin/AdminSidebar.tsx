@@ -1,26 +1,33 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LocaleToggle } from "./LocaleToggle";
 
 const NAV_ITEMS = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/products", label: "Products" },
-  { href: "/admin/collections", label: "Collections" },
-  { href: "/admin/inventory", label: "Inventory" },
-  { href: "/admin/orders", label: "Orders" },
-  { href: "/admin/discounts", label: "Discounts" },
-  { href: "/admin/customers", label: "Customers" },
-  { href: "/admin/settings", label: "Settings" },
-  { href: "/admin/staff", label: "Staff" },
-  { href: "/admin/analytics", label: "Analytics" },
-];
+  { href: "/admin", key: "dashboard" },
+  { href: "/admin/products", key: "products" },
+  { href: "/admin/categories", key: "categories" },
+  { href: "/admin/collections", key: "collections" },
+  { href: "/admin/inventory", key: "inventory" },
+  { href: "/admin/orders", key: "orders" },
+  { href: "/admin/discounts", key: "discounts" },
+  { href: "/admin/customers", key: "customers" },
+  { href: "/admin/settings", key: "settings" },
+  { href: "/admin/staff", key: "staff" },
+  { href: "/admin/analytics", key: "analytics" },
+] as const;
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const t = useTranslations("nav");
 
   return (
-    <nav aria-label="Admin" className="flex w-48 shrink-0 flex-col gap-1">
+    <nav aria-label={t("label")} className="flex w-48 shrink-0 flex-col gap-1">
+      <div className="mb-3 flex justify-end">
+        <LocaleToggle />
+      </div>
       {NAV_ITEMS.map((item) => {
         const isActive =
           item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
@@ -35,7 +42,7 @@ export function AdminSidebar() {
                 : "text-rymx-cream/60 hover:bg-rymx-card hover:text-rymx-cream"
             }`}
           >
-            {item.label}
+            {t(item.key)}
           </Link>
         );
       })}

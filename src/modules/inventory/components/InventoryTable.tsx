@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { Checkbox } from "@/components/ui/Checkbox";
@@ -17,14 +18,16 @@ function AdjustRow({
 }) {
   const [delta, setDelta] = useState("");
   const [reason, setReason] = useState("");
+  const [addQty, setAddQty] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const t = useTranslations("inventory");
 
   async function onApply() {
     setError(null);
     const deltaNumber = Number(delta);
     if (!Number.isInteger(deltaNumber) || deltaNumber === 0) {
-      setError("Enter a non-zero whole number");
+      setError(t("errNonZero"));
       return;
     }
     setPending(true);
@@ -45,30 +48,77 @@ function AdjustRow({
     setReason("");
   }
 
+  // Quick positive-only "receive stock" path: adds units and records a ledger
+  // entry with a fixed reason, without needing the ± / reason fields.
+  async function onAddStock() {
+    setError(null);
+    const qty = Number(addQty);
+    if (!Number.isInteger(qty) || qty <= 0) {
+      setError(t("errPositive"));
+      return;
+    }
+    setPending(true);
+    const result = await adjustStockAction({
+      productId: row.productId,
+      variantId: row.variantId,
+      delta: qty,
+      reason: "Received stock",
+    });
+    setPending(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+    onAdjusted(result.newStock);
+    setAddQty("");
+  }
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <div className="w-20">
-        <NumberField
-          value={delta}
-          onChange={(e) => setDelta(e.target.value)}
-          placeholder="±"
-          className="py-1 pr-7 text-xs"
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="w-20">
+          <NumberField
+            value={delta}
+            onChange={(e) => setDelta(e.target.value)}
+            placeholder={t("deltaPlaceholder")}
+            className="py-1 pr-7 text-xs"
+          />
+        </div>
+        <input
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          placeholder={t("reasonPlaceholder")}
+          className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold min-w-0 flex-1 rounded-md border px-2 py-1 font-mono text-xs outline-none"
         />
+        <button
+          type="button"
+          disabled={pending}
+          onClick={onApply}
+          className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-3 py-1 font-mono text-xs uppercase hover:text-[#12100a] disabled:opacity-50"
+        >
+          {t("colAdjust")}
+        </button>
       </div>
-      <input
-        value={reason}
-        onChange={(e) => setReason(e.target.value)}
-        placeholder="Reason"
-        className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold min-w-0 flex-1 rounded-md border px-2 py-1 font-mono text-xs outline-none"
-      />
-      <button
-        type="button"
-        disabled={pending}
-        onClick={onApply}
-        className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-3 py-1 font-mono text-xs uppercase hover:text-[#12100a] disabled:opacity-50"
-      >
-        Apply
-      </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="w-20">
+          <NumberField
+            value={addQty}
+            onChange={(e) => setAddQty(e.target.value)}
+            placeholder={t("addQtyPlaceholder")}
+            min={1}
+            className="py-1 pr-7 text-xs"
+          />
+        </div>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={onAddStock}
+          className="border-rymx-cream/30 text-rymx-cream/80 hover:border-rymx-gold hover:text-rymx-gold rounded-md border px-3 py-1 font-mono text-xs uppercase disabled:opacity-50"
+        >
+          {t("addStock")}
+        </button>
+      </div>
       {error && <p className="w-full font-mono text-xs text-red-400">{error}</p>}
     </div>
   );
@@ -79,17 +129,18 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [lowStockOnly, setLowStockOnly] = useState(false);
+  const t = useTranslations("inventory");
 
   const categoryOptions = useMemo(() => {
     const categories = new Set<string>();
     for (const row of rows) if (row.category) categories.add(row.category);
     return [
-      { value: "all", label: "All categories" },
+      { value: "all", label: t("allCategories") },
       ...Array.from(categories)
         .sort()
         .map((c) => ({ value: c, label: c })),
     ];
-  }, [rows]);
+  }, [rows, t]);
 
   const visibleRows = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -110,16 +161,17 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
         <div className="w-56">
           <Field
             id="inventory-search"
-            label="Search"
+            label={t("searchLabel")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Product or SKU…"
+            placeholder={t("searchPlaceholder")}
+            description={t("searchHelp")}
           />
         </div>
         <div className="w-48">
           <Select
             id="inventory-category"
-            label="Category"
+            label={t("categoryLabel")}
             value={categoryFilter}
             onValueChange={setCategoryFilter}
             options={categoryOptions}
@@ -128,7 +180,7 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
         <div className="pb-3">
           <Checkbox
             id="inventory-low-stock"
-            label="Low stock only"
+            label={t("lowStockOnly")}
             checked={lowStockOnly}
             onChange={setLowStockOnly}
           />
@@ -137,11 +189,11 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
       <Table>
         <thead>
           <tr>
-            <Th>Product</Th>
-            <Th>SKU</Th>
-            <Th>Options</Th>
-            <Th>Stock</Th>
-            <Th>Adjust</Th>
+            <Th>{t("colProduct")}</Th>
+            <Th>{t("colSku")}</Th>
+            <Th>{t("colOptions")}</Th>
+            <Th>{t("colStock")}</Th>
+            <Th>{t("colAdjust")}</Th>
           </tr>
         </thead>
         <tbody>
@@ -155,7 +207,7 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
                   {row.stock}
                 </span>
                 {row.stock <= LOW_STOCK_THRESHOLD && (
-                  <span className="ml-2 font-mono text-xs text-red-400 uppercase">Low</span>
+                  <span className="ml-2 font-mono text-xs text-red-400 uppercase">{t("low")}</span>
                 )}
               </Td>
               <Td>

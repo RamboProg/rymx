@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ContentSettingsForm } from "@/modules/content/components/admin/ContentSettingsForm";
 import { getContentSettings } from "@/modules/content/server";
 import { EmailTemplatesForm } from "@/modules/settings/components/admin/EmailTemplatesForm";
@@ -15,17 +16,21 @@ import {
 export const metadata: Metadata = { title: "Settings — Admin — RYMX" };
 
 export default async function AdminSettingsPage() {
-  const [shipping, store, policies, emailTemplates, content] = await Promise.all([
+  const [shipping, store, policies, emailTemplates, content, t] = await Promise.all([
     getShippingSettings(),
     getStoreSettings(),
     getPolicies(),
     getEmailTemplates(),
     getContentSettings(),
+    getTranslations("pages.settings"),
   ]);
 
   return (
     <div className="flex flex-col gap-10">
-      <h1 className="font-display text-rymx-cream text-2xl font-bold">Settings</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
+        <p className="text-rymx-cream/50 font-sans text-sm">{t("description")}</p>
+      </div>
 
       <section className="flex flex-col gap-4">
         <h2 className="font-display text-rymx-cream text-lg font-bold">Shipping</h2>

@@ -4,7 +4,9 @@ overrides:
 
 allowBuilds:
   "@firebase/util": true
+  "@parcel/watcher": false
   "@sentry/cli": true
+  "@swc/core": false
   esbuild: true
   protobufjs: true
   re2: true

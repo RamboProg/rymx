@@ -36,9 +36,9 @@ type SeedProduct = {
 };
 
 const categories = [
-  { slug: "outerwear", title: "Outerwear" },
-  { slug: "tops", title: "Tops" },
-  { slug: "bottoms", title: "Bottoms" },
+  { slug: "tops", title: "Tops", order: 0 },
+  { slug: "bottoms", title: "Bottoms", order: 1 },
+  { slug: "outerwear", title: "Outerwear", order: 2 },
 ];
 
 const products: SeedProduct[] = [
@@ -126,7 +126,7 @@ async function seed() {
     await db
       .collection("categories")
       .doc(category.slug)
-      .set({ title: category.title, slug: category.slug });
+      .set({ title: category.title, slug: category.slug, order: category.order });
   }
 
   console.log("Seeding products + variants...");

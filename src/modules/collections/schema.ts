@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { mediaAssetSchema, SLUG_MESSAGE, SLUG_REGEX } from "@/modules/catalog/schema";
+import { mediaAssetSchema } from "@/modules/catalog/schema";
 
 export const collectionSchema = z.object({
   id: z.string(),
@@ -13,9 +13,9 @@ export const collectionSchema = z.object({
 });
 export type Collection = z.infer<typeof collectionSchema>;
 
+// slug is derived from title server-side and frozen (see collections/server/admin.ts).
 export const collectionInputSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
-  slug: z.string().trim().min(1, "Slug is required").regex(SLUG_REGEX, SLUG_MESSAGE),
   description: z.string().default(""),
   media: z.array(mediaAssetSchema).default([]),
   productIds: z.array(z.string()).default([]),

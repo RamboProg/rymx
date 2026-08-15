@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { Button } from "@/components/ui/Button";
@@ -10,25 +11,31 @@ import { listAllCollectionsAdmin } from "@/modules/collections/server/admin";
 export const metadata: Metadata = { title: "Collections — Admin — RYMX" };
 
 export default async function AdminCollectionsPage() {
-  const collections = await listAllCollectionsAdmin();
+  const [collections, t] = await Promise.all([
+    listAllCollectionsAdmin(),
+    getTranslations("pages.collections"),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-rymx-cream text-2xl font-bold">Collections</h1>
-        <Button href="/admin/collections/new">New collection</Button>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
+          <p className="text-rymx-cream/50 font-sans text-sm">{t("description")}</p>
+        </div>
+        <Button href="/admin/collections/new">{t("new")}</Button>
       </div>
 
       {collections.length === 0 ? (
-        <p className="text-rymx-cream/50 font-mono text-sm">No collections yet.</p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{t("empty")}</p>
       ) : (
         <Table>
           <thead>
             <tr>
-              <Th>Title</Th>
-              <Th>Products</Th>
-              <Th>Status</Th>
-              <Th>Actions</Th>
+              <Th>{t("colTitle")}</Th>
+              <Th>{t("colProducts")}</Th>
+              <Th>{t("colStatus")}</Th>
+              <Th>{t("colActions")}</Th>
             </tr>
           </thead>
           <tbody>
@@ -45,10 +52,10 @@ export default async function AdminCollectionsPage() {
                 <Td>{collection.productIds.length}</Td>
                 <Td>
                   {!collection.active
-                    ? "Inactive"
+                    ? t("statusInactive")
                     : isCollectionLive(collection.publishAt)
-                      ? "Live"
-                      : `Scheduled — ${collection.publishAt!.toLocaleString()}`}
+                      ? t("statusLive")
+                      : t("statusScheduled", { when: collection.publishAt!.toLocaleString() })}
                 </Td>
                 <Td>
                   <div className="flex items-center gap-4">

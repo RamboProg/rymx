@@ -31,7 +31,7 @@ describe("shopSearchParamsSchema", () => {
 });
 
 describe("productFormSchema", () => {
-  const valid = { title: "Nile Tee", slug: "nile-tee" };
+  const valid = { title: "Nile Tee", category: "tops" };
 
   it("accepts a minimal valid product with defaults filled in", () => {
     const parsed = productFormSchema.safeParse(valid);
@@ -44,15 +44,15 @@ describe("productFormSchema", () => {
     expect(productFormSchema.safeParse({ ...valid, title: "  " }).success).toBe(false);
   });
 
-  it("rejects a slug with uppercase or spaces", () => {
-    expect(productFormSchema.safeParse({ ...valid, slug: "Nile Tee" }).success).toBe(false);
-    expect(productFormSchema.safeParse({ ...valid, slug: "nile_tee" }).success).toBe(false);
+  it("requires a category", () => {
+    expect(productFormSchema.safeParse({ title: "Nile Tee" }).success).toBe(false);
+    expect(productFormSchema.safeParse({ ...valid, category: "  " }).success).toBe(false);
   });
 
-  it("accepts a hyphenated lowercase slug", () => {
-    expect(productFormSchema.safeParse({ ...valid, slug: "cairo-bomber-jacket-2" }).success).toBe(
-      true,
-    );
+  it("does not accept a client-supplied slug (server derives it)", () => {
+    const parsed = productFormSchema.safeParse({ ...valid, slug: "anything" });
+    expect(parsed.success).toBe(true);
+    expect(parsed.success && "slug" in parsed.data).toBe(false);
   });
 });
 
@@ -74,15 +74,11 @@ describe("variantInputSchema", () => {
 });
 
 describe("categoryInputSchema", () => {
-  it("accepts a valid category", () => {
-    expect(categoryInputSchema.safeParse({ title: "Outerwear", slug: "outerwear" }).success).toBe(
-      true,
-    );
+  it("accepts a title-only category (slug + order derived server-side)", () => {
+    expect(categoryInputSchema.safeParse({ title: "Outerwear" }).success).toBe(true);
   });
 
-  it("rejects an invalid slug", () => {
-    expect(categoryInputSchema.safeParse({ title: "Outerwear", slug: "Outer Wear!" }).success).toBe(
-      false,
-    );
+  it("rejects an empty title", () => {
+    expect(categoryInputSchema.safeParse({ title: "  " }).success).toBe(false);
   });
 });

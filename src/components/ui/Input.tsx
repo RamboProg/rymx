@@ -4,12 +4,13 @@ export function NumberField({
   label,
   id,
   error,
+  description,
   min,
   max,
   step,
   className,
   ...props
-}: { label?: string; error?: string } & ComponentPropsWithoutRef<"input">) {
+}: { label?: string; error?: string; description?: string } & ComponentPropsWithoutRef<"input">) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   function nudge(direction: 1 | -1) {
@@ -74,6 +75,11 @@ export function NumberField({
           </button>
         </div>
       </div>
+      {description && !error && (
+        <p id={id ? `${id}-desc` : undefined} className="text-rymx-cream/40 font-sans text-xs">
+          {description}
+        </p>
+      )}
       {error && (
         <p id={id ? `${id}-error` : undefined} role="alert" className="text-sm text-red-400">
           {error}
@@ -87,8 +93,13 @@ export function Field({
   label,
   id,
   error,
+  description,
+  className,
   ...props
-}: { label: string; error?: string } & ComponentPropsWithoutRef<"input">) {
+}: { label: string; error?: string; description?: string } & ComponentPropsWithoutRef<"input">) {
+  const describedBy =
+    [description ? `${id}-desc` : null, error ? `${id}-error` : null].filter(Boolean).join(" ") ||
+    undefined;
   return (
     <div className="flex flex-col gap-1.5">
       <label
@@ -100,10 +111,15 @@ export function Field({
       <input
         id={id}
         aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
+        aria-describedby={describedBy}
+        className={`border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none ${props.readOnly ? "cursor-not-allowed opacity-60" : ""} ${className ?? ""}`}
         {...props}
       />
+      {description && (
+        <p id={`${id}-desc`} className="text-rymx-cream/40 font-sans text-xs">
+          {description}
+        </p>
+      )}
       {error && (
         <p id={`${id}-error`} role="alert" className="text-sm text-red-400">
           {error}

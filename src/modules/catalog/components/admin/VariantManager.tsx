@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Table, Td, Th } from "@/components/admin/Table";
@@ -30,6 +31,7 @@ export function VariantManager({
   options: ProductOption[];
 }) {
   const router = useRouter();
+  const t = useTranslations("variants");
   const [variants, setVariants] = useState(initialVariants);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [sku, setSku] = useState("");
@@ -109,11 +111,11 @@ export function VariantManager({
         <Table>
           <thead>
             <tr>
-              <Th>SKU</Th>
-              <Th>Options</Th>
-              <Th>Price</Th>
-              <Th>Stock</Th>
-              <Th>Actions</Th>
+              <Th>{t("colSku")}</Th>
+              <Th>{t("colOptions")}</Th>
+              <Th>{t("colPrice")}</Th>
+              <Th>{t("colStock")}</Th>
+              <Th>{t("colActions")}</Th>
             </tr>
           </thead>
           <tbody>
@@ -130,14 +132,14 @@ export function VariantManager({
                       onClick={() => startEdit(variant)}
                       className="hover:text-rymx-gold"
                     >
-                      Edit
+                      {t("edit")}
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(variant.id)}
                       className="hover:text-red-400"
                     >
-                      Delete
+                      {t("delete")}
                     </button>
                   </div>
                 </Td>
@@ -149,14 +151,15 @@ export function VariantManager({
 
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
         <h3 className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          {editingId ? "Edit variant" : "Add variant"}
+          {editingId ? t("editTitle") : t("addTitle")}
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field
             id="variant-sku"
-            label="SKU"
+            label={t("sku")}
             value={sku}
             onChange={(e) => setSku(e.target.value)}
+            description={t("skuHelp")}
           />
           {options.map((option) => (
             <Select
@@ -173,23 +176,26 @@ export function VariantManager({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <NumberField
             id="variant-price"
-            label="Price (EGP)"
+            label={t("price")}
             step="0.01"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            description={t("priceHelp")}
           />
           <NumberField
             id="variant-compareAt"
-            label="Compare-at (EGP, optional)"
+            label={t("compareAt")}
             step="0.01"
             value={compareAt}
             onChange={(e) => setCompareAt(e.target.value)}
+            description={t("compareAtHelp")}
           />
           <NumberField
             id="variant-stock"
-            label="Stock"
+            label={t("stock")}
             value={stock}
             onChange={(e) => setStock(e.target.value)}
+            description={t("stockHelp")}
           />
         </div>
         {error && (
@@ -199,7 +205,7 @@ export function VariantManager({
         )}
         <div className="flex gap-3">
           <Button type="submit" disabled={saving} className="w-fit justify-center">
-            {saving ? "Saving…" : editingId ? "Save variant" : "Add variant"}
+            {saving ? t("saving") : editingId ? t("save") : t("add")}
           </Button>
           {editingId && (
             <button
@@ -207,7 +213,7 @@ export function VariantManager({
               onClick={resetForm}
               className="text-rymx-cream/50 hover:text-rymx-cream font-mono text-xs tracking-[0.1em] uppercase"
             >
-              Cancel
+              {t("cancel")}
             </button>
           )}
         </div>

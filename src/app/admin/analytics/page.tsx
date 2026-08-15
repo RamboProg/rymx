@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { StatTile } from "@/components/admin/StatTile";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { formatEGP } from "@/lib/money";
@@ -50,6 +51,7 @@ export default async function AdminAnalyticsPage() {
     getMostReturnedItemsReport(10),
     getReturnReasonsReport(),
   ]);
+  const t = await getTranslations("pages.analytics");
 
   const totalRevenueMinor = sales.reduce((sum, d) => sum + d.revenueMinor, 0);
   const totalOrders = sales.reduce((sum, d) => sum + d.orderCount, 0);
@@ -57,7 +59,10 @@ export default async function AdminAnalyticsPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <h1 className="font-display text-rymx-cream text-2xl font-bold">Analytics</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
+        <p className="text-rymx-cream/50 font-sans text-sm">{t("description")}</p>
+      </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Revenue (30d)" value={formatEGP(totalRevenueMinor)} />

@@ -29,7 +29,9 @@ export function parseVariant(id: string, data: DocumentData): Variant {
 
 export async function listCategories(): Promise<Category[]> {
   const snap = await adminDb.collection("categories").get();
-  return snap.docs.map((d) => categorySchema.parse({ id: d.id, ...d.data() }));
+  return snap.docs
+    .map((d) => categorySchema.parse({ id: d.id, ...d.data() }))
+    .sort((a, b) => a.order - b.order);
 }
 
 // Every live product, unpaginated/unfiltered — for the sitemap generator,
@@ -96,6 +98,30 @@ export async function listShopProducts(
 
   products = sortProducts(products, params.sort);
   return paginate(products, params.page);
+}
+
+export type ShopCategorySection = { category: Category; products: Product[] };
+
+// Groups every active product under its category, for the default /shop view
+// (one heading + grid per category, in the categories' `order`). Same MVP
+// in-memory approach as listShopProducts. Empty categories are omitted.
+export async function listShopProductsByCategory(
+  sort: ShopSearchParams["sort"],
+): Promise<ShopCategorySection[]> {
+  const [snap, categories] = await Promise.all([
+    adminDb.collection("products").where("status", "==", "active").get(),
+    listCategories(),
+  ]);
+  const products = snap.docs.map((d) => parseProduct(d.id, d.data()));
+  return categories
+    .map((category) => ({
+      category,
+      products: sortProducts(
+        products.filter((p) => p.category === category.slug),
+        sort,
+      ),
+    }))
+    .filter((section) => section.products.length > 0);
 }
 
 function sortProducts(products: Product[], sort: ShopSearchParams["sort"]): Product[] {

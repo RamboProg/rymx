@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { MediaAsset } from "@/modules/catalog/schema";
@@ -12,6 +13,7 @@ export function MediaManager({
   media: MediaAsset[];
   onChange: (media: MediaAsset[]) => void;
 }) {
+  const t = useTranslations("media");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +63,7 @@ export function MediaManager({
             <div className="bg-rymx-card relative aspect-square overflow-hidden rounded-md">
               <Image
                 src={asset.url}
-                alt={asset.alt || "Product image"}
+                alt={asset.alt || t("altFallback")}
                 fill
                 sizes="200px"
                 className="object-cover"
@@ -70,7 +72,7 @@ export function MediaManager({
             <input
               value={asset.alt}
               onChange={(e) => updateAlt(index, e.target.value)}
-              placeholder="Alt text"
+              placeholder={t("altText")}
               className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-2 py-1 font-mono text-xs outline-none"
             />
             <div className="text-rymx-cream/50 flex justify-between gap-1 font-mono text-xs">
@@ -80,7 +82,7 @@ export function MediaManager({
                 onClick={() => moveMedia(index, -1)}
                 className="disabled:opacity-30"
               >
-                ← Move
+                {t("moveLeft")}
               </button>
               <button
                 type="button"
@@ -88,14 +90,14 @@ export function MediaManager({
                 onClick={() => moveMedia(index, 1)}
                 className="disabled:opacity-30"
               >
-                Move →
+                {t("moveRight")}
               </button>
               <button
                 type="button"
                 onClick={() => removeMedia(index)}
                 className="hover:text-red-400"
               >
-                Remove
+                {t("remove")}
               </button>
             </div>
           </div>
@@ -104,7 +106,7 @@ export function MediaManager({
 
       <label className="flex w-fit cursor-pointer flex-col gap-1">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Add image
+          {t("addImage")}
         </span>
         <input
           ref={fileInputRef}
@@ -115,7 +117,7 @@ export function MediaManager({
           className="text-rymx-cream/70 file:border-rymx-gold file:text-rymx-gold font-mono text-xs file:mr-3 file:rounded-full file:border file:bg-transparent file:px-3 file:py-1.5 file:font-mono file:text-xs"
         />
       </label>
-      {uploading && <p className="text-rymx-cream/50 font-mono text-xs">Uploading…</p>}
+      {uploading && <p className="text-rymx-cream/50 font-mono text-xs">{t("uploading")}</p>}
       {error && (
         <p role="alert" className="font-mono text-xs text-red-400">
           {error}

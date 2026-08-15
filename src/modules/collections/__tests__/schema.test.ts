@@ -32,7 +32,7 @@ describe("isCollectionVisible", () => {
 });
 
 describe("collectionInputSchema", () => {
-  const valid = { title: "SS26 Launch", slug: "ss26-launch" };
+  const valid = { title: "SS26 Launch" };
 
   it("accepts a minimal valid collection with defaults filled in", () => {
     const parsed = collectionInputSchema.safeParse(valid);
@@ -45,7 +45,9 @@ describe("collectionInputSchema", () => {
     expect(collectionInputSchema.safeParse({ ...valid, title: " " }).success).toBe(false);
   });
 
-  it("rejects an invalid slug", () => {
-    expect(collectionInputSchema.safeParse({ ...valid, slug: "SS26 Launch" }).success).toBe(false);
+  it("does not accept a client-supplied slug (server derives it)", () => {
+    const parsed = collectionInputSchema.safeParse({ ...valid, slug: "anything" });
+    expect(parsed.success).toBe(true);
+    expect(parsed.success && "slug" in parsed.data).toBe(false);
   });
 });

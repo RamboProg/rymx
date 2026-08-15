@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { DateTimePicker } from "@/components/ui/DateTimePicker";
 import { Field } from "@/components/ui/Input";
+import { slugify } from "@/lib/slug";
 import type { MediaAsset, Product } from "@/modules/catalog/schema";
 import { MediaManager } from "@/modules/media/components/MediaManager";
 import { collectionInputSchema, type Collection } from "../../schema";
@@ -19,8 +21,8 @@ export function CollectionForm({
   products: Product[];
 }) {
   const router = useRouter();
+  const t = useTranslations("collections");
   const [title, setTitle] = useState(collection?.title ?? "");
-  const [slug, setSlug] = useState(collection?.slug ?? "");
   const [description, setDescription] = useState(collection?.description ?? "");
   const [publishAt, setPublishAt] = useState<Date | null>(collection?.publishAt ?? null);
   const [active, setActive] = useState(collection?.active ?? true);
@@ -41,7 +43,6 @@ export function CollectionForm({
 
     const parsed = collectionInputSchema.safeParse({
       title,
-      slug,
       description,
       media,
       productIds,
@@ -74,8 +75,20 @@ export function CollectionForm({
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field id="title" label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <Field id="slug" label="Slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
+        <Field
+          id="title"
+          label={t("fields.title")}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          description={t("fields.titleHelp")}
+        />
+        <Field
+          id="slug"
+          label={t("fields.slug")}
+          value={collection ? collection.slug : slugify(title)}
+          readOnly
+          description={t("fields.slugHelp")}
+        />
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -83,7 +96,7 @@ export function CollectionForm({
           htmlFor="description"
           className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
         >
-          Description
+          {t("fields.description")}
         </label>
         <textarea
           id="description"
@@ -92,22 +105,23 @@ export function CollectionForm({
           onChange={(e) => setDescription(e.target.value)}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
         />
+        <p className="text-rymx-cream/40 font-sans text-xs">{t("fields.descriptionHelp")}</p>
       </div>
 
       <div className="w-fit">
         <DateTimePicker
           id="publishAt"
-          label="Publish at (optional — leave blank to go live immediately)"
+          label={t("fields.publishAt")}
           value={publishAt}
           onChange={setPublishAt}
         />
       </div>
 
-      <Checkbox id="active" label="Active" checked={active} onChange={setActive} />
+      <Checkbox id="active" label={t("fields.active")} checked={active} onChange={setActive} />
 
       <div className="flex flex-col gap-2">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Products
+          {t("fields.products")}
         </span>
         <div className="border-rymx-cream/10 flex max-h-64 flex-col gap-1 overflow-y-auto rounded-md border p-3">
           {products.map((product) => (
@@ -124,7 +138,7 @@ export function CollectionForm({
 
       <div className="flex flex-col gap-2">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Media
+          {t("fields.media")}
         </span>
         <MediaManager media={media} onChange={setMedia} />
       </div>
@@ -134,10 +148,10 @@ export function CollectionForm({
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{t("saved")}</p>}
 
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : collection ? "Save collection" : "Create collection"}
+        {saving ? t("saving") : collection ? t("save") : t("create")}
       </Button>
     </form>
   );

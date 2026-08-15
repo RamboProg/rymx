@@ -2,6 +2,7 @@ import "server-only";
 
 import { adminDb } from "@/lib/firebase/admin";
 import { toDate } from "@/lib/firebase/toDate";
+import { uniqueSlug } from "@/lib/firebase/uniqueSlug";
 import {
   categorySchema,
   type Category,
@@ -41,17 +42,15 @@ export async function getProductForAdmin(id: string): Promise<Product | null> {
 }
 
 export async function createProduct(input: ProductFormInput): Promise<Product> {
-  // The slug doubles as the doc id, matching scripts/seed.ts's convention —
-  // keeps /shop/[slug] URLs stable and product ids human-readable.
-  const id = input.slug;
+  // The slug is derived from the title and doubles as the doc id — keeps
+  // /shop/[slug] URLs stable and product ids human-readable. It's frozen once
+  // set (renaming the title never changes it), so uniqueSlug only runs here.
+  const id = await uniqueSlug("products", input.title);
   const ref = adminDb.doc(`products/${id}`);
-  if ((await ref.get()).exists) {
-    throw new Error(`A product with slug "${input.slug}" already exists.`);
-  }
 
   const data = {
     title: input.title,
-    slug: input.slug,
+    slug: id,
     description: input.description,
     status: input.status,
     tags: input.tags,
@@ -73,9 +72,10 @@ export async function updateProduct(id: string, input: ProductFormInput): Promis
   const existing = await ref.get();
   if (!existing.exists) throw new Error("Product not found.");
 
+  // Deliberately does NOT write `slug`: the slug is frozen at creation so the
+  // doc id, /shop URL, and any placed orders stay stable across title edits.
   await ref.update({
     title: input.title,
-    slug: input.slug,
     description: input.description,
     status: input.status,
     tags: input.tags,
@@ -98,13 +98,55 @@ async function recomputeMinPrice(productId: string): Promise<void> {
   await adminDb.doc(`products/${productId}`).update({ minPriceMinor });
 }
 
-export async function createVariant(productId: string, input: VariantInput): Promise<Variant> {
+// Appends a row to the inventoryAdjustments ledger so every stock movement is
+// auditable — not just manual +/- adjustments, but also a variant's initial
+// stock and any direct stock edits from the variant form. Mirrors the shape
+// written by inventory/server's applyStockDeltaInTransaction.
+async function logStockLedger(entry: {
+  productId: string;
+  productTitle: string;
+  variantId: string;
+  sku: string;
+  delta: number;
+  newStock: number;
+  reason: string;
+  staffUid: string;
+}): Promise<void> {
+  await adminDb
+    .collection("inventoryAdjustments")
+    .doc()
+    .set({ ...entry, createdAt: new Date() });
+}
+
+export async function createVariant(
+  productId: string,
+  input: VariantInput,
+  staffUid: string,
+): Promise<Variant> {
+  const productRef = adminDb.doc(`products/${productId}`);
+  const productSnap = await productRef.get();
+  if (!productSnap.exists) throw new Error("Product not found.");
+
   const ref = adminDb.collection(`products/${productId}/variants`).doc(input.sku);
   if ((await ref.get()).exists) {
     throw new Error(`A variant with SKU "${input.sku}" already exists on this product.`);
   }
   await ref.set(input);
   await recomputeMinPrice(productId);
+
+  // Record the opening stock so a new variant's inventory has a ledger origin.
+  if (input.stock > 0) {
+    await logStockLedger({
+      productId,
+      productTitle: productSnap.data()!.title as string,
+      variantId: ref.id,
+      sku: input.sku,
+      delta: input.stock,
+      newStock: input.stock,
+      reason: "initial stock",
+      staffUid,
+    });
+  }
   return parseVariant(ref.id, input);
 }
 
@@ -112,11 +154,32 @@ export async function updateVariant(
   productId: string,
   variantId: string,
   input: VariantInput,
+  staffUid: string,
 ): Promise<Variant> {
+  const productRef = adminDb.doc(`products/${productId}`);
   const ref = adminDb.doc(`products/${productId}/variants/${variantId}`);
-  if (!(await ref.get()).exists) throw new Error("Variant not found.");
+  const [productSnap, existing] = await Promise.all([productRef.get(), ref.get()]);
+  if (!existing.exists) throw new Error("Variant not found.");
+
+  const oldStock = existing.data()!.stock as number;
   await ref.update(input);
   await recomputeMinPrice(productId);
+
+  // A direct stock edit is a stock movement too — log the signed delta so the
+  // inventory ledger stays a complete history.
+  const delta = input.stock - oldStock;
+  if (delta !== 0) {
+    await logStockLedger({
+      productId,
+      productTitle: (productSnap.data()?.title as string) ?? "",
+      variantId,
+      sku: input.sku,
+      delta,
+      newStock: input.stock,
+      reason: "manual edit",
+      staffUid,
+    });
+  }
   return parseVariant(variantId, input);
 }
 
@@ -125,13 +188,58 @@ export async function deleteVariant(productId: string, variantId: string): Promi
   await recomputeMinPrice(productId);
 }
 
+export async function listCategoriesForAdmin(): Promise<Category[]> {
+  const snap = await adminDb.collection("categories").get();
+  return snap.docs
+    .map((d) => categorySchema.parse({ id: d.id, ...d.data() }))
+    .sort((a, b) => a.order - b.order);
+}
+
 export async function createCategory(input: CategoryInput): Promise<Category> {
-  const ref = adminDb.collection("categories").doc(input.slug);
-  if ((await ref.get()).exists) {
-    throw new Error(`A category with slug "${input.slug}" already exists.`);
+  // Slug derived from the title and frozen; order appends to the end.
+  const slug = await uniqueSlug("categories", input.title);
+  const existing = await adminDb.collection("categories").get();
+  const maxOrder = existing.docs.reduce(
+    (max, d) => Math.max(max, (d.data().order as number) ?? 0),
+    -1,
+  );
+  const data = { title: input.title, slug, order: maxOrder + 1 };
+  await adminDb.collection("categories").doc(slug).set(data);
+  return categorySchema.parse({ id: slug, ...data });
+}
+
+// Rename only: slug (doc id) and order are preserved so existing product
+// references and section ordering stay intact.
+export async function updateCategory(id: string, input: CategoryInput): Promise<Category> {
+  const ref = adminDb.doc(`categories/${id}`);
+  const existing = await ref.get();
+  if (!existing.exists) throw new Error("Category not found.");
+  await ref.update({ title: input.title });
+  return categorySchema.parse({ id, ...existing.data(), title: input.title });
+}
+
+// Refuses to delete a category that still has products pointing at its slug, so
+// products can never end up referencing a category that no longer exists.
+export async function deleteCategory(id: string): Promise<void> {
+  const ref = adminDb.doc(`categories/${id}`);
+  const existing = await ref.get();
+  if (!existing.exists) return;
+  const slug = (existing.data()!.slug as string) ?? id;
+  const inUse = await adminDb.collection("products").where("category", "==", slug).limit(1).get();
+  if (!inUse.empty) {
+    throw new Error("Can't delete a category that still has products. Reassign them first.");
   }
-  await ref.set(input);
-  return categorySchema.parse({ id: ref.id, ...input });
+  await ref.delete();
+}
+
+// Persists a new display order for categories. orderedIds is the full list of
+// category ids in the desired order; each doc's `order` is set to its index.
+export async function reorderCategories(orderedIds: readonly string[]): Promise<void> {
+  const batch = adminDb.batch();
+  orderedIds.forEach((id, index) => {
+    batch.update(adminDb.doc(`categories/${id}`), { order: index });
+  });
+  await batch.commit();
 }
 
 // Flips scheduled drops live: draft products whose publishAt has passed
