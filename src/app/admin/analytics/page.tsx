@@ -18,13 +18,13 @@ import { listLowStock } from "@/modules/inventory/server";
 
 export const metadata: Metadata = { title: "Analytics — Admin — RYMX" };
 
-function ExportLink({ report }: { report: string }) {
+function ExportLink({ report, label }: { report: string; label: string }) {
   return (
     <a
       href={`/api/admin/analytics/export?report=${report}`}
       className="text-rymx-cream/50 hover:text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase"
     >
-      Export CSV
+      {label}
     </a>
   );
 }
@@ -52,6 +52,7 @@ export default async function AdminAnalyticsPage() {
     getReturnReasonsReport(),
   ]);
   const t = await getTranslations("pages.analytics");
+  const tReasons = await getTranslations("returns");
 
   const totalRevenueMinor = sales.reduce((sum, d) => sum + d.revenueMinor, 0);
   const totalOrders = sales.reduce((sum, d) => sum + d.orderCount, 0);
@@ -65,15 +66,15 @@ export default async function AdminAnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatTile label="Revenue (30d)" value={formatEGP(totalRevenueMinor)} />
-        <StatTile label="Orders (30d)" value={String(totalOrders)} />
-        <StatTile label="Inventory value" value={formatEGP(inventoryValueMinor)} />
+        <StatTile label={t("statRevenue")} value={formatEGP(totalRevenueMinor)} />
+        <StatTile label={t("statOrders")} value={String(totalOrders)} />
+        <StatTile label={t("statInventoryValue")} value={formatEGP(inventoryValueMinor)} />
       </div>
 
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">Sales — last 30 days</h2>
-          <ExportLink report="sales" />
+          <h2 className="font-display text-rymx-cream text-lg font-bold">{t("salesHeading")}</h2>
+          <ExportLink report="sales" label={t("exportCsv")} />
         </div>
         <div className="flex h-32 items-end gap-1">
           {sales.map((day) => (
@@ -89,18 +90,20 @@ export default async function AdminAnalyticsPage() {
 
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">Top products</h2>
-          <ExportLink report="products" />
+          <h2 className="font-display text-rymx-cream text-lg font-bold">
+            {t("topProductsHeading")}
+          </h2>
+          <ExportLink report="products" label={t("exportCsv")} />
         </div>
         {topProducts.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No sales yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noSales")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Product</Th>
-                <Th>Quantity sold</Th>
-                <Th>Revenue</Th>
+                <Th>{t("colProduct")}</Th>
+                <Th>{t("colQuantitySold")}</Th>
+                <Th>{t("colRevenue")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -118,18 +121,20 @@ export default async function AdminAnalyticsPage() {
 
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">Discount performance</h2>
-          <ExportLink report="discounts" />
+          <h2 className="font-display text-rymx-cream text-lg font-bold">
+            {t("discountPerformanceHeading")}
+          </h2>
+          <ExportLink report="discounts" label={t("exportCsv")} />
         </div>
         {discountPerformance.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No promo codes redeemed yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noPromoRedeemed")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Code</Th>
-                <Th>Redemptions</Th>
-                <Th>Discount given</Th>
+                <Th>{t("colCode")}</Th>
+                <Th>{t("colRedemptions")}</Th>
+                <Th>{t("colDiscountGiven")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -147,18 +152,20 @@ export default async function AdminAnalyticsPage() {
 
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">Low stock</h2>
-          <ExportLink report="inventory" />
+          <h2 className="font-display text-rymx-cream text-lg font-bold">
+            {t("lowStockHeading")}
+          </h2>
+          <ExportLink report="inventory" label={t("exportCsv")} />
         </div>
         {lowStock.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">Nothing low on stock.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("nothingLowStock")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Product</Th>
-                <Th>SKU</Th>
-                <Th>Stock</Th>
+                <Th>{t("colProduct")}</Th>
+                <Th>{t("colSku")}</Th>
+                <Th>{t("colStock")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -176,17 +183,17 @@ export default async function AdminAnalyticsPage() {
 
       <section className="flex flex-col gap-4">
         <h2 className="font-display text-rymx-cream text-lg font-bold">
-          Trending products — last 30 days
+          {t("trendingProductsHeading")}
         </h2>
         {trendingProducts.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No sales in this window yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noSalesWindow")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Product</Th>
-                <Th>Quantity sold</Th>
-                <Th>Revenue</Th>
+                <Th>{t("colProduct")}</Th>
+                <Th>{t("colQuantitySold")}</Th>
+                <Th>{t("colRevenue")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -204,17 +211,17 @@ export default async function AdminAnalyticsPage() {
 
       <section className="flex flex-col gap-4">
         <h2 className="font-display text-rymx-cream text-lg font-bold">
-          Trending collections — last 30 days
+          {t("trendingCollectionsHeading")}
         </h2>
         {trendingCollections.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No sales in this window yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noSalesWindow")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Collection</Th>
-                <Th>Quantity sold</Th>
-                <Th>Revenue</Th>
+                <Th>{t("colCollection")}</Th>
+                <Th>{t("colQuantitySold")}</Th>
+                <Th>{t("colRevenue")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -231,15 +238,17 @@ export default async function AdminAnalyticsPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Most returned items</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">
+          {t("mostReturnedHeading")}
+        </h2>
         {mostReturnedItems.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No returns yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noReturns")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Product</Th>
-                <Th>Quantity returned</Th>
+                <Th>{t("colProduct")}</Th>
+                <Th>{t("colQuantityReturned")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -255,23 +264,26 @@ export default async function AdminAnalyticsPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Return reasons</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">
+          {t("returnReasonsHeading")}
+        </h2>
         {returnReasons.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No returns yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noReturns")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Reason</Th>
-                <Th>Count</Th>
+                <Th>{t("colReason")}</Th>
+                <Th>{t("colCount")}</Th>
               </tr>
             </thead>
             <tbody>
               {returnReasons.map((r) => (
                 <tr key={r.reasonCategory}>
                   <Td>
-                    {RETURN_REASONS.find((reason) => reason.value === r.reasonCategory)?.label ??
-                      r.reasonCategory}
+                    {RETURN_REASONS.some((reason) => reason.value === r.reasonCategory)
+                      ? tReasons(`reasons.${r.reasonCategory}`)
+                      : r.reasonCategory}
                   </Td>
                   <Td>{r.count}</Td>
                 </tr>

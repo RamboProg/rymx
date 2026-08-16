@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { formatEGP } from "@/lib/money";
@@ -27,7 +27,13 @@ export default async function AdminOrdersPage({
     ? (rawStatus as OrderStatus)
     : "all";
 
-  const [allOrders, t] = await Promise.all([listAllOrders(), getTranslations("pages.orders")]);
+  const [allOrders, t, tOrdersAdmin, tStatus, locale] = await Promise.all([
+    listAllOrders(),
+    getTranslations("pages.orders"),
+    getTranslations("ordersAdmin"),
+    getTranslations("orderStatus"),
+    getLocale(),
+  ]);
   const filtered = allOrders
     .filter((order) => status === "all" || order.status === status)
     .filter((order) => {
@@ -60,32 +66,32 @@ export default async function AdminOrdersPage({
                   : "border-rymx-cream/20 text-rymx-cream/60 hover:text-rymx-cream"
               }`}
             >
-              {s}
+              {tStatus(s)}
             </Link>
           ))}
         </div>
-        <form className="ml-auto">
+        <form className="ms-auto">
           <input
             type="search"
             name="q"
             defaultValue={q ?? ""}
-            placeholder="Search order ID, email, name…"
+            placeholder={tOrdersAdmin("searchPlaceholder")}
             className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-2 text-sm outline-none"
           />
         </form>
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-rymx-cream/50 font-mono text-sm">No orders match.</p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{tOrdersAdmin("noOrdersMatch")}</p>
       ) : (
         <Table>
           <thead>
             <tr>
-              <Th>Order</Th>
-              <Th>Customer</Th>
-              <Th>Status</Th>
-              <Th>Total</Th>
-              <Th>Placed</Th>
+              <Th>{tOrdersAdmin("colOrder")}</Th>
+              <Th>{tOrdersAdmin("colCustomer")}</Th>
+              <Th>{tOrdersAdmin("colStatus")}</Th>
+              <Th>{tOrdersAdmin("colTotal")}</Th>
+              <Th>{tOrdersAdmin("colPlaced")}</Th>
             </tr>
           </thead>
           <tbody>
@@ -100,9 +106,9 @@ export default async function AdminOrdersPage({
                   {order.shipping.fullName}
                   {order.email ? ` — ${order.email}` : ""}
                 </Td>
-                <Td>{order.status}</Td>
+                <Td>{tStatus(order.status)}</Td>
                 <Td>{formatEGP(order.totalMinor)}</Td>
-                <Td>{order.createdAt.toLocaleDateString()}</Td>
+                <Td>{order.createdAt.toLocaleDateString(locale)}</Td>
               </tr>
             ))}
           </tbody>

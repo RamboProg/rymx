@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import type { Order } from "../schema";
@@ -25,6 +25,7 @@ function readStoredOrder(orderId: string): StoredOrder | null {
 
 export function OrderConfirmation() {
   const t = useTranslations("orderConfirmation");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order");
   const order = orderId ? readStoredOrder(orderId) : null;
@@ -50,7 +51,7 @@ export function OrderConfirmation() {
         <p className="text-rymx-cream/60 mt-2 font-mono text-sm">
           {t("orderMeta", {
             id: order.id,
-            when: new Date(order.createdAt).toLocaleString(),
+            when: new Date(order.createdAt).toLocaleString(locale),
           })}
         </p>
       </div>

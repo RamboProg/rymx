@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { addOrderNoteAction } from "../../server/actions";
@@ -12,6 +13,9 @@ export function OrderNotes({
   orderId: string;
   notes: OrderNote[];
 }) {
+  const t = useTranslations("ordersAdmin");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
   const [notes, setNotes] = useState(initialNotes);
   const [body, setBody] = useState("");
   const [saving, setSaving] = useState(false);
@@ -33,10 +37,8 @@ export function OrderNotes({
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-display text-rymx-cream text-lg font-bold">Internal notes</h2>
-      <p className="text-rymx-cream/50 font-mono text-xs">
-        Staff-only — never visible to the customer.
-      </p>
+      <h2 className="font-display text-rymx-cream text-lg font-bold">{t("notesHeading")}</h2>
+      <p className="text-rymx-cream/50 font-mono text-xs">{t("notesSubtext")}</p>
 
       {notes.length > 0 && (
         <ul className="flex flex-col gap-3">
@@ -46,7 +48,7 @@ export function OrderNotes({
                 {note.body}
               </p>
               <p className="text-rymx-cream/40 mt-1 font-mono text-xs">
-                {note.createdAt.toLocaleString()}
+                {note.createdAt.toLocaleString(locale)}
               </p>
             </li>
           ))}
@@ -58,7 +60,7 @@ export function OrderNotes({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={3}
-          placeholder="Add a note…"
+          placeholder={t("notePlaceholder")}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
         />
         {error && (
@@ -71,7 +73,7 @@ export function OrderNotes({
           disabled={saving || body.trim().length === 0}
           className="w-fit justify-center"
         >
-          {saving ? "Saving…" : "Add note"}
+          {saving ? tCommon("saving") : t("addNote")}
         </Button>
       </form>
     </section>

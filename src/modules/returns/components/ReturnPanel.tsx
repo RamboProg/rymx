@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { type FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
@@ -18,6 +19,9 @@ import { ReturnItemPicker, type ReturnItemPickerValue } from "./ReturnItemPicker
 const DEFAULT_REASON = RETURN_REASONS[0].value;
 
 function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => void }) {
+  const t = useTranslations("returns");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refundInput, setRefundInput] = useState("");
@@ -28,7 +32,7 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
     const result = await action();
     setBusy(false);
     if (!result.ok) {
-      setError(result.error ?? "Something went wrong.");
+      setError(result.error ?? tCommon("somethingWentWrong"));
       return;
     }
     if (result.ret) onUpdate(result.ret);
@@ -42,20 +46,22 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
     <li className="border-rymx-cream/10 bg-rymx-card flex flex-col gap-2 rounded-md border p-4">
       <div className="flex items-center justify-between">
         <span className="text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase">
-          {ret.status}
+          {t(`status.${ret.status}`)}
         </span>
         <span className="text-rymx-cream/40 font-mono text-xs">
-          {ret.createdAt.toLocaleString()}
+          {ret.createdAt.toLocaleString(locale)}
         </span>
       </div>
       <ul className="text-rymx-cream/80 font-mono text-sm">
         {ret.items.map((item) => (
           <li key={item.variantId}>
-            {item.title} × {item.quantity} — {returnReasonLabel(item)}
+            {item.title} × {item.quantity} — {returnReasonLabel(item, (key) => t(`reasons.${key}`))}
           </li>
         ))}
       </ul>
-      <p className="text-rymx-cream/60 font-mono text-xs">Refund: {formatEGP(ret.refundMinor)}</p>
+      <p className="text-rymx-cream/60 font-mono text-xs">
+        {t("refund", { amount: formatEGP(ret.refundMinor) })}
+      </p>
 
       <div className="flex flex-wrap items-end gap-3">
         {ret.status === "requested" && (
@@ -63,7 +69,7 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
             {needsRefundInput && (
               <Field
                 id={`refund-${ret.id}`}
-                label="Refund amount (EGP)"
+                label={t("refundAmount")}
                 type="number"
                 step="0.01"
                 value={refundInput}
@@ -83,7 +89,7 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
                 )
               }
             >
-              Approve
+              {t("approve")}
             </Button>
             <button
               type="button"
@@ -91,7 +97,7 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
               onClick={() => run(() => rejectReturnAction({ returnId: ret.id }))}
               className="font-mono text-xs tracking-[0.1em] text-red-400 uppercase hover:text-red-300 disabled:opacity-50"
             >
-              Reject
+              {t("reject")}
             </button>
           </>
         )}
@@ -102,7 +108,7 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
             className="w-fit justify-center"
             onClick={() => run(() => restockReturnAction(ret.id))}
           >
-            Restock & record refund
+            {t("restock")}
           </Button>
         )}
       </div>
@@ -117,6 +123,8 @@ function ReturnRow({ ret, onUpdate }: { ret: Return; onUpdate: (r: Return) => vo
 }
 
 export function ReturnPanel({ order, returns: initial }: { order: Order; returns: Return[] }) {
+  const t = useTranslations("returns");
+  const tOrderDetail = useTranslations("orderDetail");
   const [returns, setReturns] = useState(initial);
   const [values, setValues] = useState<Record<string, ReturnItemPickerValue>>({});
   const [refund, setRefund] = useState("");
@@ -139,7 +147,7 @@ export function ReturnPanel({ order, returns: initial }: { order: Order; returns
       .map((item) => ({ variantId: item.variantId, ...valueFor(item.variantId) }))
       .filter((item) => item.quantity > 0);
     if (items.length === 0) {
-      setError("Enter a quantity for at least one item.");
+      setError(t("enterQuantity"));
       return;
     }
 
@@ -161,7 +169,7 @@ export function ReturnPanel({ order, returns: initial }: { order: Order; returns
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-display text-rymx-cream text-lg font-bold">Returns</h2>
+      <h2 className="font-display text-rymx-cream text-lg font-bold">{tOrderDetail("returns")}</h2>
 
       {returns.length > 0 && (
         <ul className="flex flex-col gap-3">
@@ -180,7 +188,7 @@ export function ReturnPanel({ order, returns: initial }: { order: Order; returns
       {returnableItems.length > 0 ? (
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           <h3 className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-            Log a return
+            {t("logATitle")}
           </h3>
           {returnableItems.map((item) => (
             <ReturnItemPicker
@@ -193,7 +201,7 @@ export function ReturnPanel({ order, returns: initial }: { order: Order; returns
           ))}
           <Field
             id="return-refund"
-            label="Refund amount (EGP)"
+            label={t("refundAmount")}
             type="number"
             step="0.01"
             value={refund}
@@ -205,11 +213,11 @@ export function ReturnPanel({ order, returns: initial }: { order: Order; returns
             </p>
           )}
           <Button type="submit" disabled={saving} className="w-fit justify-center">
-            {saving ? "Logging…" : "Log return"}
+            {saving ? t("logging") : t("logReturn")}
           </Button>
         </form>
       ) : (
-        <p className="text-rymx-cream/50 font-mono text-sm">No items remain eligible for return.</p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{t("noneEligible")}</p>
       )}
     </section>
   );

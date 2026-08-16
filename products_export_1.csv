@@ -1,0 +1,714 @@
+Handle,Title,Body (HTML),Vendor,Product Category,Type,Tags,Published,Option1 Name,Option1 Value,Option1 Linked To,Option2 Name,Option2 Value,Option2 Linked To,Option3 Name,Option3 Value,Option3 Linked To,Variant SKU,Variant Grams,Variant Inventory Tracker,Variant Inventory Qty,Variant Inventory Policy,Variant Fulfillment Service,Variant Price,Variant Compare At Price,Variant Requires Shipping,Variant Taxable,Unit Price Total Measure,Unit Price Total Measure Unit,Unit Price Base Measure,Unit Price Base Measure Unit,Variant Barcode,Image Src,Image Position,Image Alt Text,Gift Card,SEO Title,SEO Description,Age group (product.metafields.shopify.age-group),Color (product.metafields.shopify.color-pattern),Fabric (product.metafields.shopify.fabric),Neckline (product.metafields.shopify.neckline),Size (product.metafields.shopify.size),Sleeve length type (product.metafields.shopify.sleeve-length-type),Target gender (product.metafields.shopify.target-gender),Top length type (product.metafields.shopify.top-length-type),Variant Image,Variant Weight Unit,Variant Tax Code,Cost per item,Status
+rymx-black-est-2026-tee,RYMX Black EST.2026 TEE,"<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">A Statement Since Day One.</span> The <span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">RYMX EST. 2026 Tee</span> celebrates the beginning of the RYMX journey with a clean oversized silhouette and a bold back graphic. Featuring the signature RYMX logo, EST. 2026 branding, and a flowing line that symbolizes movement and growth, this piece is designed for those who appreciate minimal design with a strong identity.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Fabric:</span> Premium 100% heavyweight cotton for exceptional softness, breathability, and long-lasting durability.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Design:</span> Oversized back print featuring the iconic <span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">RYMX</span> logo, <span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">EST. 2026</span> detail, and a continuous abstract line for a modern streetwear aesthetic.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Fit:</span> Unisex Oversized Fit with dropped shoulders for a relaxed look and all-day comfort.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Style Tip:</span> Pair it with denim, cargo pants, or shorts for an effortless everyday streetwear outfit.</p>
+<p data-path-to-node=""3""> </p>
+<ul data-path-to-node=""5"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/CFFAE323-0581-4A06-A184-0F16249143A5.jpg?v=1785519904,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-black-est-2026-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/D3C0B995-1920-4F62-82E0-CC107A0E4C0C.jpg?v=1785519904,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-est-2026-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,2,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/E46C17B8-BFFB-44B0-9D42-544B9879CE3D.jpg?v=1785519905,3,"",,,,,,,,,,,,,kg,,,
+rymx-black-est-2026-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-est-2026-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,1,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-est-2026-tee,RYMX White EST.2026 TEE,"<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">A Statement Since Day One.</span> The <span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">RYMX EST. 2026 Tee</span> celebrates the beginning of the RYMX journey with a clean oversized silhouette and a bold back graphic. Featuring the signature RYMX logo, EST. 2026 branding, and a flowing line that symbolizes movement and growth, this piece is designed for those who appreciate minimal design with a strong identity.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Fabric:</span> Premium 100% heavyweight cotton for exceptional softness, breathability, and long-lasting durability.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Design:</span> Oversized back print featuring the iconic <span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">RYMX</span> logo, <span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">EST. 2026</span> detail, and a continuous abstract line for a modern streetwear aesthetic.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Fit:</span> Unisex Oversized Fit with dropped shoulders for a relaxed look and all-day comfort.</p>
+<p class=""zlAe0W_TextBase zlAe0W_Text"" data-w-component=""text"" data-w-wrap=""normal""><span class=""zlAe0W_TextBase zlAe0W_Text rFU14q_Emphasis"" data-w-component=""bold"" data-w-default-strong="""" data-w-inline="""" data-w-wrap=""normal"">Style Tip:</span> Pair it with denim, cargo pants, or shorts for an effortless everyday streetwear outfit.</p>
+<p data-path-to-node=""3""> </p>
+<ul data-path-to-node=""5"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/89FAEC8B-BCC4-4109-A60C-658441ADD210.jpg?v=1785499553,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-white-est-2026-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/1D9914C9-A157-421A-9E8A-AB957DF958F0.jpg?v=1785499553,2,"",,,,,,,,,,,,,kg,,,
+rymx-white-est-2026-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,2,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/725572AD-208C-4379-88F7-1D82C092139A.jpg?v=1785499553,3,"",,,,,,,,,,,,,kg,,,
+rymx-white-est-2026-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4CB0E41B-32C2-47CD-881C-029027C3F0E9.jpg?v=1785499553,4,"",,,,,,,,,,,,,kg,,,
+rymx-white-est-2026-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats-1,RYMX Black Midnight Orbit Sweats,"<p data-start=""30"" data-end=""297"">Built for everyday movement with a clean streetwear edge. The RYMX Everyday Sweats combine comfort, simplicity, and effortless style in one essential piece. Designed with a relaxed wide-leg fit and finished with a minimal back-pocket graphic for a subtle statement.</p>
+<p data-start=""299"" data-end=""460"">Made from premium heavyweight cotton blend fabric, these sweats deliver all-day comfort while keeping a structured oversized silhouette perfect for daily wear.</p>
+<p data-start=""462"" data-end=""537""><strong data-start=""462"" data-end=""473"">Fabric:</strong> Premium heavyweight cotton blend for a soft and durable feel.</p>
+<p data-start=""539"" data-end=""648""><strong data-start=""539"" data-end=""547"">Fit:</strong> Relaxed oversized fit with a wide-leg silhouette for maximum comfort and a modern streetwear look.</p>
+<p data-start=""650"" data-end=""749""><strong data-start=""650"" data-end=""662"">Details:</strong> Minimal RYMX back-pocket graphic with an elastic waistband for an easy everyday fit.</p>
+<p data-start=""751"" data-end=""871"" data-is-last-node="""" data-is-only-node=""""><strong data-start=""751"" data-end=""767"">Versatility:</strong> Perfect for everyday styling — whether paired with oversized tees, hoodies, or layered streetwear fits.</p>
+<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0""> </b></p>
+<ul data-path-to-node=""9"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4A5A6F4D-8053-47E4-98A9-FD03EF782AC2.jpg?v=1785326317,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-black-midnight-orbit-sweats-1,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/1A488BA9-7807-409A-93CF-5A958184D4D1.jpg?v=1785326317,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats-1,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats-1,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats-1,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats,RYMX Blue Midnight Orbit Sweats,"<p data-start=""30"" data-end=""297"">Built for everyday movement with a clean streetwear edge. The RYMX Everyday Sweats combine comfort, simplicity, and effortless style in one essential piece. Designed with a relaxed wide-leg fit and finished with a minimal back-pocket graphic for a subtle statement.</p>
+<p data-start=""299"" data-end=""460"">Made from premium heavyweight cotton blend fabric, these sweats deliver all-day comfort while keeping a structured oversized silhouette perfect for daily wear.</p>
+<p data-start=""462"" data-end=""537""><strong data-start=""462"" data-end=""473"">Fabric:</strong> Premium heavyweight cotton blend for a soft and durable feel.</p>
+<p data-start=""539"" data-end=""648""><strong data-start=""539"" data-end=""547"">Fit:</strong> Relaxed oversized fit with a wide-leg silhouette for maximum comfort and a modern streetwear look.</p>
+<p data-start=""650"" data-end=""749""><strong data-start=""650"" data-end=""662"">Details:</strong> Minimal RYMX back-pocket graphic with an elastic waistband for an easy everyday fit.</p>
+<p data-start=""751"" data-end=""871"" data-is-last-node="""" data-is-only-node=""""><strong data-start=""751"" data-end=""767"">Versatility:</strong> Perfect for everyday styling — whether paired with oversized tees, hoodies, or layered streetwear fits.</p>
+<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0""> </b></p>
+<ul data-path-to-node=""9"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/BAD02C6C-98E5-4193-B119-675DC4C3B5EF.jpg?v=1785326486,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-black-midnight-orbit-sweats,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/0244F9B6-6106-4F09-8EFB-1CC24CE0DDB6.jpg?v=1785326487,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-midnight-orbit-sweats,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-paint-splash-short,RYMX Black Paint Splash Short,"<p data-start=""126"" data-end=""466""><strong data-start=""126"" data-end=""164"">Street Art Meets Everyday Comfort.</strong> Express your individuality with the <strong data-start=""201"" data-end=""229"">RYMX Paint Splash Shorts</strong>. Designed with a bold paint-splatter graphic across the signature RYMX logo, these shorts capture the raw energy of street culture while delivering all-day comfort. A perfect balance of creativity, minimalism, and premium craftsmanship.</p>
+<p data-start=""468"" data-end=""582""><strong data-start=""468"" data-end=""479"">Fabric:</strong> Premium heavyweight cotton blend for exceptional softness, breathability, and long-lasting durability.</p>
+<p data-start=""584"" data-end=""706""><strong data-start=""584"" data-end=""595"">Design:</strong> Oversized paint splash artwork layered over the iconic RYMX logo, creating a bold graffiti-inspired statement.</p>
+<p data-start=""708"" data-end=""823""><strong data-start=""708"" data-end=""716"">Fit:</strong> Unisex Relaxed Fit with an elastic waistband and adjustable drawstrings for a comfortable, effortless fit.</p>
+<p data-start=""825"" data-end=""1003""><strong data-start=""825"" data-end=""839"">Style Tip:</strong> Pair with a clean oversized RYMX tee to let the artwork stand out, or complete the look with the matching Paint Splash collection for a coordinated streetwear fit.</p>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/9FCCAC6D-B11D-40A5-9C45-47B162AE686D.jpg?v=1785316322,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-black-paint-splash-short,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/19AA1E9E-2F8C-44CC-9432-6B115B4EE5BE.jpg?v=1785316322,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-paint-splash-short,,,,,,,,,Medium,,,,,,,,,0.0,shopify,2,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-1041.png?v=1778943779,3,"",,,,,,,,,,,,,kg,,,
+rymx-black-paint-splash-short,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-paint-splash-short,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short-copy,RYMX Blue Paint Splash Short,"<p data-start=""126"" data-end=""466""><strong data-start=""126"" data-end=""164"">Street Art Meets Everyday Comfort.</strong> Express your individuality with the <strong data-start=""201"" data-end=""229"">RYMX Paint Splash Shorts</strong>. Designed with a bold paint-splatter graphic across the signature RYMX logo, these shorts capture the raw energy of street culture while delivering all-day comfort. A perfect balance of creativity, minimalism, and premium craftsmanship.</p>
+<p data-start=""468"" data-end=""582""><strong data-start=""468"" data-end=""479"">Fabric:</strong> Premium heavyweight cotton blend for exceptional softness, breathability, and long-lasting durability.</p>
+<p data-start=""584"" data-end=""706""><strong data-start=""584"" data-end=""595"">Design:</strong> Oversized paint splash artwork layered over the iconic RYMX logo, creating a bold graffiti-inspired statement.</p>
+<p data-start=""708"" data-end=""823""><strong data-start=""708"" data-end=""716"">Fit:</strong> Unisex Relaxed Fit with an elastic waistband and adjustable drawstrings for a comfortable, effortless fit.</p>
+<p data-start=""825"" data-end=""1003""><strong data-start=""825"" data-end=""839"">Style Tip:</strong> Pair with a clean oversized RYMX tee to let the artwork stand out, or complete the look with the matching Paint Splash collection for a coordinated streetwear fit.</p>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/BC20E001-4ED5-4C2F-B954-403ADDBF0D2E.jpg?v=1785316008,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-26th-beige-short-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/01D894F6-96FA-4D63-9818-C69A4A32E7D2.jpg?v=1785316008,2,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,2,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/F33D909C-0AFB-4E2A-920A-4DFCFE00F5CE.jpg?v=1785316008,3,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8C10ABAC-696D-48E3-9D4E-723E1E2E46E2.jpg?v=1785316008,4,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/91811851-B65E-4AC5-B840-C54387FE60F2.jpg?v=1785316008,5,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short-copy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-1041.png?v=1778943779,6,"",,,,,,,,,,,,,,,,
+rymx-acid-wash-tee,RYMX Acid Wash Tee,"<p data-start=""29"" data-end=""330"">Vintage aesthetics meet modern streetwear. The <strong data-start=""76"" data-end=""98"">RYMX Acid Wash Tee</strong> is designed with a washed black finish that gives each piece a unique character and a timeless worn-in look. Featuring the signature RYMX logo across the chest, this tee delivers the perfect balance between simplicity and boldness.</p>
+<p data-start=""332"" data-end=""466"">Crafted from 100% premium cotton, it offers a soft feel and a relaxed oversized fit built for everyday comfort and effortless styling.</p>
+<p data-start=""468"" data-end=""537""><strong data-start=""468"" data-end=""479"">Fabric:</strong> 100% Premium Cotton for superior softness and durability.</p>
+<p data-start=""539"" data-end=""629""><strong data-start=""539"" data-end=""547"">Fit:</strong> Unisex oversized silhouette with dropped shoulders for a relaxed streetwear look.</p>
+<p data-start=""631"" data-end=""741""><strong data-start=""631"" data-end=""642"">Finish:</strong> Acid wash treatment creates a vintage-inspired faded appearance, making every piece one of a kind.</p>
+<p data-start=""743"" data-end=""833""><strong data-start=""743"" data-end=""755"">Graphic:</strong> Signature RYMX logo print on the front for a clean and distinctive statement.</p>
+<p data-start=""835"" data-end=""954""><strong data-start=""835"" data-end=""851"">Versatility:</strong> Easy to pair with jeans, cargos, or sweats, making it an essential staple for any streetwear wardrobe.</p>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8DB7024F-0FCB-4F4D-AE14-C792E724E9EB.png?v=1782009701,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-acid-wash-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/F079DF77-8D92-4A58-B81D-D44915CDB071.png?v=1782009702,2,"",,,,,,,,,,,,,kg,,,
+rymx-acid-wash-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/23A5CE82-AF6F-45F8-9D74-B03A7223F348.png?v=1782009701,3,"",,,,,,,,,,,,,kg,,,
+rymx-acid-wash-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/71D457D3-38DC-4DD4-9FDA-18F5DB6CF5E9.png?v=1782009701,4,"",,,,,,,,,,,,,kg,,,
+rymx-acid-wash-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-1861.png?v=1782009956,5,"",,,,,,,,,,,,,kg,,,
+rymx-acid-wash-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/764D0584-F9E0-477A-A281-B7A0184ACD17.png?v=1782009703,6,"",,,,,,,,,,,,,,,,
+rymx-everyday-gray-sweats,RYMX EVERYDAY GRAY SWEATS,"<p data-start=""30"" data-end=""297"">Built for everyday movement with a clean streetwear edge. The RYMX Everyday Sweats combine comfort, simplicity, and effortless style in one essential piece. Designed with a relaxed wide-leg fit and finished with a minimal back-pocket graphic for a subtle statement.</p>
+<p data-start=""299"" data-end=""460"">Made from premium heavyweight cotton blend fabric, these sweats deliver all-day comfort while keeping a structured oversized silhouette perfect for daily wear.</p>
+<p data-start=""462"" data-end=""537""><strong data-start=""462"" data-end=""473"">Fabric:</strong> Premium heavyweight cotton blend for a soft and durable feel.</p>
+<p data-start=""539"" data-end=""648""><strong data-start=""539"" data-end=""547"">Fit:</strong> Relaxed oversized fit with a wide-leg silhouette for maximum comfort and a modern streetwear look.</p>
+<p data-start=""650"" data-end=""749""><strong data-start=""650"" data-end=""662"">Details:</strong> Minimal RYMX back-pocket graphic with an elastic waistband for an easy everyday fit.</p>
+<p data-start=""751"" data-end=""871"" data-is-last-node="""" data-is-only-node=""""><strong data-start=""751"" data-end=""767"">Versatility:</strong> Perfect for everyday styling — whether paired with oversized tees, hoodies, or layered streetwear fits.</p>
+<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0""> </b></p>
+<ul data-path-to-node=""9"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/1241A64C-416A-449B-8A0D-F561B209DDCE.jpg?v=1779991911,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-everyday-gray-sweats,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/EE9BCA92-E212-4A92-9BD4-A2F790D09CC0.jpg?v=1779991640,2,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-gray-sweats,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4563B2DC-33E3-41DA-B6AB-A8E5A04AA0DC.jpg?v=1779991640,3,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-gray-sweats,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/C4095089-BFC2-4F36-94DE-9B0BE4A89E65.jpg?v=1779991640,4,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-gray-sweats,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-everyday-pink-sweats,RYMX EVERYDAY PINK SWEATS,"<p data-start=""30"" data-end=""297"">Built for everyday movement with a clean streetwear edge. The RYMX Everyday Sweats combine comfort, simplicity, and effortless style in one essential piece. Designed with a relaxed wide-leg fit and finished with a minimal back-pocket graphic for a subtle statement.</p>
+<p data-start=""299"" data-end=""460"">Made from premium heavyweight cotton blend fabric, these sweats deliver all-day comfort while keeping a structured oversized silhouette perfect for daily wear.</p>
+<p data-start=""462"" data-end=""537""><strong data-start=""462"" data-end=""473"">Fabric:</strong> Premium heavyweight cotton blend for a soft and durable feel.</p>
+<p data-start=""539"" data-end=""648""><strong data-start=""539"" data-end=""547"">Fit:</strong> Relaxed oversized fit with a wide-leg silhouette for maximum comfort and a modern streetwear look.</p>
+<p data-start=""650"" data-end=""749""><strong data-start=""650"" data-end=""662"">Details:</strong> Minimal RYMX back-pocket graphic with an elastic waistband for an easy everyday fit.</p>
+<p data-start=""751"" data-end=""871"" data-is-last-node="""" data-is-only-node=""""><strong data-start=""751"" data-end=""767"">Versatility:</strong> Perfect for everyday styling — whether paired with oversized tees, hoodies, or layered streetwear fits.</p>
+<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0""> </b></p>
+<ul data-path-to-node=""9"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/E1BCBA0B-2568-49C9-85C2-BD5CD4247E63.jpg?v=1779991424,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-everyday-pink-sweats,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/6EE9207D-6B45-4368-9D27-AA6C4312DAAB.jpg?v=1779991424,2,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-pink-sweats,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/5658A6A6-0646-491E-89BC-3ABAEE8FD109.jpg?v=1779991424,3,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-pink-sweats,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/1082E36D-61CE-4847-9ECF-4F7B47EE917C.jpg?v=1779991424,4,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-pink-sweats,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-everyday-sweats,RYMX EVERYDAY BLACK SWEATS,"<p data-start=""30"" data-end=""297"">Built for everyday movement with a clean streetwear edge. The RYMX Everyday Sweats combine comfort, simplicity, and effortless style in one essential piece. Designed with a relaxed wide-leg fit and finished with a minimal back-pocket graphic for a subtle statement.</p>
+<p data-start=""299"" data-end=""460"">Made from premium heavyweight cotton blend fabric, these sweats deliver all-day comfort while keeping a structured oversized silhouette perfect for daily wear.</p>
+<p data-start=""462"" data-end=""537""><strong data-start=""462"" data-end=""473"">Fabric:</strong> Premium heavyweight cotton blend for a soft and durable feel.</p>
+<p data-start=""539"" data-end=""648""><strong data-start=""539"" data-end=""547"">Fit:</strong> Relaxed oversized fit with a wide-leg silhouette for maximum comfort and a modern streetwear look.</p>
+<p data-start=""650"" data-end=""749""><strong data-start=""650"" data-end=""662"">Details:</strong> Minimal RYMX back-pocket graphic with an elastic waistband for an easy everyday fit.</p>
+<p data-start=""751"" data-end=""871"" data-is-last-node="""" data-is-only-node=""""><strong data-start=""751"" data-end=""767"">Versatility:</strong> Perfect for everyday styling — whether paired with oversized tees, hoodies, or layered streetwear fits.</p>
+<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0""> </b></p>
+<ul data-path-to-node=""9"">
+<li>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,1,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/499D499E-3B7C-4CE5-89DC-1EC2DAE506AA.jpg?v=1779991215,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-everyday-sweats,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/9B8B5ED3-9C65-465F-9905-095FBC123F87.jpg?v=1779991215,2,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-sweats,,,,,,,,,Medium,,,,,,,,,0.0,shopify,1,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4FDDD4C6-7693-4305-A719-8D8335D33DC6.jpg?v=1779991215,3,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-sweats,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/BA74A5EC-D70C-4DEC-9801-DDDEAAC8E529.jpg?v=1779991215,4,"",,,,,,,,,,,,,kg,,,
+rymx-everyday-sweats,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-exposed-tee,RYMX EXPOSED BLACK TEE,"<p data-path-to-node=""3"">Modern streetwear with a bold edge. The RYMX oversized t-shirt in <b data-path-to-node=""3"" data-index-in-node=""66"">Black</b> is designed to reframe your style, featuring the exclusive <b data-path-to-node=""3"" data-index-in-node=""131"">“RYMX EXPOSED”</b> concept. It showcases a clean printed chest branding with sharp typography, paired with a massive back print featuring striking distressed lettering layered with a vibrant red script accent. A piece crafted for those who reveal their raw truth, embrace the hustle, and make an undeniable statement.</p>
+<p data-path-to-node=""4"">Made from 100% premium cotton, it blends comfort with style, delivering a clean oversized fit perfect for daily streetwear looks.</p>
+<ul data-path-to-node=""5"">
+<li>
+<p data-path-to-node=""5,0,0""><b data-path-to-node=""5,0,0"" data-index-in-node=""0"">Material:</b> 100% Premium cotton for maximum comfort, breathability, and long-lasting quality.</p>
+</li>
+<li>
+<p data-path-to-node=""5,1,0""><b data-path-to-node=""5,1,0"" data-index-in-node=""0"">Fit:</b> Unisex oversized design with dropped shoulders for an effortless streetwear silhouette.</p>
+</li>
+<li>
+<p data-path-to-node=""5,2,0""><b data-path-to-node=""5,2,0"" data-index-in-node=""0"">Detailing:</b> Clean front chest branding print paired with a bold, contrasting multi-layered back print.</p>
+</li>
+<li>
+<p data-path-to-node=""5,3,0""><b data-path-to-node=""5,3,0"" data-index-in-node=""0"">Style:</b> Easy to style with any daily outfit, adding a powerful and confident streetwear edge.</p>
+</li>
+</ul>
+<h3 data-path-to-node=""2""></h3>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/90C45702-C2DC-4C25-8FA0-1417E8D8534A.jpg?v=1779586455,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-exposed-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4D601C29-6C5F-4FDF-BB9F-F4AF563D0CC7.jpg?v=1779586455,2,"",,,,,,,,,,,,,kg,,,
+rymx-exposed-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8B1B80DB-00C3-4A49-9CAE-442A8CAABCDD.jpg?v=1779586454,3,"",,,,,,,,,,,,,kg,,,
+rymx-exposed-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/F885BD14-3496-4D43-9BFB-0FA4CF4DF3AD.jpg?v=1779586455,4,"",,,,,,,,,,,,,kg,,,
+rymx-exposed-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-mended-tee,RYMX MENDED LIGHT BLUE TEE,"<p data-path-to-node=""4"">Modern streetwear with a bold edge. The RYMX oversized t-shirt in <b data-path-to-node=""4"" data-index-in-node=""66"">Light Blue</b> is designed to reframe your style, featuring the exclusive <b data-path-to-node=""4"" data-index-in-node=""136"">“RYMX Mended”</b> concept. It showcases a premium embroidered chest monogram, paired with a massive, detailed back print of a broken heart symbolically healed with a signature RYMX branded bandage. A piece crafted for those who embrace their journey, rebuild through the hustle, and make an undeniable statement.</p>
+<p data-path-to-node=""5"">Made from 100% premium cotton, it blends comfort with style, delivering a clean oversized fit perfect for daily streetwear looks.</p>
+<ul data-path-to-node=""6"">
+<li>
+<p data-path-to-node=""6,0,0""><b data-path-to-node=""6,0,0"" data-index-in-node=""0"">Material:</b> 100% Premium cotton for maximum comfort, breathability, and long-lasting quality.</p>
+</li>
+<li>
+<p data-path-to-node=""6,1,0""><b data-path-to-node=""6,1,0"" data-index-in-node=""0"">Fit:</b> Unisex oversized design with dropped shoulders for an effortless streetwear silhouette.</p>
+</li>
+<li>
+<p data-path-to-node=""6,2,0""><b data-path-to-node=""6,2,0"" data-index-in-node=""0"">Detailing:</b> High-quality front chest monogram embroidery paired with a striking, large-scale graphic back print.</p>
+</li>
+<li>
+<p data-path-to-node=""6,3,0""><b data-path-to-node=""6,3,0"" data-index-in-node=""0"">Style:</b> Easy to style with any daily outfit, adding a fresh yet raw streetwear edge.</p>
+</li>
+</ul>
+<h3 data-path-to-node=""2""></h3>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/E60EEC49-53ED-40CD-9D1B-DB2D8478754D.jpg?v=1779585771,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-mended-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B897E8A4-8379-4742-80BD-2813082E536E.jpg?v=1779585769,2,"",,,,,,,,,,,,,kg,,,
+rymx-mended-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,1,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/FB852693-35C1-4E66-945E-EF4E09DBCB80.jpg?v=1779585769,3,"",,,,,,,,,,,,,kg,,,
+rymx-mended-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/6C263BDA-964F-438E-89D3-67F236C5D40A.jpg?v=1779585770,4,"",,,,,,,,,,,,,kg,,,
+rymx-mended-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,1,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/D3BBE5EF-7B91-4A61-BE54-2AE8CC674236.jpg?v=1779585771,5,"",,,,,,,,,,,,,kg,,,
+rymx-mended-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/93F06303-202A-4CD5-8550-656C0EDAEFF3.jpg?v=1779585770,6,"",,,,,,,,,,,,,,,,
+rymx-mended-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/CEF3B00D-E489-4F20-81D4-D8F51827EEC2.jpg?v=1779585770,7,"",,,,,,,,,,,,,,,,
+rymx-mended-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/D59A21E2-6A25-4A69-995E-A48E32523EDC.jpg?v=1779585769,8,"",,,,,,,,,,,,,,,,
+rymx-love-bears-gray-tee,RYMX LOVE BEARS GRAY TEE,"<h3 data-path-to-node=""2""></h3>
+<p data-path-to-node=""3"">Modern streetwear with a bold edge. The RYMX oversized t-shirt in <strong>Gray</strong> is designed to reframe your style, featuring the exclusive <b data-path-to-node=""3"" data-index-in-node=""130"">“RYMX Love Bears”</b> aesthetic. It showcases a premium embroidered chest design with custom typography, paired with a massive, industrial 3D ""X"" back print integrated with a signature masked icon. A piece crafted for those who disrupt the ordinary, embrace contrast, and make an undeniable statement.</p>
+<p data-path-to-node=""4"">Made from 100% premium cotton, it blends comfort with style, delivering a clean oversized fit perfect for daily streetwear looks.</p>
+<ul data-path-to-node=""5"">
+<li>
+<p data-path-to-node=""5,0,0""><b data-path-to-node=""5,0,0"" data-index-in-node=""0"">Material:</b> 100% Premium cotton for maximum comfort, breathability, and long-lasting quality.</p>
+</li>
+<li>
+<p data-path-to-node=""5,1,0""><b data-path-to-node=""5,1,0"" data-index-in-node=""0"">Fit:</b> Unisex oversized design with dropped shoulders for an effortless streetwear silhouette.</p>
+</li>
+<li>
+<p data-path-to-node=""5,2,0""><b data-path-to-node=""5,2,0"" data-index-in-node=""0"">Detailing:</b> High-quality front chest embroidery paired with a striking, large-scale 3D geometric back print.</p>
+</li>
+<li>
+<p data-path-to-node=""5,3,0""><b data-path-to-node=""5,3,0"" data-index-in-node=""0"">Style:</b> Easy to style with any daily outfit, adding a vibrant yet raw streetwear edge.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8540A5FB-14C6-4952-86C3-614EBD81F13F.jpg?v=1779584581,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-love-bears-gray-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/39F479F2-92A4-488C-9173-08C1FCF75F66.jpg?v=1779584581,2,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-gray-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/36C86E73-A048-42BD-98FB-8A4F71E94144.jpg?v=1779584583,3,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-gray-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/EAAF4B32-CA51-48A3-AF37-2DCF31A9851C.jpg?v=1779584581,4,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-gray-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/7037404C-291C-4773-B403-637F06301618.jpg?v=1779584581,5,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-gray-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/9D05F42A-AAB3-47A4-82F9-632C7ED765ED.jpg?v=1779584581,6,"",,,,,,,,,,,,,,,,
+rymx-love-bears-gray-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/220388DA-F32A-4B5C-8F2D-67825FB4DF30.jpg?v=1779584581,7,"",,,,,,,,,,,,,,,,
+rymx-love-bears-gray-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/A06E6609-32B9-4237-BCE7-162731CB2547.jpg?v=1779584581,8,"",,,,,,,,,,,,,,,,
+rymx-love-bears-tee,RYMX LOVE BEARS PINK TEE,"<h3 data-path-to-node=""2""></h3>
+<p data-path-to-node=""3"">Modern streetwear with a bold edge. The RYMX oversized t-shirt in <b data-path-to-node=""3"" data-index-in-node=""66"">Pink</b> is designed to reframe your style, featuring the exclusive <b data-path-to-node=""3"" data-index-in-node=""130"">“RYMX Love Bears”</b> aesthetic. It showcases a premium embroidered chest design with custom typography, paired with a massive, industrial 3D ""X"" back print integrated with a signature masked icon. A piece crafted for those who disrupt the ordinary, embrace contrast, and make an undeniable statement.</p>
+<p data-path-to-node=""4"">Made from 100% premium cotton, it blends comfort with style, delivering a clean oversized fit perfect for daily streetwear looks.</p>
+<ul data-path-to-node=""5"">
+<li>
+<p data-path-to-node=""5,0,0""><b data-path-to-node=""5,0,0"" data-index-in-node=""0"">Material:</b> 100% Premium cotton for maximum comfort, breathability, and long-lasting quality.</p>
+</li>
+<li>
+<p data-path-to-node=""5,1,0""><b data-path-to-node=""5,1,0"" data-index-in-node=""0"">Fit:</b> Unisex oversized design with dropped shoulders for an effortless streetwear silhouette.</p>
+</li>
+<li>
+<p data-path-to-node=""5,2,0""><b data-path-to-node=""5,2,0"" data-index-in-node=""0"">Detailing:</b> High-quality front chest embroidery paired with a striking, large-scale 3D geometric back print.</p>
+</li>
+<li>
+<p data-path-to-node=""5,3,0""><b data-path-to-node=""5,3,0"" data-index-in-node=""0"">Style:</b> Easy to style with any daily outfit, adding a vibrant yet raw streetwear edge.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/A98502B0-66D9-4284-9028-B6BDBCD19FBF.jpg?v=1779583623,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-love-bears-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,1,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/5632D2DF-F293-4B9A-9316-7E6ABA69FDE4.jpg?v=1779583621,2,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B1666E69-C432-4553-8ED8-24496288669F.jpg?v=1779583620,3,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/A78DC60C-4EA1-4153-94C3-324C67D35436.jpg?v=1779583621,4,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B815F4F1-D0B8-4217-864C-42A57CEC9AA5.jpg?v=1779583621,5,"",,,,,,,,,,,,,kg,,,
+rymx-love-bears-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/6A914825-4C5F-46BA-9395-8198435BD808.jpg?v=1779583621,6,"",,,,,,,,,,,,,,,,
+rymx-love-bears-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B92BE8EA-7CCC-42BD-A43B-579DB0666140.jpg?v=1779583621,7,"",,,,,,,,,,,,,,,,
+rymx-love-bears-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/634620FA-E489-4649-833A-8F2711709358.jpg?v=1779583621,8,"",,,,,,,,,,,,,,,,
+no-risk-no-story-dark-gray-tee,NO RISK NO STORY DARK GRAY TEE,"<p data-path-to-node=""1"">Modern streetwear with a bold edge. The RYMX oversized t-shirt in <b data-path-to-node=""1"" data-index-in-node=""66"">Dark Gray</b> is designed to make a powerful statement, featuring a standout back print that carries the phrase <b data-path-to-node=""1"" data-index-in-node=""174"">“No Risk No Story”</b> integrated with a red star-inspired graphic. A piece crafted for those who take risks, stand out, and write their own narrative.</p>
+<p data-path-to-node=""2"">Made from 100% premium cotton, it blends comfort with style, delivering a clean oversized fit perfect for daily streetwear looks.</p>
+<ul data-path-to-node=""3"">
+<li>
+<p data-path-to-node=""3,0,0""><b data-path-to-node=""3,0,0"" data-index-in-node=""0"">Material:</b> 100% Premium cotton for maximum comfort, breathability, and long-lasting quality.</p>
+</li>
+<li>
+<p data-path-to-node=""3,1,0""><b data-path-to-node=""3,1,0"" data-index-in-node=""0"">Fit:</b> Unisex oversized design with dropped shoulders for an effortless streetwear silhouette.</p>
+</li>
+<li>
+<p data-path-to-node=""3,2,0""><b data-path-to-node=""3,2,0"" data-index-in-node=""0"">Graphic:</b> Bold back print featuring interlocking typography paired with a striking red star graphic.</p>
+</li>
+<li>
+<p data-path-to-node=""3,3,0""><b data-path-to-node=""3,3,0"" data-index-in-node=""0"">Style:</b> Easy to style with any daily outfit, adding a strong and confident streetwear edge</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/BC285805-E801-4A3B-9F22-9FE6047E8CDC.jpg?v=1779569069,1,"",false,,,,,,,,,,,,kg,,,active
+no-risk-no-story-dark-gray-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/65F7E43C-5972-4AA1-9DDF-7C6DBCA5AF6A.jpg?v=1779569069,2,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-dark-gray-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/64D61CF3-C662-46D0-96E3-B6BDB9B754B4.jpg?v=1779569069,3,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-dark-gray-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/FACAE8DE-7E3D-4673-99DC-AB2818E96564.jpg?v=1779569069,4,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-dark-gray-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,1,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/7CEF2D52-6A4B-4E22-8D9C-3887BE8F2BE3.jpg?v=1779568976,5,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-dark-gray-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/56BF4BB1-2860-47B9-9A04-F9CD2A9DBB4B.jpg?v=1779569069,6,"",,,,,,,,,,,,,,,,
+no-risk-no-story-dark-gray-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/F538505B-3EE2-4342-894B-CAD7BDCD7FA8.jpg?v=1779569069,7,"",,,,,,,,,,,,,,,,
+no-risk-no-story-tee,NO RISK NO STORY BLACK TEE,"<p data-start=""35"" data-end=""339"">Modern streetwear with a fearless attitude. The RYMX oversized tee is designed to make a bold statement, featuring the phrase <em data-start=""161"" data-end=""181"">“No Risk No Story”</em> printed in a striking layered graphic with a red star-inspired design on the back. Built for those who take chances, stand out, and create their own story.</p>
+<p data-start=""341"" data-end=""499"">Crafted from 100% premium cotton, this oversized piece delivers both comfort and a clean streetwear silhouette, making it an essential for everyday styling.</p>
+<p data-start=""501"" data-end=""576""><strong data-start=""501"" data-end=""512"">Fabric:</strong> 100% Premium Cotton for a soft, breathable, and durable feel.</p>
+<p data-start=""578"" data-end=""663""><strong data-start=""578"" data-end=""586"">Fit:</strong> Unisex oversized fit with dropped shoulders for a relaxed streetwear look.</p>
+<p data-start=""665"" data-end=""750""><strong data-start=""665"" data-end=""677"">Graphic:</strong> Bold back graphic featuring layered typography with a red star design.</p>
+<p data-start=""752"" data-end=""855"" data-is-last-node="""" data-is-only-node=""""><strong data-start=""752"" data-end=""768"">Versatility:</strong> Easy to style for everyday wear, giving any outfit a confident street-ready aesthetic</p>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/976E143A-84A8-4C2B-ADEA-33C1E43A5787.jpg?v=1779567574,1,"",false,,,,,,,,,,,,kg,,,active
+no-risk-no-story-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8CB04664-3DFB-4CD1-ACA4-3483D154F408.jpg?v=1779567574,2,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/FF91D51F-0467-47C6-AF5D-6F4A5F1A9ED9.jpg?v=1779567574,3,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/3DE88E3E-B1B7-4306-B507-0D9E6C9BA70A.jpg?v=1779567574,4,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/77F4E973-6BB7-401A-8D7B-9BF877289E33.jpg?v=1779567574,5,"",,,,,,,,,,,,,kg,,,
+no-risk-no-story-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/22A8494E-F8EF-4307-81E9-6D9E53CC6D32.jpg?v=1779567574,6,"",,,,,,,,,,,,,,,,
+no-risk-no-story-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/6D044295-934E-4FA8-A2F3-3DAB92C27BCA.jpg?v=1779567574,7,"",,,,,,,,,,,,,,,,
+no-risk-no-story-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/FFD2855C-4989-49DD-B7D7-77F3284F4AC1.jpg?v=1779567574,8,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee-1,RYMX 26th Polo Black Tee,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">The Modern Edge of Classic Style.</b> The <b data-path-to-node=""8"" data-index-in-node=""38"">RYMX</b> Oversized Polo is where sophisticated tailoring meets raw street culture. This statement piece redefines the traditional polo with a relaxed silhouette and bold graphic elements. Featuring an intricate chest patch and high-density sleeve prints, it represents the <b data-path-to-node=""8"" data-index-in-node=""307"">RYMX</b> 2026 collection's vision. Crafted from <b data-path-to-node=""8"" data-index-in-node=""351"">100% premium cotton</b>, it provides a structured yet comfortable fit that stands out in any urban setting.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> 100% Premium Heavyweight Cotton for a structured look and feel.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Fit:</b> Unisex Oversized silhouette with a classic polo collar.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Design Elements:</b> Distinctive chest graphic, side sleeve branding, and premium woven labels at the hem.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Versatility:</b> A standout piece that transitions effortlessly from day to night, pairing perfectly with shorts or oversized trousers.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2540.jpg?v=1778734347,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-26th-polo-black-tee-1,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2545.jpg?v=1778734347,2,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,Medium,,,,,,,,,0.0,shopify,1,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2547.jpg?v=1778734347,3,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,Large,,,,,,,,,0.0,shopify,2,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2549.jpg?v=1778734347,4,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2562_c26ad30d-2efe-48bf-9756-67e0729fb295.jpg?v=1778734347,5,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2432.jpg?v=1778734347,6,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2441.jpg?v=1778734347,7,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2444.jpg?v=1778734348,8,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2446.jpg?v=1778734347,9,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee-1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B2A731C5-EEA7-491C-B336-5F9F9D89336A.png?v=1778943821,10,"",,,,,,,,,,,,,,,,
+rymx-26th-beige-short,RYMX 26th Beige Short,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">Effortless Style Meets Urban Comfort.</b> Complete your look with the <b data-path-to-node=""8"" data-index-in-node=""66"">RYMX</b> Signature Sweat-Shorts. These shorts are the epitome of modern streetwear, featuring a clean aesthetic paired with high-contrast graphic branding. Designed with both style and functionality in mind, they feature the iconic ""26"" logo and ""Revealing your mistakes"" calligraphy for a stand-out look.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> Premium heavyweight cotton blend for a soft feel and durable wear.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Design:</b> Dual-leg graphics featuring ""26 EST.2026"" and artistic script typography.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Fit:</b> Unisex Relaxed Fit with an elastic waistband for maximum comfort.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Style Tip:</b> Pair with a matching <b data-path-to-node=""9,3,0"" data-index-in-node=""32"">RYMX</b> oversized top for the ultimate coordinated street style set.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2705_ed078c2a-2e53-4fa6-97af-e819adc5887a.jpg?v=1778734755,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-26th-beige-short,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2706.jpg?v=1778734755,2,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short,,,,,,,,,Medium,,,,,,,,,0.0,shopify,1,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2709.jpg?v=1778734755,3,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2714.jpg?v=1778734755,4,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2519_09460627-8190-429a-ae81-4ef87d4759ca.jpg?v=1778734755,5,"",,,,,,,,,,,,,kg,,,
+rymx-26th-beige-short,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2528.jpg?v=1778734755,6,"",,,,,,,,,,,,,,,,
+rymx-26th-beige-short,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2532.jpg?v=1778734755,7,"",,,,,,,,,,,,,,,,
+rymx-26th-beige-short,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-1041.png?v=1778943779,8,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-beige-tee-copy,RYMX 26th Polo Beige Tee,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">The Modern Edge of Classic Style.</b> The <b data-path-to-node=""8"" data-index-in-node=""38"">RYMX</b> Oversized Polo is where sophisticated tailoring meets raw street culture. This statement piece redefines the traditional polo with a relaxed silhouette and bold graphic elements. Featuring an intricate chest patch and high-density sleeve prints, it represents the <b data-path-to-node=""8"" data-index-in-node=""307"">RYMX</b> 2026 collection's vision. Crafted from <b data-path-to-node=""8"" data-index-in-node=""351"">100% premium cotton</b>, it provides a structured yet comfortable fit that stands out in any urban setting.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> 100% Premium Heavyweight Cotton for a structured look and feel.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Fit:</b> Unisex Oversized silhouette with a classic polo collar.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Design Elements:</b> Distinctive chest graphic, side sleeve branding, and premium woven labels at the hem.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Versatility:</b> A standout piece that transitions effortlessly from day to night, pairing perfectly with shorts or oversized trousers.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2519_09460627-8190-429a-ae81-4ef87d4759ca.jpg?v=1778734755,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-26th-polo-beige-tee-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,2,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2528.jpg?v=1778734755,2,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-beige-tee-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2532.jpg?v=1778734755,3,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-beige-tee-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,2,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2705_ed078c2a-2e53-4fa6-97af-e819adc5887a.jpg?v=1778734755,4,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-beige-tee-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,549.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2706.jpg?v=1778734755,5,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-beige-tee-copy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2709.jpg?v=1778734755,6,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-beige-tee-copy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2714.jpg?v=1778734755,7,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-beige-tee-copy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B2A731C5-EEA7-491C-B336-5F9F9D89336A.png?v=1778943821,8,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee,RYMX 26th Black Short,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">Effortless Style Meets Urban Comfort.</b> Complete your look with the <b data-path-to-node=""8"" data-index-in-node=""66"">RYMX</b> Signature Sweat-Shorts. These shorts are the epitome of modern streetwear, featuring a clean aesthetic paired with high-contrast graphic branding. Designed with both style and functionality in mind, they feature the iconic ""26"" logo and ""Revealing your mistakes"" calligraphy for a stand-out look.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> Premium heavyweight cotton blend for a soft feel and durable wear.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Design:</b> Dual-leg graphics featuring ""26 EST.2026"" and artistic script typography.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Fit:</b> Unisex Relaxed Fit with an elastic waistband for maximum comfort.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Style Tip:</b> Pair with a matching <b data-path-to-node=""9,3,0"" data-index-in-node=""32"">RYMX</b> oversized top for the ultimate coordinated street style set.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2432.jpg?v=1778734347,1,"",false,,,,,,,,,,,,kg,,,active
+rymx-26th-polo-black-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2441.jpg?v=1778734347,2,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2444.jpg?v=1778734348,3,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,1,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2446.jpg?v=1778734347,4,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,449.00,599.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2540.jpg?v=1778734347,5,"",,,,,,,,,,,,,kg,,,
+rymx-26th-polo-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2545.jpg?v=1778734347,6,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2547.jpg?v=1778734347,7,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2549.jpg?v=1778734347,8,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2562_c26ad30d-2efe-48bf-9756-67e0729fb295.jpg?v=1778734347,9,"",,,,,,,,,,,,,,,,
+rymx-26th-polo-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-1041.png?v=1778943779,10,"",,,,,,,,,,,,,,,,
+rmx-essential-light-blue-tee,RMX Essential Light Blue Tee,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">Minimalism with a Narrative.</b> The <b data-path-to-node=""8"" data-index-in-node=""33"">RYMX</b> Sky Blue oversized tee is the perfect blend of serenity and street style. Designed with a clean aesthetic, this unisex piece features the brand’s signature logo on the chest and subtle, artistic graphics on the sleeves and hemline for an added touch of personality. Crafted from <b data-path-to-node=""8"" data-index-in-node=""317"">100% premium cotton</b>, it ensures premium comfort without compromising on its modern, relaxed silhouette.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> 100% High-quality Cotton for durability and a soft feel.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Fit:</b> Unisex Oversized Fit with dropped shoulders for an effortless, relaxed look.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Design Elements:</b> Minimalist <b data-path-to-node=""9,2,0"" data-index-in-node=""28"">RYMX</b> branding with intricate artistic text details on the sleeve and lower edge.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Versatility:</b> A versatile staple that pairs perfectly with neutral tones for a fresh, urban vibe.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2573.jpg?v=1778733663,1,"",false,,,,,,,,,,,,kg,,,active
+rmx-essential-light-blue-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2570.jpg?v=1778733663,2,"",,,,,,,,,,,,,kg,,,
+rmx-essential-light-blue-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,2,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2575.jpg?v=1778733664,3,"",,,,,,,,,,,,,kg,,,
+rmx-essential-light-blue-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2005.jpg?v=1778733664,4,"",,,,,,,,,,,,,kg,,,
+rmx-essential-light-blue-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_1996.jpg?v=1778733663,5,"",,,,,,,,,,,,,kg,,,
+rmx-essential-light-blue-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_1982_1.jpg?v=1778733664,6,"",,,,,,,,,,,,,,,,
+rmx-essential-light-blue-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_1988.jpg?v=1778733664,7,"",,,,,,,,,,,,,,,,
+rmx-essential-light-blue-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_1992.jpg?v=1778733663,8,"",,,,,,,,,,,,,,,,
+rmx-essential-light-blue-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/B7201975-00B3-41E0-990C-873339919EE6.png?v=1778943756,9,"",,,,,,,,,,,,,,,,
+birds-of-rymx-white-tee,Birds Of RYMX White Tee,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">Modern Streetwear with a Touch of Arabic Heritage.</b> The <b data-path-to-node=""8"" data-index-in-node=""55"">RYMX</b> oversized tee is a unique statement piece that effortlessly blends modern streetwear aesthetics with traditional Arabic calligraphy. This unisex tee features the text ""Revealing Your Mistake"" beautifully rendered in vibrant pink Arabic calligraphy, layered over bold white English letters. Crafted from <b data-path-to-node=""8"" data-index-in-node=""363"">100% premium cotton</b>, it offers both style and exceptional comfort, making it the perfect addition to your everyday wardrobe.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> 100% Premium Cotton for maximum comfort and durability.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Fit:</b> Unisex Oversized silhouette with dropped shoulders for a relaxed look.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Graphic:</b> Dual-layer graphic print featuring pink Arabic calligraphy over white English text.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Versatility:</b> Designed to be styled by anyone, anywhere—perfect for an effortless, edgy aesthetic.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2234.jpg?v=1778733268,1,"",false,,,,,,,,,,,,kg,,,active
+birds-of-rymx-white-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,1,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2242.jpg?v=1778733268,2,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-white-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,1,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2244.jpg?v=1778733268,3,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-white-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2592.jpg?v=1778733268,4,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-white-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,11,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2594.jpg?v=1778733268,5,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-white-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2596.jpg?v=1778733268,6,"",,,,,,,,,,,,,,,,
+birds-of-rymx-white-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2598.jpg?v=1778733267,7,"",,,,,,,,,,,,,,,,
+birds-of-rymx-white-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/EEBCA0F3-F680-4729-90E6-029CDD4F13F0.png?v=1778943719,8,"",,,,,,,,,,,,,,,,
+birds-of-rymx-black-tee,Birds Of RYMX Black Tee,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">Modern Streetwear with a Touch of Arabic Heritage.</b> The <b data-path-to-node=""8"" data-index-in-node=""55"">RYMX</b> oversized tee is a unique statement piece that effortlessly blends modern streetwear aesthetics with traditional Arabic calligraphy. This unisex tee features the text ""Revealing Your Mistake"" beautifully rendered in vibrant pink Arabic calligraphy, layered over bold white English letters. Crafted from <b data-path-to-node=""8"" data-index-in-node=""363"">100% premium cotton</b>, it offers both style and exceptional comfort, making it the perfect addition to your everyday wardrobe.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> 100% Premium Cotton for maximum comfort and durability.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Fit:</b> Unisex Oversized silhouette with dropped shoulders for a relaxed look.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Graphic:</b> Dual-layer graphic print featuring pink Arabic calligraphy over white English text.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Versatility:</b> Designed to be styled by anyone, anywhere—perfect for an effortless, edgy aesthetic.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2045.jpg?v=1778732124,1,"",false,,,,,,,,,,,,kg,,,active
+birds-of-rymx-black-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2048.jpg?v=1778732124,2,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-black-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2051.jpg?v=1778732124,3,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-black-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2056.jpg?v=1778732123,4,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-black-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,2,deny,manual,499.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2465.jpg?v=1778732124,5,"",,,,,,,,,,,,,kg,,,
+birds-of-rymx-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2466.jpg?v=1778732124,6,"",,,,,,,,,,,,,,,,
+birds-of-rymx-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2468.jpg?v=1778732126,7,"",,,,,,,,,,,,,,,,
+birds-of-rymx-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2470.jpg?v=1778732123,8,"",,,,,,,,,,,,,,,,
+birds-of-rymx-black-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/EEBCA0F3-F680-4729-90E6-029CDD4F13F0.png?v=1778943719,9,"",,,,,,,,,,,,,,,,
+revealing-your-mistake-tee,REVEALING YOUR MISTAKE TEE,"<p data-path-to-node=""8""><b data-path-to-node=""8"" data-index-in-node=""0"">Embrace the truth in style.</b> Our ""Revealing Your Mistake"" oversized tee merges philosophical depth with high-end streetwear. Crafted from <b data-path-to-node=""8"" data-index-in-node=""137"">100% premium cotton</b>, this unisex piece offers a bold silhouette with a unique wrap-around typography design. It’s the perfect balance between comfort and a loud fashion statement for your everyday wardrobe.</p>
+<ul data-path-to-node=""9"">
+<li>
+<p data-path-to-node=""9,0,0""><b data-path-to-node=""9,0,0"" data-index-in-node=""0"">Fabric:</b> 100% Premium Cotton for maximum comfort and durability.</p>
+</li>
+<li>
+<p data-path-to-node=""9,1,0""><b data-path-to-node=""9,1,0"" data-index-in-node=""0"">Fit:</b> Unisex Oversized silhouette with dropped shoulders for a relaxed look.</p>
+</li>
+<li>
+<p data-path-to-node=""9,2,0""><b data-path-to-node=""9,2,0"" data-index-in-node=""0"">Graphic:</b> High-density ""Revealing Your Mistake"" print across the side and back.</p>
+</li>
+<li>
+<p data-path-to-node=""9,3,0""><b data-path-to-node=""9,3,0"" data-index-in-node=""0"">Versatility:</b> Designed to be styled by anyone, anywhere—perfect for an effortless, edgy aesthetic.</p>
+</li>
+</ul>",RYMX,Uncategorized,"","",true,Size,X-Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2640.jpg?v=1778730859,1,"",false,,,,,,,,,,,,kg,,,active
+revealing-your-mistake-tee,,,,,,,,,Small,,,,,,,,,0.0,shopify,3,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2643.jpg?v=1778730860,2,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2649.jpg?v=1778730907,3,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,4,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2644.jpg?v=1778730907,4,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-tee,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,4,deny,manual,499.00,849.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2132_702a945b-9916-4ad3-821a-29332555c18a.jpg?v=1778730907,5,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2138.jpg?v=1778730908,6,"",,,,,,,,,,,,,,,,
+revealing-your-mistake-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/DSC_2143.jpg?v=1778730908,7,"",,,,,,,,,,,,,,,,
+revealing-your-mistake-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/CE4D8391-EF87-492C-A2C8-AD34583671CF.png?v=1778943681,8,"",,,,,,,,,,,,,,,,
+untitled-jan25_02-03,Untitled Jan25_02:03,,RYMX,,"","",false,Title,Default Title,,,,,,,,,0.0,shopify,0,deny,manual,0.00,,true,true,,,,,,,,,false,,,,,,,,,,,,kg,,,draft
+phantom-burgundy-hoodie-1,PHANTOM BURGUNDY HOODIE,"<p class=""isSelectedEnd""><span>Born in the shadows.</span><br><span>Built for the ones who fight quietly — and strike loudly.</span></p>
+<p><span>This hoodie carries the spirit of resilience, featuring a bold front graphic and the unmistakable RYMX signature across the back. Crafted from premium heavyweight fabric for structure, warmth, and lasting comfort, it’s designed for those who don’t chase attention — they command it.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/498-removebg-preview.png?v=1763845635,1,"",false,,,,,,,,,,,,kg,,,draft
+phantom-burgundy-hoodie-1,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/500-removebg-preview.png?v=1763845635,2,"",,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie-1,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/501-removebg-preview.png?v=1763845635,3,"",,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie-1,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/502-removebg-preview.png?v=1763845635,4,"",,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie-1,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie,PHANTOM GRAY HOODIE,"<p class=""isSelectedEnd""><span>Born in the shadows.</span><br><span>Built for the ones who fight quietly — and strike loudly.</span></p>
+<p><span>This hoodie carries the spirit of resilience, featuring a bold front graphic and the unmistakable RYMX signature across the back. Crafted from premium heavyweight fabric for structure, warmth, and lasting comfort, it’s designed for those who don’t chase attention — they command it.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/474-removebg-preview.png?v=1763845275,1,"",false,,,,,,,,,,,,kg,,,draft
+phantom-burgundy-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/476-removebg-preview.png?v=1763845275,2,"",,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/477-removebg-preview.png?v=1763845275,3,"",,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/478-removebg-preview.png?v=1763845275,4,"",,,,,,,,,,,,,kg,,,
+phantom-burgundy-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+phantom-black-hoodie,PHANTOM BLACK HOODIE,"<p class=""isSelectedEnd""><span>Born in the shadows.</span><br><span>Built for the ones who fight quietly — and strike loudly.</span></p>
+<p><span>This hoodie carries the spirit of resilience, featuring a bold front graphic and the unmistakable RYMX signature across the back. Crafted from premium heavyweight fabric for structure, warmth, and lasting comfort, it’s designed for those who don’t chase attention — they command it.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/794-removebg-preview.png?v=1763845045,1,"",false,,,,,,,,,,,,kg,,,draft
+phantom-black-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/800-removebg-preview.png?v=1763845045,2,"",,,,,,,,,,,,,kg,,,
+phantom-black-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/804-removebg-preview.png?v=1763845045,3,"",,,,,,,,,,,,,kg,,,
+phantom-black-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+phantom-black-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-green-hoodie,LOGO GREEN HOODIE,"<p data-start=""268"" data-end=""567"">Dropped straight from the ring, built for those who embrace the fight.<br data-start=""338"" data-end=""341"">The VILLAIN hoodie carries a bold attitude with a powerful back logo that represents the raw identity of RYMX. Crafted from premium heavyweight fabric, it offers warmth, durability, and a structured fit that holds its shape.</p>
+<p data-start=""569"" data-end=""740"">Designed for presence, not permission. Whether worn on the streets or layered into your everyday look, this hoodie delivers confidence, strength, and undeniable character.</p>
+<p data-start=""742"" data-end=""776"">Born in battle. Worn with purpose.</p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/418-removebg-preview.png?v=1763844778,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-green-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/419-removebg-preview.png?v=1763844778,2,"",,,,,,,,,,,,,kg,,,
+logo-green-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/420-removebg-preview.png?v=1763844778,3,"",,,,,,,,,,,,,kg,,,
+logo-green-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/421-removebg-preview.png?v=1763844778,4,"",,,,,,,,,,,,,kg,,,
+logo-green-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/422-removebg-preview.png?v=1763844778,5,"",,,,,,,,,,,,,kg,,,
+logo-white-hoodie,LOGO WHITE HOODIE,"<p data-start=""268"" data-end=""567"">Dropped straight from the ring, built for those who embrace the fight.<br data-start=""338"" data-end=""341"">The VILLAIN hoodie carries a bold attitude with a powerful back logo that represents the raw identity of RYMX. Crafted from premium heavyweight fabric, it offers warmth, durability, and a structured fit that holds its shape.</p>
+<p data-start=""569"" data-end=""740"">Designed for presence, not permission. Whether worn on the streets or layered into your everyday look, this hoodie delivers confidence, strength, and undeniable character.</p>
+<p data-start=""742"" data-end=""776"">Born in battle. Worn with purpose.</p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/445-removebg-preview-Copy.png?v=1763844534,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-white-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/447-removebg-preview_9dcc0460-780f-4c7c-9af9-ac53afe55f32.png?v=1763844534,2,"",,,,,,,,,,,,,kg,,,
+logo-white-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/448-removebg-preview_ff1be74d-3189-4895-880f-4d3df9fd5f5e.png?v=1763844534,3,"",,,,,,,,,,,,,kg,,,
+logo-white-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/449-removebg-preview_16c1b1c8-a120-43bc-b2a4-b3cb739eb598.png?v=1763844534,4,"",,,,,,,,,,,,,kg,,,
+logo-white-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-black-hoodie,LOGO BLACK HOODIE,"<p data-start=""268"" data-end=""567"">Dropped straight from the ring, built for those who embrace the fight.<br data-start=""338"" data-end=""341"">The VILLAIN hoodie carries a bold attitude with a powerful back logo that represents the raw identity of RYMX. Crafted from premium heavyweight fabric, it offers warmth, durability, and a structured fit that holds its shape.</p>
+<p data-start=""569"" data-end=""740"">Designed for presence, not permission. Whether worn on the streets or layered into your everyday look, this hoodie delivers confidence, strength, and undeniable character.</p>
+<p data-start=""742"" data-end=""776"">Born in battle. Worn with purpose.</p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/757-removebg-preview.png?v=1763844258,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-black-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/761-removebg-preview.png?v=1763844258,2,"",,,,,,,,,,,,,kg,,,
+logo-black-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/765-removebg-preview.png?v=1763844258,3,"",,,,,,,,,,,,,kg,,,
+logo-black-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/768-removebg-preview.png?v=1763844259,4,"",,,,,,,,,,,,,kg,,,
+logo-black-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-burgundy-hoodie,RYMX BURGUNDY HOODIE,"<p class=""isSelectedEnd""><span>Drawn from pure flow.</span></p>
+<p class=""isSelectedEnd""><span>Featuring a bold front design and the unmistakable </span><strong><span>RYMX</span></strong><span> signature, this hoodie reflects confidence and effortless presence. Crafted from premium heavyweight fabric, it delivers warmth, structure, and all-day comfort — allowing you to move freely while standing out without trying.</span></p>
+<p><span>Not just something you wear… it’s something you project.</span><br><span>Quiet presence. Clear confidence. Lasting impact</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/486-removebg-preview.png?v=1763844036,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-burgundy-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/488-removebg-preview.png?v=1763844036,2,"",,,,,,,,,,,,,kg,,,
+rymx-burgundy-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/489-removebg-preview.png?v=1763844036,3,"",,,,,,,,,,,,,kg,,,
+rymx-burgundy-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/491-removebg-preview.png?v=1763844036,4,"",,,,,,,,,,,,,kg,,,
+rymx-burgundy-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-hoodie,RYMX BLACK HOODIE,"<p class=""isSelectedEnd""><span>Drawn from pure flow.</span></p>
+<p class=""isSelectedEnd""><span>Featuring a bold front design and the unmistakable </span><strong><span>RYMX</span></strong><span> signature, this hoodie reflects confidence and effortless presence. Crafted from premium heavyweight fabric, it delivers warmth, structure, and all-day comfort — allowing you to move freely while standing out without trying.</span></p>
+<p><span>Not just something you wear… it’s something you project.</span><br><span>Quiet presence. Clear confidence. Lasting impact</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/524-removebg-preview.png?v=1763843857,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-black-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/526-removebg-preview.png?v=1763843857,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/527-removebg-preview.png?v=1763843857,3,"",,,,,,,,,,,,,kg,,,
+rymx-black-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/528-removebg-preview.png?v=1763843857,4,"",,,,,,,,,,,,,kg,,,
+rymx-black-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-pink-hoodie,RYMX PINK HOODIE,"<p class=""isSelectedEnd""><span>Drawn from pure flow.</span></p>
+<p class=""isSelectedEnd""><span>Featuring a bold front design and the unmistakable </span><strong><span>RYMX</span></strong><span> signature, this hoodie reflects confidence and effortless presence. Crafted from premium heavyweight fabric, it delivers warmth, structure, and all-day comfort — allowing you to move freely while standing out without trying.</span></p>
+<p><span>Not just something you wear… it’s something you project.</span><br><span>Quiet presence. Clear confidence. Lasting impact</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,599.00,949.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/806-removebg-preview.png?v=1763843671,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-pink-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,599.00,949.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/812-removebg-preview.png?v=1763843671,2,"",,,,,,,,,,,,,kg,,,
+rymx-pink-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,599.00,949.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-pink-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,599.00,949.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-pink-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,599.00,949.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+hidden-hero-pink-hoodie,HIDDEN HERO PINK HOODIE,"<p data-start=""236"" data-end=""500"">Forged in silence, built for those who move with purpose.<br data-start=""293"" data-end=""296"">The HEALER hoodie blends a bold streetwear attitude with a clean, minimal design. Crafted from premium heavyweight fabric, it delivers warmth, durability, and all-day comfort without compromising style.</p>
+<p data-start=""502"" data-end=""708"">Featuring a relaxed fit and a statement back print that speaks without noise, this hoodie is made for those who lead quietly and stand strong. Perfect for layering or wearing solo, on the streets or beyond.</p>
+<p data-start=""710"" data-end=""743"">Timeless. Powerful. Unapologetic.</p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/432-removebg-preview.png?v=1763843300,1,"",false,,,,,,,,,,,,kg,,,draft
+hidden-hero-pink-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/434-removebg-preview.png?v=1763843300,2,"",,,,,,,,,,,,,kg,,,
+hidden-hero-pink-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/435-removebg-preview.png?v=1763843300,3,"",,,,,,,,,,,,,kg,,,
+hidden-hero-pink-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/436-removebg-preview.png?v=1763843300,4,"",,,,,,,,,,,,,kg,,,
+hidden-hero-pink-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+hidden-hero-white-hoodie,HIDDEN HERO WHITE HOODIE,"<p data-start=""236"" data-end=""500"">Forged in silence, built for those who move with purpose.<br data-start=""293"" data-end=""296"">The HEALER hoodie blends a bold streetwear attitude with a clean, minimal design. Crafted from premium heavyweight fabric, it delivers warmth, durability, and all-day comfort without compromising style.</p>
+<p data-start=""502"" data-end=""708"">Featuring a relaxed fit and a statement back print that speaks without noise, this hoodie is made for those who lead quietly and stand strong. Perfect for layering or wearing solo, on the streets or beyond.</p>
+<p data-start=""710"" data-end=""743"">Timeless. Powerful. Unapologetic.</p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/731-removebg-preview.png?v=1763843101,1,"",false,,,,,,,,,,,,kg,,,draft
+hidden-hero-white-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/735-removebg-preview.png?v=1763843101,2,"",,,,,,,,,,,,,kg,,,
+hidden-hero-white-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/737-removebg-preview.png?v=1763843101,3,"",,,,,,,,,,,,,kg,,,
+hidden-hero-white-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/741-removebg-preview.png?v=1763843101,4,"",,,,,,,,,,,,,kg,,,
+hidden-hero-white-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+hidden-hero-black-hoodie,HIDDEN HERO BLACK HOODIE,"<p data-start=""236"" data-end=""500"">Forged in silence, built for those who move with purpose.<br data-start=""293"" data-end=""296"">The HEALER hoodie blends a bold streetwear attitude with a clean, minimal design. Crafted from premium heavyweight fabric, it delivers warmth, durability, and all-day comfort without compromising style.</p>
+<p data-start=""502"" data-end=""708"">Featuring a relaxed fit and a statement back print that speaks without noise, this hoodie is made for those who lead quietly and stand strong. Perfect for layering or wearing solo, on the streets or beyond.</p>
+<p data-start=""710"" data-end=""743"">Timeless. Powerful. Unapologetic.</p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/458-removebg-preview.png?v=1763842768,1,"",false,,,,,,,,,,,,kg,,,draft
+hidden-hero-black-hoodie,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/462-removebg-preview.png?v=1763842796,2,"",,,,,,,,,,,,,kg,,,
+hidden-hero-black-hoodie,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/463-removebg-preview.png?v=1763842796,3,"",,,,,,,,,,,,,kg,,,
+hidden-hero-black-hoodie,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/464-removebg-preview.png?v=1763842796,4,"",,,,,,,,,,,,,kg,,,
+hidden-hero-black-hoodie,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+revealing-your-mistake-gray-sweatshirt,REVEALING YOUR MISTAKE GRAY SWEATSHIRT,"<p class=""isSelectedEnd""><span>Presence you don’t announce — you embody.</span></p>
+<p class=""isSelectedEnd""><span>This sweatshirt blends sharp street attitude with the unmistakable </span><strong><span>RYMX</span></strong><span> signature. Featuring bold sleeve detailing and a clean, structured silhouette, it’s crafted from premium heavyweight fabric for durability, warmth, and elevated everyday comfort.</span></p>
+<p><span>Made for those who don’t follow energy — they set it.</span><br><span>Step in strong. Stay unforgettable.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/539-removebg-preview.png?v=1763842489,1,"",false,,,,,,,,,,,,kg,,,draft
+revealing-your-mistake-gray-sweatshirt,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/541-removebg-preview.png?v=1763842490,2,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-gray-sweatshirt,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/542-removebg-preview.png?v=1763842490,3,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-gray-sweatshirt,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/544-removebg-preview.png?v=1769305070,4,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-gray-sweatshirt,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+revealing-your-mistake-white-sweatshirt,REVEALING YOUR MISTAKE WHITE SWEATSHIRT,"<p class=""isSelectedEnd""><span>Presence you don’t announce — you embody.</span></p>
+<p class=""isSelectedEnd""><span>This sweatshirt blends sharp street attitude with the unmistakable </span><strong><span>RYMX</span></strong><span> signature. Featuring bold sleeve detailing and a clean, structured silhouette, it’s crafted from premium heavyweight fabric for durability, warmth, and elevated everyday comfort.</span></p>
+<p><span>Made for those who don’t follow energy — they set it.</span><br><span>Step in strong. Stay unforgettable.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/513-removebg-preview.png?v=1763842293,1,"",false,,,,,,,,,,,,kg,,,draft
+revealing-your-mistake-white-sweatshirt,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/515-removebg-preview.png?v=1763842293,2,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-white-sweatshirt,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/516-removebg-preview.png?v=1763842293,3,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-white-sweatshirt,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/518-removebg-preview.png?v=1763842293,4,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-white-sweatshirt,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+revealing-your-mistake-black-sweatshirt,REVEALING YOUR MISTAKE BLACK SWEATSHIRT,"<p class=""isSelectedEnd""><span>Presence you don’t announce — you embody.</span></p>
+<p class=""isSelectedEnd""><span>This sweatshirt blends sharp street attitude with the unmistakable </span><strong><span>RYMX</span></strong><span> signature. Featuring bold sleeve detailing and a clean, structured silhouette, it’s crafted from premium heavyweight fabric for durability, warmth, and elevated everyday comfort.</span></p>
+<p><span>Made for those who don’t follow energy — they set it.</span><br><span>Step in strong. Stay unforgettable.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/826-removebg-preview.png?v=1763842060,1,"",false,,,,,,,,,,,,kg,,,draft
+revealing-your-mistake-black-sweatshirt,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/829-removebg-preview.png?v=1763842060,2,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-black-sweatshirt,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/832-removebg-preview.png?v=1763842060,3,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-black-sweatshirt,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/834-removebg-preview.png?v=1763842060,4,"",,,,,,,,,,,,,kg,,,
+revealing-your-mistake-black-sweatshirt,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt-copy,RYMX HALF-ZIP BLACK SWEATSHIRT,"<p class=""isSelectedEnd""><span>Elegance that speaks quietly.</span></p>
+<p class=""isSelectedEnd""><span>A clean, modern design elevated by a sleek zipper that lets you switch up your look with ease. Made for those who appreciate subtle details that make a statement, finished with the unmistakable </span><strong><span>RYMX</span></strong><span> signature for a refined edge without the noise.</span></p>
+<p><span>Crafted from premium heavyweight fabric for lasting comfort and structure — zipped up or worn open, your style stays effortlessly sharp.</span><br><span>Chic, versatile, and built for everyday presence.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/565-removebg-preview.png?v=1763841315,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-half-zip-green-sweatshirt-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/566-removebg-preview.png?v=1763841334,2,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/567-removebg-preview.png?v=1763841334,3,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/568-removebg-preview.png?v=1763841334,4,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/570-removebg-preview.png?v=1763841334,5,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt,RYMX HALF-ZIP GREEN SWEATSHIRT,"<p class=""isSelectedEnd""><span>Elegance that speaks quietly.</span></p>
+<p class=""isSelectedEnd""><span>A clean, modern design elevated by a sleek zipper that lets you switch up your look with ease. Made for those who appreciate subtle details that make a statement, finished with the unmistakable </span><strong><span>RYMX</span></strong><span> signature for a refined edge without the noise.</span></p>
+<p><span>Crafted from premium heavyweight fabric for lasting comfort and structure — zipped up or worn open, your style stays effortlessly sharp.</span><br><span>Chic, versatile, and built for everyday presence.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/552-removebg-preview.png?v=1763841458,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-half-zip-green-sweatshirt,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/553-removebg-preview.png?v=1763841638,2,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/554-removebg-preview.png?v=1763841638,3,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/555-removebg-preview.png?v=1763841638,4,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-green-sweatshirt,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/557-removebg-preview.png?v=1763841638,5,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-white-sweatshirt,RYMX HALF-ZIP WHITE SWEATSHIRT,"<p class=""isSelectedEnd""><span>Elegance that speaks quietly.</span></p>
+<p class=""isSelectedEnd""><span>A clean, modern design elevated by a sleek zipper that lets you switch up your look with ease. Made for those who appreciate subtle details that make a statement, finished with the unmistakable </span><strong><span>RYMX</span></strong><span> signature for a refined edge without the noise.</span></p>
+<p><span>Crafted from premium heavyweight fabric for lasting comfort and structure — zipped up or worn open, your style stays effortlessly sharp.</span><br><span>Chic, versatile, and built for everyday presence.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/777-removebg-preview.png?v=1763841131,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-half-zip-white-sweatshirt,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/780-removebg-preview.png?v=1763841131,2,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-white-sweatshirt,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/785-removebg-preview.png?v=1763841132,3,"",,,,,,,,,,,,,kg,,,
+rymx-half-zip-white-sweatshirt,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-half-zip-white-sweatshirt,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,899.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-sweatpant-1,RYMX WHITE ON BLACK SWEATPANT,"<p><span>Step into effortless style with the RYMX sweatpants. Crafted from premium fabric for superior comfort, they feature a relaxed yet polished fit that works anywhere. Finished with the iconic RYMX logo, this piece blends modern streetwear energy with clean, confident design.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/700_800x800_d4a62733-61a8-4c48-a08b-8c7c3356de60.png?v=1763663882,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-white-on-black-sweatpant-1,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/704_800x800_af4fd6ff-448e-4666-a737-bb513aa00da3.png?v=1763663882,2,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-sweatpant-1,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/706_800x800_8bb57d19-8c66-43eb-b4b4-c6b91c6ef2d3.png?v=1763663882,3,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-sweatpant-1,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/710_800x800_fa6791ab-2c05-4458-bac7-08f4c2fa7b90.png?v=1763663882,4,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-sweatpant-1,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-sweatpant,RYMX BLACK ON GRAY SWEATPANT,"<p><span>Step into effortless style with the RYMX sweatpants. Crafted from premium fabric for superior comfort, they feature a relaxed yet polished fit that works anywhere. Finished with the iconic RYMX logo, this piece blends modern streetwear energy with clean, confident design.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/625_800x800_3466a3f5-9771-4acf-b479-463006916a88.png?v=1763663683,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-black-on-gray-sweatpant,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/627_800x800_d1075100-875d-45b8-9bb8-7bf763fd46f3.png?v=1763663683,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-sweatpant,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/628_800x800_7997653f-abb8-4b49-8e92-d7cd3345d54d.png?v=1763663683,3,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-sweatpant,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/630_800x800_d8d1a3ca-de5e-4ac7-9a1a-d14ad4d70767.png?v=1763663683,4,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-sweatpant,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-on-baby-blue-sweatpant,RYMX BLACK ON Baby Blue SWEATPANT,"<p><span>Step into effortless style with the RYMX sweatpants. Crafted from premium fabric for superior comfort, they feature a relaxed yet polished fit that works anywhere. Finished with the iconic RYMX logo, this piece blends modern streetwear energy with clean, confident design.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/646_800x800_301b3936-8ec5-47f9-ab76-60d7054c9ad6.png?v=1763663536,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-black-on-baby-blue-sweatpant,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/642_800x800_633ca42e-997a-43ba-9360-25a625a7ca2e.png?v=1763663536,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-baby-blue-sweatpant,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/643_800x800_a3dea59d-8e1a-4961-bae5-f7dbe5530b59.png?v=1763663536,3,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-baby-blue-sweatpant,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/645_800x800_039f5896-37af-4561-a3de-770048034cf5.png?v=1763663536,4,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-baby-blue-sweatpant,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-zipup-jacket-copy,RYMX BLACK ON Baby Blue ZIPUP JACKET,"<p><strong><span></span></strong><br><span>Make a statement with the RYMX zip-up jacket — where signature branding meets refined style. Designed with a sleek silhouette and a smooth front zipper, this piece delivers both comfort and elevated street appeal. The bold RYMX logo adds a distinctive touch, turning an everyday essential into a standout look.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/640_800x800_5c02599e-ebef-4fad-bd81-b441f9df9d9c.png?v=1763663340,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-black-on-gray-zipup-jacket-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/642_800x800_91891138-10cd-4c8a-b522-4035b7e23a3b.png?v=1763663340,2,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-zipup-jacket-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/643_800x800_988be982-be1f-45d9-b47e-b9c7f7bae61d.png?v=1763663340,3,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-zipup-jacket-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/645_800x800_ca7c1dc1-52fd-484b-a7f9-81e0bdd4e384.png?v=1763663340,4,"",,,,,,,,,,,,,kg,,,
+rymx-black-on-gray-zipup-jacket-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket-copy,RYMX BLACK ON GRAY ZIPUP JACKET,"<p><strong><span></span></strong><br><span>Make a statement with the RYMX zip-up jacket — where signature branding meets refined style. Designed with a sleek silhouette and a smooth front zipper, this piece delivers both comfort and elevated street appeal. The bold RYMX logo adds a distinctive touch, turning an everyday essential into a standout look.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/625_800x800_9243f5e7-eb7a-437b-81c6-427c044e0541.png?v=1763663171,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-white-on-black-zipup-jacket-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/627_800x800_dbdc873e-49ed-49d3-869b-6f9bda8e7b39.png?v=1763663171,2,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/628_800x800_c57c7214-4d9b-4713-ae2c-0b820e99bbd5.png?v=1763663171,3,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/630_800x800_917aa685-2979-4995-9613-5218882b9285.png?v=1763663171,4,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket-copy,RYMX WHITE ON BLACK ZIPUP JACKET,"<p><strong><span></span></strong><br><span>Make a statement with the RYMX zip-up jacket — where signature branding meets refined style. Designed with a sleek silhouette and a smooth front zipper, this piece delivers both comfort and elevated street appeal. The bold RYMX logo adds a distinctive touch, turning an everyday essential into a standout look.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/700_800x800_37c43ee2-5e24-4f1a-9d3c-a73eb10ad038.png?v=1763662968,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-gray-on-black-zipup-jacket-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/704_800x800_0adbf0e6-8ec8-4847-86a3-d1da4dd2b89a.png?v=1763662968,2,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/706_800x800_41a203e4-a69e-42f0-9d56-5741bae1303d.png?v=1763662969,3,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/711_800x800_ca0c3d0d-e183-4b68-8624-379ec24cc0bb.png?v=1763662979,4,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket,RYMX WHITE ON BLACK ZIPUP JACKET,"",RYMX,Uncategorized,"","",false,size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,900.00,799.00,true,true,,,,,"",,,,false,,,,,,,,,,,,kg,,,draft
+rymx-white-on-black-zipup-jacket,,,,,,,,,Small,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket,,,,,,,,,Medium,,,,,,,,,0.0,shopify,5,deny,manual,390.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket,,,,,,,,,Large,,,,,,,,,0.0,shopify,2,deny,manual,390.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-zipup-jacket,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+rymx-white-on-black-sweatpant,RYMX WHITE ON BLACK SWEATPANT,"",RYMX,Uncategorized,"","",false,Size,medium,,,,,,,,,0.0,shopify,0,deny,manual,390.00,699.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/18_623968ec-9c0c-44f5-951b-87ef514b4ebb.jpg?v=1756168119,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-white-on-black-sweatpant,,,,,,,,,small,,,,,,,,,0.0,shopify,5,deny,manual,390.00,699.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/18.jpg?v=1756168119,2,"",,,,,,,,,,,,,kg,,,
+rymx-white-on-black-sweatpant,,,,,,,,,large,,,,,,,,,0.0,shopify,5,deny,manual,390.00,699.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-sweatpant,LOGO PINK ON PINK SWEATPANT,<p><span>The </span><strong><span>RYMX</span></strong><span> sweatpants are designed with a clean silhouette and premium fabric for an effortlessly stylish look.</span><br><span>And it’s all about the details — the </span><strong><span>X logo</span></strong><span> on the back adds a bold signature touch that represents the brand from every angle</span></p>,RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/655_800x800_d11288b6-afeb-4577-969a-94b3fc94213f.png?v=1763662786,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-pink-on-pink-sweatpant,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/657_800x800_86d06245-6421-4768-a7e1-d5ffe12d2433.png?v=1763662793,2,"",,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-sweatpant,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/658_800x800_81f7b1bd-ee8d-4700-bb91-dcd6ec394a68.png?v=1763662793,3,"",,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-sweatpant,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/656_800x800_3c7e2ad9-36af-4016-8aab-7ac0b4b98c31.png?v=1763662793,4,"",,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-sweatpant,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-gray-on-black-sweatpant,LOGO GRAY ON BLACK SWEATPANT,<p><span>The </span><strong><span>RYMX</span></strong><span> sweatpants are designed with a clean silhouette and premium fabric for an effortlessly stylish look.</span><br><span>And it’s all about the details — the </span><strong><span>X logo</span></strong><span> on the back adds a bold signature touch that represents the brand from every angle</span></p>,RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/611_800x800_996918bc-4d34-4bed-b57e-0989e98ba385.png?v=1763662617,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-gray-on-black-sweatpant,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/613_800x800_210652fc-d1c0-4c94-bad4-0d5479373d99.png?v=1763662637,2,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-sweatpant,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/614_800x800_10fd9101-7c83-4b11-8da7-b74b63a6ab76.png?v=1763662637,3,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-sweatpant,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/612_800x800_b7f747cf-bbfc-4ee8-a0d1-201415f5be7e.png?v=1763662637,4,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-sweatpant,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-white-on-white-sweatpant,LOGO WHITE ON WHITE SWEATPANT,<p><span>The </span><strong><span>RYMX</span></strong><span> sweatpants are designed with a clean silhouette and premium fabric for an effortlessly stylish look.</span><br><span>And it’s all about the details — the </span><strong><span>X logo</span></strong><span> on the back adds a bold signature touch that represents the brand from every angle</span></p>,RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/677_800x800_73179d48-f306-4052-bb12-23c0b550c0db.png?v=1763662416,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-white-on-white-sweatpant,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/683_800x800_b2a4c147-14b1-4021-a1bc-65db39473532.png?v=1763662416,2,"",,,,,,,,,,,,,kg,,,
+logo-white-on-white-sweatpant,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/685_800x800_e29496e6-6c97-417b-9050-5e6c1414ef5f.png?v=1763662416,3,"",,,,,,,,,,,,,kg,,,
+logo-white-on-white-sweatpant,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/689_800x800_a0003617-8c30-4966-9757-ca98af7b8cbf.png?v=1763662416,4,"",,,,,,,,,,,,,kg,,,
+logo-white-on-white-sweatpant,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,849.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-zipup-jacket,LOGO PINK ON PINK ZIPUP JACKET,"<p><span>Elevate your everyday style with the RYMX zip-up jacket. Designed with a sleek silhouette and a smooth front zipper, it delivers the perfect balance of comfort and modern elegance. Finished with the signature RYMX logo, this piece is made to stand out while keeping your look effortlessly refined.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/655_800x800_9d03f26e-2857-4d3b-a77a-a3a36f508e0e.png?v=1763662232,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-pink-on-pink-zipup-jacket,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/657_800x800_2906d969-0a90-4780-8fd1-e7cb39e3a082.png?v=1763662232,2,"",,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-zipup-jacket,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/658_800x800_26cf52c9-6695-4aef-85cb-7d0970166674.png?v=1763662219,3,"",,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-zipup-jacket,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/660_800x800_6950af68-bad6-4bbf-8512-cc3ce386a3ed.png?v=1763662219,4,"",,,,,,,,,,,,,kg,,,
+logo-pink-on-pink-zipup-jacket,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket,LOGO GRAY ON BLACK ZIPUP JACKET,"<p><span>Elevate your everyday style with the RYMX zip-up jacket. Designed with a sleek silhouette and a smooth front zipper, it delivers the perfect balance of comfort and modern elegance. Finished with the signature RYMX logo, this piece is made to stand out while keeping your look effortlessly refined.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/611_800x800_094a28d7-bb68-492b-b453-c4d712074083.png?v=1763661573,1,"",false,,,,,,,,,,,,kg,,,draft
+logo-gray-on-black-zipup-jacket,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/613_800x800_fc1b94b5-ba42-467c-97cd-3030bc79c67e.png?v=1763661614,2,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/614_800x800_b14d98ff-13d0-4094-9abf-59ba83c4fc66.png?v=1763661614,3,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/612_800x800_31230a49-b343-4754-b3fa-80513b1d95fe.png?v=1763661614,4,"",,,,,,,,,,,,,kg,,,
+logo-gray-on-black-zipup-jacket,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+pink-polo-copy,LOGO WHITE ON WHITE ZIPUP JACKET,"<p><span>Elevate your everyday style with the RYMX zip-up jacket. Designed with a sleek silhouette and a smooth front zipper, it delivers the perfect balance of comfort and modern elegance. Finished with the signature RYMX logo, this piece is made to stand out while keeping your look effortlessly refined.</span></p>",RYMX,Uncategorized,"","",false,Size,X-Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/677_800x800_f962448a-d050-4197-b8d8-00779f5f18ac.png?v=1763662016,1,"",false,,,,,,,,,,,,kg,,,draft
+pink-polo-copy,,,,,,,,,Small,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/684_800x800_2a85659e-13ea-4452-a7d4-2a71382dbff3.png?v=1763662016,2,"",,,,,,,,,,,,,kg,,,
+pink-polo-copy,,,,,,,,,Medium,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/686_800x800_721f36f7-853b-42d3-9f91-4ac44a5f7221.png?v=1763662016,3,"",,,,,,,,,,,,,kg,,,
+pink-polo-copy,,,,,,,,,Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/690_800x800_f347755c-8376-4be7-9787-efe6c3bfc021.png?v=1763662016,4,"",,,,,,,,,,,,,kg,,,
+pink-polo-copy,,,,,,,,,X-Large,,,,,,,,,0.0,shopify,0,deny,manual,949.00,,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+gray-round-tee,Gray round tee,"",RYMX,Uncategorized,T-shirt,"",false,Size,Small,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-7627.jpg?v=1757962411,1,"",false,,,,,,,,,,,,kg,,,draft
+gray-round-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG-7628.jpg?v=1757962411,2,"",,,,,,,,,,,,,kg,,,
+gray-round-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,,,,,,,,,,,,,,,,,kg,,,
+beige-wild-scar-tee,Beige Wild Scar Tee,"",RYMX,Uncategorized,"","",false,size,small,,,,,,,,,0.0,shopify,1,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/3-1.jpg?v=1756209850,1,"",false,,,,,,,,,,,,kg,,,draft
+beige-wild-scar-tee,,,,,,,,,medium,,,,,,,,,0.0,shopify,2,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/3-2.jpg?v=1756209850,2,"",,,,,,,,,,,,,kg,,,
+beige-wild-scar-tee,,,,,,,,,large,,,,,,,,,0.0,shopify,2,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+gray-wild-scar-tee-1,Gray Wild Scar Tee,"",RYMX,Uncategorized,"","",false,size,small,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/1-1_0455d0af-56d0-42a3-841b-ecdd95b4a492.jpg?v=1756209671,1,"",false,,,,,,,,,,,,kg,,,draft
+gray-wild-scar-tee-1,,,,,,,,,medium,,,,,,,,,0.0,shopify,5,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/1-2_31fa1c9c-0d07-4dd3-b141-522b288419de.jpg?v=1756209671,2,"",,,,,,,,,,,,,kg,,,
+gray-wild-scar-tee-1,,,,,,,,,large,,,,,,,,,0.0,shopify,2,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+rymx-green,RYMX green,"",RYMX,Uncategorized,"","",false,Size,small,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/12-1.jpg?v=1756209309,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-green,,,,,,,,,medium,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/12-2.jpg?v=1756209309,2,"",,,,,,,,,,,,,kg,,,
+rymx-green,,,,,,,,,large,,,,,,,,,0.0,shopify,4,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+rymx-pink,RYMX pink,"",RYMX,Uncategorized,"","",false,size,small,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/13-1.jpg?v=1756209212,1,"",false,,,,,,,,,,,,kg,,,draft
+rymx-pink,,,,,,,,,medium,,,,,,,,,0.0,shopify,5,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/13-2.jpg?v=1756209212,2,"",,,,,,,,,,,,,kg,,,
+rymx-pink,,,,,,,,,large,,,,,,,,,0.0,shopify,4,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+rymx-white,RYMX white,"",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,4,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/16-1.jpg?v=1756169069,1,"",false,,,,white,,round,l; m; s,short,unisex,medium,,kg,,,draft
+rymx-white,,,,,,,,,m,,,,,,,,,0.0,shopify,3,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/16-2.jpg?v=1756169067,2,"",,,,,,,,,,,,,kg,,,
+rymx-white,,,,,,,,,s,,,,,,,,,0.0,shopify,4,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+rymx-black,RYMX black,"",RYMX,Arts & Entertainment > Hobbies & Creative Arts > Collectibles > Sports Collectibles > Sports Fan Accessories > T-Shirts,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,1,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/14-1.jpg?v=1756168968,1,"",false,,,,black,,,l; m; s,,,,,kg,,,draft
+rymx-black,,,,,,,,,m,,,,,,,,,0.0,shopify,2,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/14-2.jpg?v=1756168968,2,"",,,,,,,,,,,,,kg,,,
+rymx-black,,,,,,,,,s,,,,,,,,,0.0,shopify,5,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+brown-wild-scar-tee,Brown Wild Scar Tee,"",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4-1.jpg?v=1756168871,1,"",false,,,,,,,l; m; s,,,,,kg,,,draft
+brown-wild-scar-tee,,,,,,,,,m,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/4-2.jpg?v=1756168870,2,"",,,,,,,,,,,,,kg,,,
+brown-wild-scar-tee,,,,,,,,,s,,,,,,,,,0.0,shopify,7,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+black-wild-scar-tee,Black Wild Scar Tee,"",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,"","",false,size,small,,,,,,,,,0.0,shopify,1,deny,manual,449.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/2-1.jpg?v=1756168716,1,"",false,,,,,,,l; m; s,,,,,kg,,,draft
+black-wild-scar-tee,,,,,,,,,medium,,,,,,,,,0.0,shopify,0,deny,manual,449.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/2-2.jpg?v=1756168716,2,"",,,,,,,,,,,,,kg,,,
+black-wild-scar-tee,,,,,,,,,large,,,,,,,,,0.0,shopify,0,deny,manual,449.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+white-short,White short,"",RYMX,Uncategorized,"","",false,size,small,,,,,,,,,0.0,shopify,6,deny,manual,390.00,699.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/20.jpg?v=1756168421,1,"",false,,,,,,,,,,,,kg,,,draft
+white-short,,,,,,,,,medium,,,,,,,,,0.0,shopify,2,deny,manual,390.00,699.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/20_38bd2a01-9577-4524-9597-fdca536a0028.jpg?v=1756168421,2,"",,,,,,,,,,,,,kg,,,
+white-short,,,,,,,,,large,,,,,,,,,0.0,shopify,4,deny,manual,390.00,699.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+black-short,Black short,"",RYMX,Uncategorized,"","",false,size,small,,,,,,,,,0.0,shopify,3,deny,manual,390.00,699.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/19.jpg?v=1756168319,1,"",false,,,,,,,,,,,,kg,,,draft
+black-short,,,,,,,,,meduim,,,,,,,,,0.0,shopify,0,deny,manual,390.00,699.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/19_e28a9dae-b1b4-43ff-aaec-52bc3ca95a65.jpg?v=1756168318,2,"",,,,,,,,,,,,,kg,,,
+black-short,,,,,,,,,large,,,,,,,,,0.0,shopify,0,deny,manual,390.00,699.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+grey-short,Grey short,"",RYMX,Uncategorized,"","",false,Size,medium,,,,,,,,,0.0,shopify,0,deny,manual,390.00,699.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/18_623968ec-9c0c-44f5-951b-87ef514b4ebb.jpg?v=1756168119,1,"",false,,,,,,,,,,,,kg,,,draft
+grey-short,,,,,,,,,small,,,,,,,,,0.0,shopify,5,deny,manual,390.00,699.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/18.jpg?v=1756168119,2,"",,,,,,,,,,,,,kg,,,
+grey-short,,,,,,,,,large,,,,,,,,,0.0,shopify,5,deny,manual,390.00,699.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+white-round-tee,White round tee,<p><span>Crafted for comfort and style</span></p>,RYMX,Uncategorized,"","",false,Size,Small,,,,,,,,,0.0,shopify,6,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8-1.jpg?v=1756167810,1,"",false,,,,,,,,,,,,kg,,,draft
+white-round-tee,,,,,,,,,Medium,,,,,,,,,0.0,shopify,7,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/8-2.jpg?v=1756167810,2,"",,,,,,,,,,,,,kg,,,
+white-round-tee,,,,,,,,,Large,,,,,,,,,0.0,shopify,5,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+purple-round-tee,Purple round tee,<p><span>Crafted for comfort and style</span></p>,RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,10,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/7-1.jpg?v=1756167745,1,"",false,,,adults,purple,,round,l; m; s,short,unisex,medium,,kg,,,draft
+purple-round-tee,,,,,,,,,m,,,,,,,,,0.0,shopify,8,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/7-2.jpg?v=1756167746,2,"",,,,,,,,,,,,,kg,,,
+purple-round-tee,,,,,,,,,s,,,,,,,,,0.0,shopify,13,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+beige-round-tee,Beige round tee,<p><span>Crafted for comfort and style</span></p>,RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,0,deny,manual,449.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/6-1.jpg?v=1756167664,1,"",false,,,adults,beige,,round,l; m; s,short,unisex,medium,,kg,,,draft
+beige-round-tee,,,,,,,,,m,,,,,,,,,0.0,shopify,0,deny,manual,449.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/6-2.jpg?v=1756167664,2,"",,,,,,,,,,,,,kg,,,
+beige-round-tee,,,,,,,,,s,,,,,,,,,0.0,shopify,0,deny,manual,449.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+brown-round-tee,Black round tee,<p><span>Crafted for comfort and style</span></p>,RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,7,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/5-1.jpg?v=1756167423,1,"",false,,,adults,brown,,round,l; m; s,long,unisex,medium,,kg,,,draft
+brown-round-tee,,,,,,,,,m,,,,,,,,,0.0,shopify,9,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/5-2.jpg?v=1756167423,2,"",,,,,,,,,,,,,kg,,,
+brown-round-tee,,,,,,,,,s,,,,,,,,,0.0,shopify,9,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+beige-polo,Beige Polo,"<p>Elevate your wardrobe with this expertly tailored polo shirt, designed for timeless style and exceptional comfort. Crafted from breathable, high-quality fabric, it ensures all-day freshness and ease of movement.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > Polos,"","",false,Size,s,product.metafields.shopify.size,,,,,,,,0.0,shopify,1,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/17-1.jpg?v=1756167336,1,"",false,,,adults,beige,,,s; l; m,short,unisex,medium,,kg,,,draft
+beige-polo,,,,,,,,,l,,,,,,,,,0.0,shopify,1,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/17-2.jpg?v=1756167336,2,"",,,,,,,,,,,,,kg,,,
+beige-polo,,,,,,,,,m,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+pink-polo,Pink Polo,"<p>Elevate your wardrobe with this expertly tailored polo shirt, designed for timeless style and exceptional comfort. Crafted from breathable, high-quality fabric, it ensures all-day freshness and ease of movement.</p>",RYMX,Uncategorized,"","",false,Size,Small,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/11-1.jpg?v=1756167244,1,"",false,,,,,,,,,,,,kg,,,draft
+pink-polo,,,,,,,,,Medium,,,,,,,,,0.0,shopify,1,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/11-2.jpg?v=1756167244,2,"",,,,,,,,,,,,,kg,,,
+pink-polo,,,,,,,,,Large,,,,,,,,,0.0,shopify,4,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+brown-polo,Brown Polo,"<p>Elevate your wardrobe with this expertly tailored polo shirt, designed for timeless style and exceptional comfort. Crafted from breathable, high-quality fabric, it ensures all-day freshness and ease of movement.</p>",RYMX,Uncategorized,"","",false,Size,Small,,,,,,,,,0.0,shopify,3,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/15-1.jpg?v=1756166790,1,"",false,,,,,,,,,,,,kg,,,draft
+brown-polo,,,,,,,,,Medium,,,,,,,,,0.0,shopify,3,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/15-2.jpg?v=1756166790,2,"",,,,,,,,,,,,,kg,,,
+brown-polo,,,,,,,,,Large,,,,,,,,,0.0,shopify,4,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+white-polo,White Polo,"<p>Elevate your wardrobe with this expertly tailored polo shirt, designed for timeless style and exceptional comfort. Crafted from breathable, high-quality fabric, it ensures all-day freshness and ease of movement.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > Polos,"","",false,Size,s,product.metafields.shopify.size,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/9-1.jpg?v=1756140668,1,"",false,,,,,,,s; m; l,,,,,kg,,,draft
+white-polo,,,,,,,,,m,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/9-2.jpg?v=1756140668,2,"",,,,,,,,,,,,,kg,,,
+white-polo,,,,,,,,,l,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+back-polo,Black Polo,"<p>Elevate your wardrobe with this expertly tailored polo shirt, designed for timeless style and exceptional comfort. Crafted from breathable, high-quality fabric, it ensures all-day freshness and ease of movement.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > Polos,"","",false,Size,l,product.metafields.shopify.size,,,,,,,,0.0,shopify,2,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/10-1.jpg?v=1756166570,1,"",false,,,,black,,,l; m; s,short,unisex,medium,,kg,,,draft
+back-polo,,,,,,,,,m,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/10-2.jpg?v=1756166570,2,"",,,,,,,,,,,,,kg,,,
+back-polo,,,,,,,,,s,,,,,,,,,0.0,shopify,0,deny,manual,390.00,799.00,true,true,,,,,"",,,,,,,,,,,,,,,,kg,,,
+gray-wild-scar-tee,LOGO GRAY ON BLACK ZIPUP JACKET,"",RYMX,Arts & Entertainment > Hobbies & Creative Arts > Arts & Crafts > Art & Crafting Materials > Craft Fasteners & Closures > Zippers,zipper,"",false,Title,Default Title,,,,,,,,,0.0,shopify,0,deny,manual,900.00,,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/611.jpg?v=1763400125,1,"",false,,,,,,,,,,,,kg,,,draft
+gray-wild-scar-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/613.jpg?v=1763400104,2,"",,,,,,,,,,,,,,,,
+gray-wild-scar-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/614.jpg?v=1763400104,3,"",,,,,,,,,,,,,,,,
+gray-wild-scar-tee,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/612.jpg?v=1763400104,4,"",,,,,,,,,,,,,,,,
+villain-green-t-shirt,Villain Green T shirt,<p>teste tsetset est st set. es</p>,RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,T-shirt,Villain,false,Title,Default Title,,,,,,,,,0.0,,50,deny,manual,500.00,,true,false,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_5417.png?v=1755786241,1,"",false,,,,white,cotton,,l; m; s,,,,,kg,,0.00,draft
+villain-green-t-shirt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_49922.png?v=1755786160,2,"",,,,,,,,,,,,,,,,
+villain-green-t-shirt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_3848_b54b3fd1-900d-480c-aafb-83e268b2eb11.png?v=1755785991,3,"",,,,,,,,,,,,,,,,
+villain-green-t-shirt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_38502.png?v=1755785857,4,"",,,,,,,,,,,,,,,,
+whaite-fanky-t-shirt,Whaite Fanky T-shirt,"<p>The Whaite Fanky T-shirt offers a distinctive style with a focus on comfort and quality. Crafted from premium materials, it ensures durability and a soft feel against the skin. This T-shirt is designed for those who appreciate both fashion and functionality, making it an essential addition to any modern wardrobe. Its clean design pairs effortlessly with various outfits, providing versatility for casual or semi-casual occasions.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,T-shirt,"",false,Title,Default Title,,,,,,,,,0.0,shopify,10,continue,manual,500.00,,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_5417.png?v=1755786241,1,"",false,,,,white,,,,,,,,kg,,,draft
+white-t-shirt,White T-shirt§,"<p>This classic white T-shirt offers a clean, versatile look essential for any wardrobe. Crafted from high-quality cotton, it ensures breathability and comfort for all-day wear. Its simple design makes it an ideal base for layering or wearing alone, adapting effortlessly to casual and smart-casual outfits. Durable stitching guarantees long-lasting wear, making it a reliable staple piece.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,T-shirt,"",false,Title,Default Title,,,,,,,,,0.0,shopify,10,continue,manual,499.00,,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_49922.png?v=1755786160,1,"",false,,,,white,cotton,crew,,short,,,,kg,,,draft
+olive-green-t-shirt,Olive Green T-shirt,"<p>This olive green T-shirt offers a versatile and timeless style, crafted from breathable fabric for all-day comfort. Its subtle green shade complements various outfits, making it a reliable choice for both casual and semi-formal wear. The T-shirt’s design ensures durability and ease of care, providing a practical wardrobe staple with an understated yet refined look.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,T-shirt,"",false,Title,Default Title,,,,,,,,,0.0,shopify,0,continue,manual,499.00,,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_3848_b54b3fd1-900d-480c-aafb-83e268b2eb11.png?v=1755785991,1,"",false,,,,green,,,m; l; s,,,,,kg,,,draft
+olive-green-t-shirt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_38502.png?v=1755785857,2,"",,,,,,,,,,,,,,,,
+villen-pink-t-shirt,Villen Pink T-shirt,"<p>Experience comfort and style with the Villen Pink T-shirt, crafted from high-quality cotton for breathability and durability. Its soft fabric ensures all-day wearability while maintaining a refined fit suitable for various occasions. Perfect for layering or as a standout piece, this T-shirt combines expert craftsmanship with a vibrant pink hue to enhance your wardrobe effortlessly.</p>",RYMX,Apparel & Accessories > Clothing > Clothing Tops > T-Shirts,T-shirt,"",false,Title,Default Title,,,,,,,,,0.0,shopify,10,deny,manual,399.00,,true,true,,,,,"",https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_4978.heic?v=1755784927,1,"",false,,,,pink,cotton,crew,s; m; l,short,,,,kg,,200.00,draft
+villen-pink-t-shirt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0700/2098/9084/files/IMG_4980_2.heic?v=1755784973,2,"",,,,,,,,,,,,,,,,

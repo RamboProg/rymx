@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -9,6 +10,8 @@ import { contentSettingsSchema, type ContentSettings } from "../../schema";
 import { updateContentSettingsAction } from "../../server/actions";
 
 export function ContentSettingsForm({ settings }: { settings: ContentSettings }) {
+  const t = useTranslations("content");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [announcementEnabled, setAnnouncementEnabled] = useState(settings.announcementEnabled);
   const [announcementText, setAnnouncementText] = useState(settings.announcementText);
@@ -34,7 +37,7 @@ export function ContentSettingsForm({ settings }: { settings: ContentSettings })
       heroCta,
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -53,20 +56,20 @@ export function ContentSettingsForm({ settings }: { settings: ContentSettings })
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
       <Checkbox
         id="announcementEnabled"
-        label="Show announcement bar"
+        label={t("announcementEnabled")}
         checked={announcementEnabled}
         onChange={setAnnouncementEnabled}
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field
           id="announcementText"
-          label="Announcement text"
+          label={t("announcementText")}
           value={announcementText}
           onChange={(e) => setAnnouncementText(e.target.value)}
         />
         <Field
           id="announcementHref"
-          label="Announcement link (optional)"
+          label={t("announcementHref")}
           value={announcementHref}
           onChange={(e) => setAnnouncementHref(e.target.value)}
         />
@@ -74,24 +77,24 @@ export function ContentSettingsForm({ settings }: { settings: ContentSettings })
 
       <div className="border-rymx-cream/10 border-t pt-4">
         <h3 className="text-rymx-cream/60 mb-4 font-mono text-xs tracking-[0.1em] uppercase">
-          Homepage hero
+          {t("heroHeading")}
         </h3>
         <div className="flex flex-col gap-4">
           <Field
             id="heroEyebrow"
-            label="Eyebrow"
+            label={t("heroEyebrow")}
             value={heroEyebrow}
             onChange={(e) => setHeroEyebrow(e.target.value)}
           />
           <Field
             id="heroHeadline"
-            label="Headline"
+            label={t("heroHeadline")}
             value={heroHeadline}
             onChange={(e) => setHeroHeadline(e.target.value)}
           />
           <Field
             id="heroCta"
-            label="Call-to-action label"
+            label={t("heroCta")}
             value={heroCta}
             onChange={(e) => setHeroCta(e.target.value)}
           />
@@ -103,9 +106,9 @@ export function ContentSettingsForm({ settings }: { settings: ContentSettings })
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{tCommon("saved")}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : "Save content"}
+        {saving ? tCommon("saving") : t("saveContent")}
       </Button>
     </form>
   );

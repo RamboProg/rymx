@@ -21,15 +21,15 @@ export default async function AdminCustomersPage() {
       </div>
 
       {customers.length === 0 ? (
-        <p className="text-rymx-cream/50 font-mono text-sm">No customers yet.</p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{t("empty")}</p>
       ) : (
         <Table>
           <thead>
             <tr>
-              <Th>Customer</Th>
-              <Th>Tags</Th>
-              <Th>Orders</Th>
-              <Th>Lifetime value</Th>
+              <Th>{t("colCustomer")}</Th>
+              <Th>{t("colTags")}</Th>
+              <Th>{t("colOrders")}</Th>
+              <Th>{t("colLifetimeValue")}</Th>
             </tr>
           </thead>
           <tbody>

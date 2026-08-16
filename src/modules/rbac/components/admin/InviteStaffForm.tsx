@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +14,9 @@ import { PermissionCheckboxes } from "./PermissionCheckboxes";
 type InvitableRole = "admin" | "staff";
 
 export function InviteStaffForm() {
+  const t = useTranslations("staffAdmin");
+  const tRole = useTranslations("role");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -35,7 +39,7 @@ export function InviteStaffForm() {
 
     const parsed = inviteStaffInputSchema.safeParse({ email, displayName, role, permissions });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -46,7 +50,7 @@ export function InviteStaffForm() {
       setError(result.error);
       return;
     }
-    setNotice(`Invited ${result.member.email}. A temporary password was emailed to them.`);
+    setNotice(t("invited", { email: result.member.email ?? "" }));
     setEmail("");
     setDisplayName("");
     router.refresh();
@@ -57,25 +61,25 @@ export function InviteStaffForm() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Field
           id="staff-email"
-          label="Email"
+          label={t("email")}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Field
           id="staff-name"
-          label="Name"
+          label={t("name")}
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
         <Select
           id="staff-role"
-          label="Role"
+          label={t("role")}
           value={role}
           onValueChange={(v) => onRoleChange(v as InvitableRole)}
           options={[
-            { value: "staff", label: "Staff" },
-            { value: "admin", label: "Admin" },
+            { value: "staff", label: tRole("staff") },
+            { value: "admin", label: tRole("admin") },
           ]}
         />
       </div>
@@ -89,7 +93,7 @@ export function InviteStaffForm() {
       )}
       {notice && <p className="text-rymx-gold font-mono text-sm">{notice}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Inviting…" : "Invite staff member"}
+        {saving ? t("inviting") : t("inviteStaffMember")}
       </Button>
     </form>
   );

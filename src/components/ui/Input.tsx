@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useRef, type ComponentPropsWithoutRef } from "react";
 
 export function NumberField({
@@ -11,6 +12,7 @@ export function NumberField({
   className,
   ...props
 }: { label?: string; error?: string; description?: string } & ComponentPropsWithoutRef<"input">) {
+  const t = useTranslations("common");
   const inputRef = useRef<HTMLInputElement>(null);
 
   function nudge(direction: 1 | -1) {
@@ -49,16 +51,16 @@ export function NumberField({
           step={step}
           aria-invalid={error ? true : undefined}
           aria-describedby={error && id ? `${id}-error` : undefined}
-          className={`border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold w-full appearance-none rounded-md border px-4 py-3 pr-9 text-sm outline-none [-moz-appearance:textfield] ${className ?? ""}`}
+          className={`border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold w-full appearance-none rounded-md border px-4 py-3 pe-9 text-sm outline-none [-moz-appearance:textfield] ${className ?? ""}`}
           {...props}
         />
-        <div className="absolute top-1/2 right-1.5 flex -translate-y-1/2 flex-col">
+        <div className="absolute top-1/2 end-1.5 flex -translate-y-1/2 flex-col">
           <button
             type="button"
             tabIndex={-1}
             disabled={atMax}
             onClick={() => nudge(1)}
-            aria-label="Increment"
+            aria-label={t("increment")}
             className="text-rymx-cream/50 hover:text-rymx-gold leading-none disabled:opacity-30"
           >
             ▲
@@ -68,7 +70,7 @@ export function NumberField({
             tabIndex={-1}
             disabled={atMin}
             onClick={() => nudge(-1)}
-            aria-label="Decrement"
+            aria-label={t("decrement")}
             className="text-rymx-cream/50 hover:text-rymx-gold leading-none disabled:opacity-30"
           >
             ▼

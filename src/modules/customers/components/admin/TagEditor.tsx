@@ -1,9 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { addCustomerTagAction, removeCustomerTagAction } from "../../server/actions";
 
 export function TagEditor({ uid, tags: initial }: { uid: string; tags: string[] }) {
+  const t = useTranslations("pages.customers");
+  const tCommon = useTranslations("common");
   const [tags, setTags] = useState(initial);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +47,7 @@ export function TagEditor({ uid, tags: initial }: { uid: string; tags: string[] 
               type="button"
               disabled={busy}
               onClick={() => onRemove(tag)}
-              aria-label={`Remove tag ${tag}`}
+              aria-label={t("removeTag", { tag })}
               className="hover:text-red-400"
             >
               ×
@@ -52,7 +55,7 @@ export function TagEditor({ uid, tags: initial }: { uid: string; tags: string[] 
           </span>
         ))}
         {tags.length === 0 && (
-          <span className="text-rymx-cream/40 font-mono text-xs">No tags yet.</span>
+          <span className="text-rymx-cream/40 font-mono text-xs">{t("noTags")}</span>
         )}
       </div>
       <form onSubmit={onAdd} className="flex gap-2">
@@ -60,7 +63,7 @@ export function TagEditor({ uid, tags: initial }: { uid: string; tags: string[] 
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Add a tag…"
+          placeholder={t("addTagPlaceholder")}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-3 py-2 text-sm outline-none"
         />
         <button
@@ -68,7 +71,7 @@ export function TagEditor({ uid, tags: initial }: { uid: string; tags: string[] 
           disabled={busy}
           className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-4 py-2 font-mono text-xs uppercase hover:text-[#12100a] disabled:opacity-50"
         >
-          Add
+          {tCommon("add")}
         </button>
       </form>
       {error && (

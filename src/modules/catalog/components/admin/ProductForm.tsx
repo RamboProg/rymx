@@ -75,7 +75,7 @@ function OptionValuesEditor({
             <button
               type="button"
               onClick={() => removeValue(value)}
-              aria-label={`Remove value ${value}`}
+              aria-label={t("fields.removeValue", { value })}
               className="hover:text-red-400"
             >
               ×
@@ -150,7 +150,7 @@ function OptionRowEditor({
               label={t("fields.optionName")}
               value={row.name}
               onChange={(e) => onChange({ ...row, name: e.target.value })}
-              placeholder="e.g. Size"
+              placeholder={t("fields.optionNamePlaceholder")}
             />
           ) : (
             <Select
@@ -211,13 +211,15 @@ export function ProductForm({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const t = useTranslations("productForm");
+  const tCommon = useTranslations("common");
 
   // Slug is derived from the title and frozen once the product exists — never
   // editable. On create it previews live from the title; on edit it's the
   // stored slug (renaming the title won't change it).
   const slug = product ? product.slug : slugify(title);
 
-  const statusOptions = PRODUCT_STATUSES.map((s) => ({ value: s, label: s }));
+  const tStatus = useTranslations("productStatus");
+  const statusOptions = PRODUCT_STATUSES.map((s) => ({ value: s, label: tStatus(s) }));
   const categoryOptions = categoryList.map((c) => ({ value: c.slug, label: c.title }));
 
   function updateOption(index: number, row: OptionRow) {
@@ -270,7 +272,7 @@ export function ProductForm({
         .map((o) => ({ name: o.name.trim(), values: o.values })),
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 

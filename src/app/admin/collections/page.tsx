@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { Button } from "@/components/ui/Button";
@@ -11,9 +11,10 @@ import { listAllCollectionsAdmin } from "@/modules/collections/server/admin";
 export const metadata: Metadata = { title: "Collections — Admin — RYMX" };
 
 export default async function AdminCollectionsPage() {
-  const [collections, t] = await Promise.all([
+  const [collections, t, locale] = await Promise.all([
     listAllCollectionsAdmin(),
     getTranslations("pages.collections"),
+    getLocale(),
   ]);
 
   return (
@@ -55,7 +56,9 @@ export default async function AdminCollectionsPage() {
                     ? t("statusInactive")
                     : isCollectionLive(collection.publishAt)
                       ? t("statusLive")
-                      : t("statusScheduled", { when: collection.publishAt!.toLocaleString() })}
+                      : t("statusScheduled", {
+                          when: collection.publishAt!.toLocaleString(locale),
+                        })}
                 </Td>
                 <Td>
                   <div className="flex items-center gap-4">

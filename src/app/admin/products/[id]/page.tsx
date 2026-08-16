@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ProductForm } from "@/modules/catalog/components/admin/ProductForm";
 import { VariantManager } from "@/modules/catalog/components/admin/VariantManager";
@@ -9,10 +10,11 @@ export const metadata: Metadata = { title: "Edit product — Admin — RYMX" };
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [product, categories, existingOptions] = await Promise.all([
+  const [product, categories, existingOptions, t] = await Promise.all([
     getProductForAdmin(id),
     listCategories(),
     listAllOptions(),
+    getTranslations("variants"),
   ]);
   if (!product) notFound();
 
@@ -28,7 +30,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       <ProductForm product={product} categories={categories} existingOptions={existingOptions} />
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Variants</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("title")}</h2>
         <VariantManager productId={product.id} variants={variants} options={product.options} />
       </section>
     </div>

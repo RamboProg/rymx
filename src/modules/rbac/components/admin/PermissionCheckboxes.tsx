@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { PERMISSIONS, type Permission } from "../../schema";
 
@@ -10,6 +11,8 @@ export function PermissionCheckboxes({
   selected: Permission[];
   onChange: (permissions: Permission[]) => void;
 }) {
+  const t = useTranslations("permission");
+
   function toggle(permission: Permission) {
     onChange(
       selected.includes(permission)
@@ -24,7 +27,7 @@ export function PermissionCheckboxes({
         <Checkbox
           key={permission}
           id={`permission-${permission}`}
-          label={permission}
+          label={t(permission)}
           checked={selected.includes(permission)}
           onChange={() => toggle(permission)}
         />

@@ -1,9 +1,8 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import * as Popover from "@radix-ui/react-popover";
 import { useState } from "react";
-
-const WEEKDAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
 
 function startOfMonth(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), 1);
@@ -25,8 +24,8 @@ function formatTimeInput(date: Date): string {
   return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
-function formatDisplay(date: Date): string {
-  return date.toLocaleString(undefined, {
+function formatDisplay(date: Date, locale: string): string {
+  return date.toLocaleString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -35,12 +34,22 @@ function formatDisplay(date: Date): string {
   });
 }
 
+// Weekday initials for the header row, in the active locale's own week order
+// and script (next-intl's locale, not the browser's) — Su/Mo/... in English,
+// أحد/إثنين/... initials in Arabic, rather than a hardcoded English row.
+function weekdayLabels(locale: string): string[] {
+  const formatter = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
+  // Jan 4 1970 was a Sunday — start there so index 0..6 walks Sun..Sat,
+  // matching Date#getDay()/leadingBlanks below regardless of locale.
+  return Array.from({ length: 7 }, (_, i) => formatter.format(new Date(1970, 0, 4 + i)));
+}
+
 export function DateTimePicker({
   id,
   label,
   value,
   onChange,
-  placeholder = "Not set",
+  placeholder,
   error,
 }: {
   id?: string;
@@ -50,6 +59,9 @@ export function DateTimePicker({
   placeholder?: string;
   error?: string;
 }) {
+  const locale = useLocale();
+  const t = useTranslations("common");
+  const resolvedPlaceholder = placeholder ?? t("notSet");
   const [viewMonth, setViewMonth] = useState(() => startOfMonth(value ?? new Date()));
 
   function pickDay(day: number) {
@@ -88,16 +100,16 @@ export function DateTimePicker({
             id={id}
             type="button"
             aria-describedby={error && id ? `${id}-error` : undefined}
-            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold flex items-center justify-between gap-2 rounded-md border px-4 py-3 text-left text-sm outline-none"
+            className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold flex items-center justify-between gap-2 rounded-md border px-4 py-3 text-start text-sm outline-none"
           >
             <span className={value ? "" : "text-rymx-cream/40"}>
-              {value ? formatDisplay(value) : placeholder}
+              {value ? formatDisplay(value, locale) : resolvedPlaceholder}
             </span>
             {value && (
               <span
                 role="button"
                 tabIndex={0}
-                aria-label="Clear date"
+                aria-label={t("clearDate")}
                 onClick={(e) => {
                   e.stopPropagation();
                   onChange(null);
@@ -119,24 +131,28 @@ export function DateTimePicker({
                 type="button"
                 onClick={() => setViewMonth((m) => new Date(m.getFullYear(), m.getMonth() - 1, 1))}
                 className="text-rymx-cream/60 hover:text-rymx-gold px-2"
-                aria-label="Previous month"
+                aria-label={t("previousMonth")}
               >
-                ←
+                <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+                  ←
+                </span>
               </button>
               <span className="text-rymx-cream font-mono text-xs tracking-[0.1em] uppercase">
-                {viewMonth.toLocaleString(undefined, { month: "long", year: "numeric" })}
+                {viewMonth.toLocaleString(locale, { month: "long", year: "numeric" })}
               </span>
               <button
                 type="button"
                 onClick={() => setViewMonth((m) => new Date(m.getFullYear(), m.getMonth() + 1, 1))}
                 className="text-rymx-cream/60 hover:text-rymx-gold px-2"
-                aria-label="Next month"
+                aria-label={t("nextMonth")}
               >
-                →
+                <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+                  →
+                </span>
               </button>
             </div>
             <div className="grid grid-cols-7 gap-1 text-center">
-              {WEEKDAY_LABELS.map((wd, i) => (
+              {weekdayLabels(locale).map((wd, i) => (
                 <span key={i} className="text-rymx-cream/40 font-mono text-[10px] uppercase">
                   {wd}
                 </span>

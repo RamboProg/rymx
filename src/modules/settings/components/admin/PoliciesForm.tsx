@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -37,6 +38,9 @@ function TextAreaField({
 }
 
 export function PoliciesForm({ policies }: { policies: Policies }) {
+  const t = useTranslations("policies");
+  const tSettings = useTranslations("policiesAdmin");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [returnsPolicy, setReturnsPolicy] = useState(policies.returnsPolicy);
   const [privacyPolicy, setPrivacyPolicy] = useState(policies.privacyPolicy);
@@ -52,7 +56,7 @@ export function PoliciesForm({ policies }: { policies: Policies }) {
 
     const parsed = policiesSchema.safeParse({ returnsPolicy, privacyPolicy, termsPolicy });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -71,19 +75,19 @@ export function PoliciesForm({ policies }: { policies: Policies }) {
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
       <TextAreaField
         id="returnsPolicy"
-        label="Returns policy"
+        label={t("returns")}
         value={returnsPolicy}
         onChange={setReturnsPolicy}
       />
       <TextAreaField
         id="privacyPolicy"
-        label="Privacy policy"
+        label={t("privacy")}
         value={privacyPolicy}
         onChange={setPrivacyPolicy}
       />
       <TextAreaField
         id="termsPolicy"
-        label="Terms of service"
+        label={t("terms")}
         value={termsPolicy}
         onChange={setTermsPolicy}
       />
@@ -92,9 +96,9 @@ export function PoliciesForm({ policies }: { policies: Policies }) {
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{tCommon("saved")}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : "Save policies"}
+        {saving ? tCommon("saving") : tSettings("savePolicies")}
       </Button>
     </form>
   );

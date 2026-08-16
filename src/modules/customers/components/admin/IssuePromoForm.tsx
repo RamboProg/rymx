@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
@@ -14,6 +15,8 @@ import { createDiscountAction } from "@/modules/discounts/server/actions";
 // this entry point needs (full scoping/scheduling options stay on
 // /admin/discounts/new for public/bulk codes).
 export function IssuePromoForm({ uid, email }: { uid: string; email: string | null }) {
+  const t = useTranslations("discounts");
+  const tCommon = useTranslations("common");
   const [code, setCode] = useState("");
   const [type, setType] = useState<DiscountType>("percent");
   const [value, setValue] = useState("10");
@@ -42,7 +45,7 @@ export function IssuePromoForm({ uid, email }: { uid: string; email: string | nu
       notifyEmail: notify && email ? email : undefined,
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -62,23 +65,23 @@ export function IssuePromoForm({ uid, email }: { uid: string; email: string | nu
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Field
           id="promo-code"
-          label="Code"
+          label={t("fields.code")}
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
         <Select
           id="promo-type"
-          label="Type"
+          label={t("fields.type")}
           value={type}
           onValueChange={(v) => setType(v as DiscountType)}
           options={[
-            { value: "percent", label: "Percent off" },
-            { value: "fixed", label: "Fixed amount off (EGP)" },
+            { value: "percent", label: t("fields.typePercent") },
+            { value: "fixed", label: t("fields.typeFixed") },
           ]}
         />
         <NumberField
           id="promo-value"
-          label={type === "percent" ? "Value (%)" : "Value (EGP)"}
+          label={type === "percent" ? t("fields.valuePercent") : t("fields.valueFixed")}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -86,7 +89,7 @@ export function IssuePromoForm({ uid, email }: { uid: string; email: string | nu
       {email && (
         <Checkbox
           id="promo-notify"
-          label={`Email the code to ${email}`}
+          label={t("emailCodeTo", { email })}
           checked={notify}
           onChange={setNotify}
         />
@@ -96,9 +99,9 @@ export function IssuePromoForm({ uid, email }: { uid: string; email: string | nu
           {error}
         </p>
       )}
-      {issuedCode && <p className="text-rymx-gold font-mono text-sm">Issued {issuedCode}.</p>}
+      {issuedCode && <p className="text-rymx-gold font-mono text-sm">{t("issued", { code: issuedCode })}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Issuing…" : "Issue promo code"}
+        {saving ? t("issuing") : t("issuePromoCode")}
       </Button>
     </form>
   );

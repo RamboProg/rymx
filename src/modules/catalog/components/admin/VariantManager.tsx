@@ -32,6 +32,7 @@ export function VariantManager({
 }) {
   const router = useRouter();
   const t = useTranslations("variants");
+  const tCommon = useTranslations("common");
   const [variants, setVariants] = useState(initialVariants);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [optionValues, setOptionValues] = useState<Record<string, string>>(
@@ -70,7 +71,7 @@ export function VariantManager({
       stock: Number(stock),
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 

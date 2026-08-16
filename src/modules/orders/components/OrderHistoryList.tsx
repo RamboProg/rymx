@@ -1,10 +1,10 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { formatEGP } from "@/lib/money";
 import type { Order } from "../schema";
 
 export async function OrderHistoryList({ orders }: { orders: Order[] }) {
-  const t = await getTranslations("account");
+  const [t, locale] = await Promise.all([getTranslations("account"), getLocale()]);
   if (orders.length === 0) {
     return <p className="text-rymx-cream/50 font-mono text-sm">{t("noOrdersYet")}</p>;
   }
@@ -19,7 +19,7 @@ export async function OrderHistoryList({ orders }: { orders: Order[] }) {
           >
             <div className="text-rymx-cream/70 font-mono text-xs">
               <p className="text-rymx-cream">{t("orderNumber", { id: order.id })}</p>
-              <p>{order.createdAt.toLocaleDateString()}</p>
+              <p>{order.createdAt.toLocaleDateString(locale)}</p>
             </div>
             <p className="text-rymx-gold font-mono text-sm">{formatEGP(order.totalMinor)}</p>
           </Link>

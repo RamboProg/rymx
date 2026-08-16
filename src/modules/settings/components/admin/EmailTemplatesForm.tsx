@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -7,6 +8,8 @@ import { emailTemplatesSchema, type EmailTemplates } from "../../schema";
 import { updateEmailTemplatesAction } from "../../server/actions";
 
 export function EmailTemplatesForm({ templates }: { templates: EmailTemplates }) {
+  const t = useTranslations("emailTemplates");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [orderConfirmationIntro, setOrderConfirmationIntro] = useState(
     templates.orderConfirmationIntro,
@@ -23,7 +26,7 @@ export function EmailTemplatesForm({ templates }: { templates: EmailTemplates })
 
     const parsed = emailTemplatesSchema.safeParse({ orderConfirmationIntro, promoCodeIntro });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -45,7 +48,7 @@ export function EmailTemplatesForm({ templates }: { templates: EmailTemplates })
           htmlFor="orderConfirmationIntro"
           className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
         >
-          Order confirmation email — intro line (optional)
+          {t("orderConfirmationIntro")}
         </label>
         <textarea
           id="orderConfirmationIntro"
@@ -60,7 +63,7 @@ export function EmailTemplatesForm({ templates }: { templates: EmailTemplates })
           htmlFor="promoCodeIntro"
           className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
         >
-          Promo code email — intro line (optional)
+          {t("promoCodeIntro")}
         </label>
         <textarea
           id="promoCodeIntro"
@@ -75,9 +78,9 @@ export function EmailTemplatesForm({ templates }: { templates: EmailTemplates })
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{tCommon("saved")}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : "Save email templates"}
+        {saving ? tCommon("saving") : t("saveEmailTemplates")}
       </Button>
     </form>
   );

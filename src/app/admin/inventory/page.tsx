@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { InventoryTable } from "@/modules/inventory/components/InventoryTable";
 import { listAdjustments, listVariantsAcrossProducts } from "@/modules/inventory/server";
@@ -7,10 +7,11 @@ import { listAdjustments, listVariantsAcrossProducts } from "@/modules/inventory
 export const metadata: Metadata = { title: "Inventory — Admin — RYMX" };
 
 export default async function AdminInventoryPage() {
-  const [rows, adjustments, t] = await Promise.all([
+  const [rows, adjustments, t, locale] = await Promise.all([
     listVariantsAcrossProducts(),
     listAdjustments(20),
     getTranslations("inventory"),
+    getLocale(),
   ]);
 
   return (
@@ -56,7 +57,7 @@ export default async function AdminInventoryPage() {
                   <Td>{adjustment.delta > 0 ? `+${adjustment.delta}` : adjustment.delta}</Td>
                   <Td>{adjustment.newStock}</Td>
                   <Td>{adjustment.reason}</Td>
-                  <Td>{adjustment.createdAt.toLocaleString()}</Td>
+                  <Td>{adjustment.createdAt.toLocaleString(locale)}</Td>
                 </tr>
               ))}
             </tbody>

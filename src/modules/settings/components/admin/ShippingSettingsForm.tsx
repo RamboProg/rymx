@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -29,6 +30,8 @@ function parseZonesText(text: string): ShippingZone[] {
 }
 
 export function ShippingSettingsForm({ settings }: { settings: ShippingSettings }) {
+  const t = useTranslations("shippingSettings");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [defaultFee, setDefaultFee] = useState(String(settings.defaultFeeMinor / 100));
   const [freeThreshold, setFreeThreshold] = useState(
@@ -52,7 +55,7 @@ export function ShippingSettingsForm({ settings }: { settings: ShippingSettings 
       zones: parseZonesText(zonesText),
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -72,14 +75,14 @@ export function ShippingSettingsForm({ settings }: { settings: ShippingSettings 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <NumberField
           id="defaultFee"
-          label="Default shipping fee (EGP)"
+          label={t("defaultFee")}
           step="0.01"
           value={defaultFee}
           onChange={(e) => setDefaultFee(e.target.value)}
         />
         <NumberField
           id="freeThreshold"
-          label="Free shipping over (EGP, blank = never)"
+          label={t("freeThreshold")}
           step="0.01"
           value={freeThreshold}
           onChange={(e) => setFreeThreshold(e.target.value)}
@@ -90,7 +93,7 @@ export function ShippingSettingsForm({ settings }: { settings: ShippingSettings 
           htmlFor="zones"
           className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
         >
-          Governorate zones (one per line, e.g. &quot;Cairo, Giza: 30&quot;)
+          {t("zonesLabel")}
         </label>
         <textarea
           id="zones"
@@ -105,9 +108,9 @@ export function ShippingSettingsForm({ settings }: { settings: ShippingSettings 
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{tCommon("saved")}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : "Save shipping settings"}
+        {saving ? tCommon("saving") : t("saveShippingSettings")}
       </Button>
     </form>
   );

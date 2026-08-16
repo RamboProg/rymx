@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Table, Td, Th } from "@/components/admin/Table";
@@ -11,6 +12,9 @@ import { PermissionCheckboxes } from "./PermissionCheckboxes";
 const ASSIGNABLE_ROLES = ROLES.filter((r) => r !== "customer") as Exclude<Role, "customer">[];
 
 function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) {
+  const t = useTranslations("staffAdmin");
+  const tRole = useTranslations("role");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [role, setRole] = useState(member.role);
   const [permissions, setPermissions] = useState<Permission[]>(member.permissions);
@@ -48,10 +52,10 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
       <tr>
         <Td>
           {member.displayName ?? member.email ?? member.uid}
-          {isSelf && <span className="text-rymx-cream/40"> (you)</span>}
+          {isSelf && <span className="text-rymx-cream/40"> {t("you")}</span>}
         </Td>
         <Td>{member.email}</Td>
-        <Td>{member.role}</Td>
+        <Td>{tRole(member.role)}</Td>
         <Td>{member.permissions.length}</Td>
         <Td>
           {!isSelf && (
@@ -61,7 +65,7 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
                 onClick={() => setEditing((v) => !v)}
                 className="hover:text-rymx-gold"
               >
-                {editing ? "Cancel" : "Edit"}
+                {editing ? tCommon("cancel") : tCommon("edit")}
               </button>
               <button
                 type="button"
@@ -69,7 +73,7 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
                 onClick={onRevoke}
                 className="hover:text-red-400"
               >
-                Revoke
+                {t("revoke")}
               </button>
             </div>
           )}
@@ -83,7 +87,7 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
                 <Select
                   value={role}
                   onValueChange={(v) => setRole(v as Role)}
-                  options={ASSIGNABLE_ROLES.map((r) => ({ value: r, label: r }))}
+                  options={ASSIGNABLE_ROLES.map((r) => ({ value: r, label: tRole(r) }))}
                 />
               </div>
               <PermissionCheckboxes selected={permissions} onChange={setPermissions} />
@@ -98,7 +102,7 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
                 onClick={onSave}
                 className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold w-fit rounded-md border px-4 py-2 font-mono text-xs uppercase hover:text-[#12100a] disabled:opacity-50"
               >
-                {busy ? "Saving…" : "Save"}
+                {busy ? tCommon("saving") : tCommon("save")}
               </button>
             </div>
           </td>
@@ -109,15 +113,16 @@ function StaffRow({ member, isSelf }: { member: StaffMember; isSelf: boolean }) 
 }
 
 export function StaffTable({ staff, currentUid }: { staff: StaffMember[]; currentUid: string }) {
+  const t = useTranslations("staffAdmin");
   return (
     <Table>
       <thead>
         <tr>
-          <Th>Name</Th>
-          <Th>Email</Th>
-          <Th>Role</Th>
-          <Th>Permissions</Th>
-          <Th>Actions</Th>
+          <Th>{t("colName")}</Th>
+          <Th>{t("colEmail")}</Th>
+          <Th>{t("colRole")}</Th>
+          <Th>{t("colPermissions")}</Th>
+          <Th>{t("colActions")}</Th>
         </tr>
       </thead>
       <tbody>

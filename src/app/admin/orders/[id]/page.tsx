@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { formatEGP } from "@/lib/money";
@@ -21,34 +22,40 @@ export default async function AdminOrderDetailPage({
   const order = await getOrderById(id);
   if (!order) notFound();
 
-  const [notes, shipments, returns] = await Promise.all([
+  const [notes, shipments, returns, t, tOrderSummary, locale] = await Promise.all([
     listOrderNotes(id),
     listShipmentsByOrder(id),
     listReturnsByOrder(id),
+    getTranslations("ordersAdmin"),
+    getTranslations("orderSummary"),
+    getLocale(),
   ]);
 
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <h1 className="font-display text-rymx-cream text-2xl font-bold">
-          Order #{order.id.slice(0, 8)}
+          {t("orderNumber", { id: order.id.slice(0, 8) })}
         </h1>
         <p className="text-rymx-cream/50 font-mono text-xs">
-          {order.createdAt.toLocaleString()} — {order.email ?? "guest"}
+          {t("placedMeta", {
+            when: order.createdAt.toLocaleString(locale),
+            email: order.email ?? t("guest"),
+          })}
         </p>
       </div>
 
       <OrderStatusActions order={order} />
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Items</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("itemsHeading")}</h2>
         <Table>
           <thead>
             <tr>
-              <Th>Item</Th>
-              <Th>SKU</Th>
-              <Th>Qty</Th>
-              <Th>Price</Th>
+              <Th>{t("colItem")}</Th>
+              <Th>{t("colSku")}</Th>
+              <Th>{t("colQty")}</Th>
+              <Th>{t("colPrice")}</Th>
             </tr>
           </thead>
           <tbody>
@@ -64,40 +71,44 @@ export default async function AdminOrderDetailPage({
         </Table>
         <div className="text-rymx-cream/80 flex flex-col gap-1 self-end font-mono text-sm">
           <div className="flex justify-between gap-8">
-            <span>Subtotal</span>
+            <span>{tOrderSummary("subtotal")}</span>
             <span>{formatEGP(order.subtotalMinor)}</span>
           </div>
           {order.discountMinor > 0 && (
             <div className="flex justify-between gap-8">
-              <span>Discount ({order.discountCode})</span>
+              <span>
+                {tOrderSummary("discount")} ({order.discountCode})
+              </span>
               <span>-{formatEGP(order.discountMinor)}</span>
             </div>
           )}
           <div className="flex justify-between gap-8">
-            <span>Shipping</span>
+            <span>{tOrderSummary("shipping")}</span>
             <span>{formatEGP(order.shippingFeeMinor)}</span>
           </div>
           {order.taxMinor > 0 && (
             <div className="flex justify-between gap-8">
-              <span>Tax</span>
+              <span>{tOrderSummary("tax")}</span>
               <span>{formatEGP(order.taxMinor)}</span>
             </div>
           )}
           {order.codFeeMinor > 0 && (
             <div className="flex justify-between gap-8">
-              <span>COD fee</span>
+              <span>{tOrderSummary("codFee")}</span>
               <span>{formatEGP(order.codFeeMinor)}</span>
             </div>
           )}
           <div className="text-rymx-cream flex justify-between gap-8 font-bold">
-            <span>Total</span>
+            <span>{tOrderSummary("total")}</span>
             <span>{formatEGP(order.totalMinor)}</span>
           </div>
         </div>
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Shipping address</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">
+          {t("shippingAddressHeading")}
+        </h2>
         <p className="text-rymx-cream/80 font-mono text-sm">
           {order.shipping.fullName}
           <br />

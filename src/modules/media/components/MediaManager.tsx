@@ -82,7 +82,11 @@ export function MediaManager({
                 onClick={() => moveMedia(index, -1)}
                 className="disabled:opacity-30"
               >
-                {t("moveLeft")}
+                {/* The glyph flips in RTL; the label names the action, not a screen side. */}
+                <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+                  ←
+                </span>{" "}
+                {t("moveBack")}
               </button>
               <button
                 type="button"
@@ -90,7 +94,10 @@ export function MediaManager({
                 onClick={() => moveMedia(index, 1)}
                 className="disabled:opacity-30"
               >
-                {t("moveRight")}
+                {t("moveForward")}{" "}
+                <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+                  →
+                </span>
               </button>
               <button
                 type="button"
@@ -114,7 +121,7 @@ export function MediaManager({
           accept="image/jpeg,image/png,image/webp,image/gif"
           disabled={uploading}
           onChange={onFileSelected}
-          className="text-rymx-cream/70 file:border-rymx-gold file:text-rymx-gold font-mono text-xs file:mr-3 file:rounded-full file:border file:bg-transparent file:px-3 file:py-1.5 file:font-mono file:text-xs"
+          className="text-rymx-cream/70 file:border-rymx-gold file:text-rymx-gold font-mono text-xs file:me-3 file:rounded-full file:border file:bg-transparent file:px-3 file:py-1.5 file:font-mono file:text-xs"
         />
       </label>
       {uploading && <p className="text-rymx-cream/50 font-mono text-xs">{t("uploading")}</p>}

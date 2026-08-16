@@ -17,16 +17,21 @@ import {
   createVariant,
   deleteCategory,
   deleteVariant,
+  importProductsFromCsv,
   reorderCategories,
   updateCategory,
   updateProduct,
   updateVariant,
+  type CsvImportSummary,
 } from "./admin";
 
 type ProductActionResult = { ok: true; product: Product } | { ok: false; error: string };
 type VariantActionResult = { ok: true; variant: Variant } | { ok: false; error: string };
 type VoidActionResult = { ok: true } | { ok: false; error: string };
 type CategoryActionResult = { ok: true; category: Category } | { ok: false; error: string };
+type CsvImportActionResult =
+  | { ok: true; summary: CsvImportSummary }
+  | { ok: false; error: string };
 
 // Returns the caller's claims when they may write products (and passes the
 // rate-limit), else null — so actions can both authorize and read staffUid.
@@ -48,6 +53,30 @@ export async function createProductAction(rawInput: unknown): Promise<ProductAct
     return { ok: true, product };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Failed to create product" };
+  }
+}
+
+const MAX_IMPORT_FILE_BYTES = 10 * 1024 * 1024;
+
+export async function importProductsCsvAction(formData: FormData): Promise<CsvImportActionResult> {
+  const claims = await requireProductsWrite();
+  if (!claims) return { ok: false, error: "Forbidden" };
+
+  const file = formData.get("file");
+  if (!(file instanceof File)) return { ok: false, error: "No file provided" };
+  if (file.size === 0) return { ok: false, error: "The file is empty" };
+  if (file.size > MAX_IMPORT_FILE_BYTES) return { ok: false, error: "File is too large (max 10 MB)" };
+
+  try {
+    const text = await file.text();
+    const summary = await importProductsFromCsv(text, claims.uid);
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/categories");
+    revalidatePath("/admin/inventory");
+    revalidatePath("/shop");
+    return { ok: true, summary };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Import failed" };
   }
 }
 

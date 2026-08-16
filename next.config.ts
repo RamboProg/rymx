@@ -36,6 +36,14 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
         pathname: "/**",
       },
+      // Products bulk-imported via CSV (see catalog/services/csvImport.ts)
+      // keep their image URLs pointing at Shopify's CDN rather than being
+      // re-uploaded to Cloudinary — staff can swap them in per-product later.
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/**",
+      },
     ],
   },
   async headers() {

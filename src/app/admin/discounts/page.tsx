@@ -11,8 +11,9 @@ import { listAllDiscounts } from "@/modules/discounts/server/admin";
 export const metadata: Metadata = { title: "Discounts — Admin — RYMX" };
 
 export default async function AdminDiscountsPage() {
-  const [discounts, t] = await Promise.all([
+  const [discounts, t, tPage] = await Promise.all([
     listAllDiscounts(),
+    getTranslations("discounts"),
     getTranslations("pages.discounts"),
   ]);
 
@@ -20,24 +21,24 @@ export default async function AdminDiscountsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
-          <p className="text-rymx-cream/50 font-sans text-sm">{t("description")}</p>
+          <h1 className="font-display text-rymx-cream text-2xl font-bold">{tPage("title")}</h1>
+          <p className="text-rymx-cream/50 font-sans text-sm">{tPage("description")}</p>
         </div>
-        <Button href="/admin/discounts/new">New discount</Button>
+        <Button href="/admin/discounts/new">{t("newDiscount")}</Button>
       </div>
 
       {discounts.length === 0 ? (
-        <p className="text-rymx-cream/50 font-mono text-sm">No discounts yet.</p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{t("empty")}</p>
       ) : (
         <Table>
           <thead>
             <tr>
-              <Th>Code</Th>
-              <Th>Value</Th>
-              <Th>Assigned to</Th>
-              <Th>Redeemed</Th>
-              <Th>Status</Th>
-              <Th>Actions</Th>
+              <Th>{t("colCode")}</Th>
+              <Th>{t("colValue")}</Th>
+              <Th>{t("colAssignedTo")}</Th>
+              <Th>{t("colRedeemed")}</Th>
+              <Th>{t("colStatus")}</Th>
+              <Th>{t("colActions")}</Th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +57,7 @@ export default async function AdminDiscountsPage() {
                   {discount.redeemedCount}
                   {discount.usageLimit ? ` / ${discount.usageLimit}` : ""}
                 </Td>
-                <Td>{discount.active ? "Active" : "Inactive"}</Td>
+                <Td>{discount.active ? t("statusActive") : t("statusInactive")}</Td>
                 <Td>
                   <DiscountActiveToggle code={discount.code} active={discount.active} />
                 </Td>

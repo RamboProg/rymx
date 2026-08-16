@@ -43,7 +43,7 @@ export function Select({
           aria-label={ariaLabel}
           aria-invalid={error ? true : undefined}
           aria-describedby={error && id ? `${id}-error` : undefined}
-          className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold data-[placeholder]:text-rymx-cream/40 flex w-full items-center justify-between gap-2 rounded-md border px-4 py-3 text-left text-sm outline-none disabled:opacity-50"
+          className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold data-[placeholder]:text-rymx-cream/40 flex w-full items-center justify-between gap-2 rounded-md border px-4 py-3 text-start text-sm outline-none disabled:opacity-50"
         >
           <RadixSelect.Value placeholder={placeholder} />
           <RadixSelect.Icon className="text-rymx-cream/60">▾</RadixSelect.Icon>

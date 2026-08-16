@@ -1,7 +1,9 @@
 "use client";
 
 import * as RadixToast from "@radix-ui/react-toast";
+import { useLocale, useTranslations } from "next-intl";
 import { createContext, useCallback, useContext, useRef, useState } from "react";
+import { dirForLocale, type Locale } from "@/i18n/locale";
 
 type ToastVariant = "success" | "error";
 type ToastEntry = { id: string; message: string; variant: ToastVariant };
@@ -17,6 +19,11 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 // success/error notice). Mounted once in the root layout; call useToast()
 // anywhere below it.
 export function ToastProvider({ children }: { children: React.ReactNode }) {
+  const locale = useLocale() as Locale;
+  const t = useTranslations("common");
+  // Swipe-to-dismiss should match the corner the toast actually renders in
+  // (the end side — right in LTR, left in RTL), not a hardcoded screen side.
+  const swipeDirection = dirForLocale(locale) === "rtl" ? "left" : "right";
   const [toasts, setToasts] = useState<ToastEntry[]>([]);
   const counter = useRef(0);
 
@@ -32,39 +39,39 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   };
 
   function remove(id: string) {
-    setToasts((current) => current.filter((t) => t.id !== id));
+    setToasts((current) => current.filter((toast) => toast.id !== id));
   }
 
   return (
     <ToastContext.Provider value={value}>
-      <RadixToast.Provider swipeDirection="right" duration={4000}>
+      <RadixToast.Provider swipeDirection={swipeDirection} duration={4000}>
         {children}
-        {toasts.map((t) => (
+        {toasts.map((toast) => (
           <RadixToast.Root
-            key={t.id}
+            key={toast.id}
             onOpenChange={(open) => {
-              if (!open) remove(t.id);
+              if (!open) remove(toast.id);
             }}
             className={`border-rymx-cream/10 bg-rymx-card flex items-start gap-3 rounded-md border p-4 shadow-lg transition-all data-[state=closed]:opacity-0 data-[state=open]:opacity-100 ${
-              t.variant === "error" ? "border-red-400/30" : "border-rymx-gold/30"
+              toast.variant === "error" ? "border-red-400/30" : "border-rymx-gold/30"
             }`}
           >
             <RadixToast.Description
               className={`font-mono text-xs ${
-                t.variant === "error" ? "text-red-400" : "text-rymx-cream"
+                toast.variant === "error" ? "text-red-400" : "text-rymx-cream"
               }`}
             >
-              {t.message}
+              {toast.message}
             </RadixToast.Description>
             <RadixToast.Close
-              aria-label="Dismiss"
-              className="text-rymx-cream/40 hover:text-rymx-cream ml-auto text-xs"
+              aria-label={t("dismiss")}
+              className="text-rymx-cream/40 hover:text-rymx-cream ms-auto text-xs"
             >
               ✕
             </RadixToast.Close>
           </RadixToast.Root>
         ))}
-        <RadixToast.Viewport className="fixed top-4 right-4 z-[100] flex w-full max-w-sm flex-col gap-2 outline-none" />
+        <RadixToast.Viewport className="fixed top-4 end-4 z-[100] flex w-full max-w-sm flex-col gap-2 outline-none" />
       </RadixToast.Provider>
     </ToastContext.Provider>
   );

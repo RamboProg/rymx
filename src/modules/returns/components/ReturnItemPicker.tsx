@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Field, NumberField } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { RETURN_REASONS } from "../schema";
@@ -9,8 +10,6 @@ export type ReturnItemPickerValue = {
   reasonCategory: string;
   reasonDetail: string;
 };
-
-const REASON_OPTIONS = RETURN_REASONS.map((r) => ({ value: r.value, label: r.label }));
 
 // Item name + quantity + reason picker for one order line item. Shared by
 // the customer-facing RequestReturnForm and the staff "log a return" section
@@ -27,13 +26,16 @@ export function ReturnItemPicker({
   value: ReturnItemPickerValue;
   onChange: (value: ReturnItemPickerValue) => void;
 }) {
+  const t = useTranslations("returns");
+  const reasonOptions = RETURN_REASONS.map((r) => ({ value: r.value, label: t(`reasons.${r.value}`) }));
+
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
       <span className="text-rymx-cream/80 flex-1 font-mono text-sm">
-        {title} ({max} eligible)
+        {t("eligibleCount", { title, count: max })}
       </span>
       <NumberField
-        aria-label={`Quantity for ${title}`}
+        aria-label={t("quantityFor", { title })}
         min={0}
         max={max}
         value={String(value.quantity)}
@@ -46,17 +48,17 @@ export function ReturnItemPicker({
         className="sm:w-24"
       />
       <Select
-        ariaLabel={`Reason for ${title}`}
+        ariaLabel={t("reasonFor", { title })}
         value={value.reasonCategory}
         onValueChange={(reasonCategory) => onChange({ ...value, reasonCategory })}
-        options={REASON_OPTIONS}
-        placeholder="Reason"
+        options={reasonOptions}
+        placeholder={t("reasonPlaceholder")}
       />
       {value.reasonCategory === "other" && (
         <div className="sm:w-48">
           <Field
-            label="Details"
-            placeholder="Describe the reason"
+            label={t("details")}
+            placeholder={t("detailsPlaceholder")}
             value={value.reasonDetail}
             onChange={(e) => onChange({ ...value, reasonDetail: e.target.value })}
           />

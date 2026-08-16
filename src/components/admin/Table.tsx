@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef } from "react";
 export function Table({ children, ...props }: ComponentPropsWithoutRef<"table">) {
   return (
     <div className="border-rymx-cream/10 overflow-x-auto rounded-md border">
-      <table className="w-full min-w-max text-left" {...props}>
+      <table className="w-full min-w-max text-start" {...props}>
         {children}
       </table>
     </div>

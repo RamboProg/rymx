@@ -33,27 +33,29 @@ export default async function AdminSettingsPage() {
       </div>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Shipping</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("shippingHeading")}</h2>
         <ShippingSettingsForm settings={shipping} />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Store &amp; COD</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("storeHeading")}</h2>
         <StoreSettingsForm settings={store} />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Content</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("contentHeading")}</h2>
         <ContentSettingsForm settings={content} />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Policies</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("policiesHeading")}</h2>
         <PoliciesForm policies={policies} />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Email templates</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">
+          {t("emailTemplatesHeading")}
+        </h2>
         <EmailTemplatesForm templates={emailTemplates} />
       </section>
     </div>

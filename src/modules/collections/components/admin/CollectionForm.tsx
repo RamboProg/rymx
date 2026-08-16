@@ -22,6 +22,7 @@ export function CollectionForm({
 }) {
   const router = useRouter();
   const t = useTranslations("collections");
+  const tCommon = useTranslations("common");
   const [title, setTitle] = useState(collection?.title ?? "");
   const [description, setDescription] = useState(collection?.description ?? "");
   const [publishAt, setPublishAt] = useState<Date | null>(collection?.publishAt ?? null);
@@ -50,7 +51,7 @@ export function CollectionForm({
       active,
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 

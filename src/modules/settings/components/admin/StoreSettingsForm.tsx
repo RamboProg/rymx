@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -9,6 +10,8 @@ import { storeSettingsSchema, type StoreSettings } from "../../schema";
 import { updateStoreSettingsAction } from "../../server/actions";
 
 export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
+  const t = useTranslations("storeSettings");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [storeName, setStoreName] = useState(settings.storeName);
   const [supportEmail, setSupportEmail] = useState(settings.supportEmail ?? "");
@@ -36,7 +39,7 @@ export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
       taxPercent: Number(taxPercent),
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -56,13 +59,13 @@ export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field
           id="storeName"
-          label="Store name"
+          label={t("storeName")}
           value={storeName}
           onChange={(e) => setStoreName(e.target.value)}
         />
         <Field
           id="supportEmail"
-          label="Support email"
+          label={t("supportEmail")}
           type="email"
           value={supportEmail}
           onChange={(e) => setSupportEmail(e.target.value)}
@@ -71,7 +74,7 @@ export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
 
       <Checkbox
         id="codEnabled"
-        label="Accepting cash-on-delivery orders"
+        label={t("codEnabled")}
         checked={codEnabled}
         onChange={setCodEnabled}
       />
@@ -79,20 +82,20 @@ export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <NumberField
           id="codFee"
-          label="COD handling fee (EGP)"
+          label={t("codFee")}
           step="0.01"
           value={codFee}
           onChange={(e) => setCodFee(e.target.value)}
         />
         <NumberField
           id="maxOrderValue"
-          label="Max COD order value (EGP, blank = no cap)"
+          label={t("maxOrderValue")}
           value={maxOrderValue}
           onChange={(e) => setMaxOrderValue(e.target.value)}
         />
         <NumberField
           id="taxPercent"
-          label="Tax rate (%)"
+          label={t("taxRate")}
           step="0.01"
           value={taxPercent}
           onChange={(e) => setTaxPercent(e.target.value)}
@@ -104,9 +107,9 @@ export function StoreSettingsForm({ settings }: { settings: StoreSettings }) {
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{tCommon("saved")}</p>}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : "Save store settings"}
+        {saving ? tCommon("saving") : t("saveStoreSettings")}
       </Button>
     </form>
   );

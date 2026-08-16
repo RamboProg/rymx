@@ -62,7 +62,7 @@ function AdjustRow({
       productId: row.productId,
       variantId: row.variantId,
       delta: qty,
-      reason: "Received stock",
+      reason: t("receivedStock"),
     });
     setPending(false);
 
@@ -82,7 +82,7 @@ function AdjustRow({
             value={delta}
             onChange={(e) => setDelta(e.target.value)}
             placeholder={t("deltaPlaceholder")}
-            className="py-1 pr-7 text-xs"
+            className="py-1 pe-7 text-xs"
           />
         </div>
         <input
@@ -107,7 +107,7 @@ function AdjustRow({
             onChange={(e) => setAddQty(e.target.value)}
             placeholder={t("addQtyPlaceholder")}
             min={1}
-            className="py-1 pr-7 text-xs"
+            className="py-1 pe-7 text-xs"
           />
         </div>
         <button
@@ -207,7 +207,7 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
                   {row.stock}
                 </span>
                 {row.stock <= LOW_STOCK_THRESHOLD && (
-                  <span className="ml-2 font-mono text-xs text-red-400 uppercase">{t("low")}</span>
+                  <span className="ms-2 font-mono text-xs text-red-400 uppercase">{t("low")}</span>
                 )}
               </Td>
               <Td>

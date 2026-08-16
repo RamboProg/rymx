@@ -5,13 +5,15 @@ export type ReturnStatus = z.infer<typeof returnStatusSchema>;
 
 // Fixed reason categories — the only way "most common return reason" can
 // mean anything in analytics. Shared source of truth for both the customer
-// self-service form and the staff "log a return" form.
+// self-service form and the staff "log a return" form. Values only — display
+// labels come from the `returnReasons` message namespace (see
+// returnReasonLabel below), not baked in here, so they localize.
 export const RETURN_REASONS = [
-  { value: "wrong_size", label: "Wrong size" },
-  { value: "changed_mind", label: "Changed my mind" },
-  { value: "defective", label: "Defective or damaged" },
-  { value: "not_as_described", label: "Not as described" },
-  { value: "other", label: "Other" },
+  { value: "wrong_size" },
+  { value: "changed_mind" },
+  { value: "defective" },
+  { value: "not_as_described" },
+  { value: "other" },
 ] as const;
 export const returnReasonCategorySchema = z.enum(
   RETURN_REASONS.map((r) => r.value) as [string, ...string[]],
@@ -19,10 +21,16 @@ export const returnReasonCategorySchema = z.enum(
 export type ReturnReasonCategory = z.infer<typeof returnReasonCategorySchema>;
 
 // reasonDetail is always present in the type but only meaningfully populated
-// when reasonCategory is "other" (free-text elaboration).
-export function returnReasonLabel(item: { reasonCategory: string; reasonDetail: string }): string {
-  if (item.reasonCategory === "other") return item.reasonDetail || "Other";
-  return RETURN_REASONS.find((r) => r.value === item.reasonCategory)?.label ?? item.reasonCategory;
+// when reasonCategory is "other" (free-text elaboration). `t` is the
+// `returnReasons` namespace's translate function from the calling component.
+export function returnReasonLabel(
+  item: { reasonCategory: string; reasonDetail: string },
+  t: (key: string) => string,
+): string {
+  if (item.reasonCategory === "other") return item.reasonDetail || t("other");
+  return RETURN_REASONS.some((r) => r.value === item.reasonCategory)
+    ? t(item.reasonCategory)
+    : item.reasonCategory;
 }
 
 export const returnItemSchema = z.object({

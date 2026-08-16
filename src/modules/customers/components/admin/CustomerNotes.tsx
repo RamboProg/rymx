@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { addCustomerNoteAction } from "../../server/actions";
@@ -12,6 +13,8 @@ export function CustomerNotes({
   uid: string;
   notes: CustomerNote[];
 }) {
+  const t = useTranslations("pages.customers");
+  const locale = useLocale();
   const [notes, setNotes] = useState(initialNotes);
   const [body, setBody] = useState("");
   const [saving, setSaving] = useState(false);
@@ -33,7 +36,7 @@ export function CustomerNotes({
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-display text-rymx-cream text-lg font-bold">Internal notes</h2>
+      <h2 className="font-display text-rymx-cream text-lg font-bold">{t("notesHeading")}</h2>
 
       {notes.length > 0 && (
         <ul className="flex flex-col gap-3">
@@ -43,7 +46,7 @@ export function CustomerNotes({
                 {note.body}
               </p>
               <p className="text-rymx-cream/40 mt-1 font-mono text-xs">
-                {note.createdAt.toLocaleString()}
+                {note.createdAt.toLocaleString(locale)}
               </p>
             </li>
           ))}
@@ -55,7 +58,7 @@ export function CustomerNotes({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={3}
-          placeholder="Add a note…"
+          placeholder={t("notePlaceholder")}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold rounded-md border px-4 py-3 text-sm outline-none"
         />
         {error && (
@@ -68,7 +71,7 @@ export function CustomerNotes({
           disabled={saving || body.trim().length === 0}
           className="w-fit justify-center"
         >
-          {saving ? "Saving…" : "Add note"}
+          {saving ? t("saving") : t("addNote")}
         </Button>
       </form>
     </section>

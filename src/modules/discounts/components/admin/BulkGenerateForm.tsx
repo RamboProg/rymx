@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { NumberField, Field } from "@/components/ui/Input";
@@ -8,6 +9,7 @@ import type { DiscountType } from "../../schema";
 import { bulkGenerateCodesAction } from "../../server/actions";
 
 export function BulkGenerateForm() {
+  const t = useTranslations("discounts");
   const [prefix, setPrefix] = useState("");
   const [count, setCount] = useState("10");
   const [type, setType] = useState<DiscountType>("percent");
@@ -42,34 +44,34 @@ export function BulkGenerateForm() {
       className="border-rymx-cream/10 bg-rymx-card flex flex-col gap-4 rounded-md border p-5"
     >
       <h3 className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-        Bulk-generate single-use codes
+        {t("bulkTitle")}
       </h3>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
         <Field
           id="bulk-prefix"
-          label="Prefix (optional)"
+          label={t("bulkPrefix")}
           value={prefix}
           onChange={(e) => setPrefix(e.target.value)}
         />
         <NumberField
           id="bulk-count"
-          label="How many"
+          label={t("bulkHowMany")}
           value={count}
           onChange={(e) => setCount(e.target.value)}
         />
         <Select
           id="bulk-type"
-          label="Type"
+          label={t("fields.type")}
           value={type}
           onValueChange={(v) => setType(v as DiscountType)}
           options={[
-            { value: "percent", label: "Percent off" },
-            { value: "fixed", label: "Fixed amount off (EGP)" },
+            { value: "percent", label: t("fields.typePercent") },
+            { value: "fixed", label: t("fields.typeFixed") },
           ]}
         />
         <NumberField
           id="bulk-value"
-          label={type === "percent" ? "Value (%)" : "Value (EGP)"}
+          label={type === "percent" ? t("fields.valuePercent") : t("fields.valueFixed")}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -81,11 +83,11 @@ export function BulkGenerateForm() {
       )}
       {codes && (
         <p className="text-rymx-cream/80 font-mono text-sm break-words">
-          Generated: {codes.join(", ")}
+          {t("bulkGenerated", { codes: codes.join(", ") })}
         </p>
       )}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Generating…" : "Generate codes"}
+        {saving ? t("bulkGenerating") : t("bulkGenerateCodes")}
       </Button>
     </form>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -17,6 +18,7 @@ const DEFAULT_REASON = RETURN_REASONS[0].value;
 // approve/reject/restock controls (staff-only). Calls requestReturnAction
 // instead of createReturnAction.
 export function RequestReturnForm({ order, returns }: { order: Order; returns: Return[] }) {
+  const t = useTranslations("returns");
   const router = useRouter();
   const remaining = remainingToReturn(order.items, returns);
   const returnableItems = order.items.filter((item) => (remaining.get(item.variantId) ?? 0) > 0);
@@ -38,7 +40,7 @@ export function RequestReturnForm({ order, returns }: { order: Order; returns: R
       .map((item) => ({ variantId: item.variantId, ...valueFor(item.variantId) }))
       .filter((item) => item.quantity > 0);
     if (items.length === 0) {
-      setError("Enter a quantity for at least one item.");
+      setError(t("enterQuantity"));
       return;
     }
 
@@ -72,7 +74,7 @@ export function RequestReturnForm({ order, returns }: { order: Order; returns: R
         </p>
       )}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Submitting…" : "Request return"}
+        {saving ? t("submitting") : t("requestReturn")}
       </Button>
     </form>
   );

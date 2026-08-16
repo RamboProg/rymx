@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -18,6 +19,8 @@ function parseIdsText(text: string): string[] {
 }
 
 export function DiscountForm({ discount }: { discount?: Discount }) {
+  const t = useTranslations("discounts");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const [code, setCode] = useState(discount?.code ?? "");
   const [type, setType] = useState<DiscountType>(discount?.type ?? "percent");
@@ -62,7 +65,7 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
       notifyEmail: notifyEmail.trim() || undefined,
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? tCommon("invalidInput"));
       return;
     }
 
@@ -89,24 +92,24 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Field
           id="code"
-          label="Code"
+          label={t("fields.code")}
           value={code}
           onChange={(e) => setCode(e.target.value)}
           disabled={!!discount}
         />
         <Select
           id="type"
-          label="Type"
+          label={t("fields.type")}
           value={type}
           onValueChange={(v) => setType(v as DiscountType)}
           options={[
-            { value: "percent", label: "Percent off" },
-            { value: "fixed", label: "Fixed amount off (EGP)" },
+            { value: "percent", label: t("fields.typePercent") },
+            { value: "fixed", label: t("fields.typeFixed") },
           ]}
         />
         <NumberField
           id="value"
-          label={type === "percent" ? "Value (%)" : "Value (EGP)"}
+          label={type === "percent" ? t("fields.valuePercent") : t("fields.valueFixed")}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -115,20 +118,20 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <NumberField
           id="minSpend"
-          label="Minimum spend (EGP)"
+          label={t("fields.minSpend")}
           step="0.01"
           value={minSpend}
           onChange={(e) => setMinSpend(e.target.value)}
         />
         <NumberField
           id="usageLimit"
-          label="Total usage limit (blank = unlimited)"
+          label={t("fields.usageLimit")}
           value={usageLimit}
           onChange={(e) => setUsageLimit(e.target.value)}
         />
         <NumberField
           id="perUserLimit"
-          label="Per-customer limit"
+          label={t("fields.perUserLimit")}
           value={perUserLimit}
           onChange={(e) => setPerUserLimit(e.target.value)}
         />
@@ -137,27 +140,22 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <DateTimePicker
           id="startsAt"
-          label="Starts at (optional)"
+          label={t("fields.startsAt")}
           value={startsAt}
           onChange={setStartsAt}
         />
-        <DateTimePicker
-          id="endsAt"
-          label="Ends at (optional)"
-          value={endsAt}
-          onChange={setEndsAt}
-        />
+        <DateTimePicker id="endsAt" label={t("fields.endsAt")} value={endsAt} onChange={setEndsAt} />
       </div>
 
       <Field
         id="productIds"
-        label="Scoped product IDs (comma-separated, blank = any product)"
+        label={t("fields.scopedProducts")}
         value={productIdsText}
         onChange={(e) => setProductIdsText(e.target.value)}
       />
       <Field
         id="collectionIds"
-        label="Scoped collection IDs (comma-separated, blank = any collection)"
+        label={t("fields.scopedCollections")}
         value={collectionIdsText}
         onChange={(e) => setCollectionIdsText(e.target.value)}
       />
@@ -165,14 +163,14 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field
           id="assignedToUid"
-          label="Assign to customer uid (blank = public code)"
+          label={t("fields.assignedTo")}
           value={assignedToUid}
           onChange={(e) => setAssignedToUid(e.target.value)}
         />
         {!discount && (
           <Field
             id="notifyEmail"
-            label="Email the code to (optional, requires assignment above)"
+            label={t("fields.notifyEmail")}
             type="email"
             value={notifyEmail}
             onChange={(e) => setNotifyEmail(e.target.value)}
@@ -180,17 +178,17 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
         )}
       </div>
 
-      <Checkbox id="active" label="Active" checked={active} onChange={setActive} />
+      <Checkbox id="active" label={t("fields.active")} checked={active} onChange={setActive} />
 
       {error && (
         <p role="alert" className="font-mono text-sm text-red-400">
           {error}
         </p>
       )}
-      {saved && <p className="text-rymx-gold font-mono text-sm">Saved</p>}
+      {saved && <p className="text-rymx-gold font-mono text-sm">{tCommon("saved")}</p>}
 
       <Button type="submit" disabled={saving} className="w-fit justify-center">
-        {saving ? "Saving…" : discount ? "Save discount" : "Create discount"}
+        {saving ? t("saving") : discount ? t("save") : t("create")}
       </Button>
     </form>
   );

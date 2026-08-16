@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Table, Td, Th } from "@/components/admin/Table";
@@ -20,7 +21,13 @@ export default async function AdminCustomerDetailPage({
   const customer = await getCustomer(uid);
   if (!customer) notFound();
 
-  const [orders, notes] = await Promise.all([listOrdersByUid(uid), listCustomerNotes(uid)]);
+  const [orders, notes, t, tOrderStatus, locale] = await Promise.all([
+    listOrdersByUid(uid),
+    listCustomerNotes(uid),
+    getTranslations("pages.customers"),
+    getTranslations("orderStatus"),
+    getLocale(),
+  ]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -36,13 +43,13 @@ export default async function AdminCustomerDetailPage({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="border-rymx-cream/10 bg-rymx-card rounded-md border p-5">
           <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-            Orders
+            {t("colOrders")}
           </span>
           <p className="font-display text-rymx-cream text-2xl font-bold">{customer.orderCount}</p>
         </div>
         <div className="border-rymx-cream/10 bg-rymx-card rounded-md border p-5">
           <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-            Lifetime value
+            {t("colLifetimeValue")}
           </span>
           <p className="font-display text-rymx-cream text-2xl font-bold">
             {formatEGP(customer.lifetimeValueMinor)}
@@ -51,22 +58,22 @@ export default async function AdminCustomerDetailPage({
       </div>
 
       <section className="flex flex-col gap-3">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Tags</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("colTags")}</h2>
         <TagEditor uid={uid} tags={customer.tags} />
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Order history</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("orderHistory")}</h2>
         {orders.length === 0 ? (
-          <p className="text-rymx-cream/50 font-mono text-sm">No orders yet.</p>
+          <p className="text-rymx-cream/50 font-mono text-sm">{t("noOrders")}</p>
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>Order</Th>
-                <Th>Status</Th>
-                <Th>Total</Th>
-                <Th>Placed</Th>
+                <Th>{t("colOrder")}</Th>
+                <Th>{t("colStatus")}</Th>
+                <Th>{t("colTotal")}</Th>
+                <Th>{t("colPlaced")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -77,9 +84,9 @@ export default async function AdminCustomerDetailPage({
                       #{order.id.slice(0, 8)}
                     </Link>
                   </Td>
-                  <Td>{order.status}</Td>
+                  <Td>{tOrderStatus(order.status)}</Td>
                   <Td>{formatEGP(order.totalMinor)}</Td>
-                  <Td>{order.createdAt.toLocaleDateString()}</Td>
+                  <Td>{order.createdAt.toLocaleDateString(locale)}</Td>
                 </tr>
               ))}
             </tbody>
@@ -89,7 +96,7 @@ export default async function AdminCustomerDetailPage({
 
       <section className="flex flex-col gap-3">
         <h2 className="font-display text-rymx-cream text-lg font-bold">
-          Issue a personal promo code
+          {t("issuePromoHeading")}
         </h2>
         <IssuePromoForm uid={uid} email={customer.email} />
       </section>

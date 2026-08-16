@@ -12,6 +12,7 @@ import {
   type Variant,
   type VariantInput,
 } from "../schema";
+import { parseShopifyProductsCsv } from "../services/csvImport";
 import { isDueToPublish } from "../services/publish";
 import { parseProduct, parseVariant } from "./index";
 
@@ -254,4 +255,73 @@ export async function publishScheduledProducts(now: Date = new Date()): Promise<
 
   await Promise.all(due.map((d) => d.ref.update({ status: "active" })));
   return due.map((d) => d.id);
+}
+
+export type CsvImportSummary = {
+  productsCreated: number;
+  variantsCreated: number;
+  categoriesCreated: number;
+  skipped: { handle: string; reason: string }[];
+};
+
+// Bulk-creates products (+ variants, media, and any missing categories) from
+// a Shopify "Export products" CSV — see services/csvImport.ts for the actual
+// row-grouping/parsing. Each parsed product goes through the same
+// createProduct/createVariant path a staff member using the form would, so
+// slugs, SKUs, and the min-price denormalization all stay consistent with a
+// manually-created product. One row's failure doesn't abort the rest — it's
+// recorded in `skipped` and the import continues.
+export async function importProductsFromCsv(
+  csvText: string,
+  staffUid: string,
+): Promise<CsvImportSummary> {
+  const { products, skipped: parseSkipped } = parseShopifyProductsCsv(csvText);
+  const skipped = [...parseSkipped];
+
+  // Category resolution is case-insensitive and cached across the whole
+  // import so e.g. two products both tagged "T-shirt" only create it once.
+  const existingCategories = await listCategoriesForAdmin();
+  const categoryBySlug = new Map(existingCategories.map((c) => [c.title.toLowerCase(), c]));
+  let categoriesCreated = 0;
+
+  async function resolveCategorySlug(title: string): Promise<string> {
+    const existing = categoryBySlug.get(title.toLowerCase());
+    if (existing) return existing.slug;
+    const created = await createCategory({ title });
+    categoryBySlug.set(title.toLowerCase(), created);
+    categoriesCreated += 1;
+    return created.slug;
+  }
+
+  let productsCreated = 0;
+  let variantsCreated = 0;
+
+  for (const parsed of products) {
+    try {
+      const categorySlug = await resolveCategorySlug(parsed.category);
+      const product = await createProduct({
+        title: parsed.title,
+        description: parsed.description,
+        status: parsed.status,
+        tags: parsed.tags,
+        category: categorySlug,
+        media: parsed.media,
+        options: parsed.options,
+        publishAt: null,
+      });
+      productsCreated += 1;
+
+      for (const variant of parsed.variants) {
+        await createVariant(product.id, variant, staffUid);
+        variantsCreated += 1;
+      }
+    } catch (err) {
+      skipped.push({
+        handle: parsed.handle,
+        reason: err instanceof Error ? err.message : "Failed to import",
+      });
+    }
+  }
+
+  return { productsCreated, variantsCreated, categoriesCreated, skipped };
 }

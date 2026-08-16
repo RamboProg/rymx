@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -16,6 +17,8 @@ function ShipmentRow({
   shipment: Shipment;
   onUpdate: (s: Shipment) => void;
 }) {
+  const t = useTranslations("shipments");
+  const locale = useLocale();
   const router = useRouter();
   const [carrier, setCarrier] = useState("");
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -57,10 +60,10 @@ function ShipmentRow({
     <li className="border-rymx-cream/10 bg-rymx-card flex flex-col gap-2 rounded-md border p-4">
       <div className="flex items-center justify-between">
         <span className="text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase">
-          {shipment.status}
+          {t(`status.${shipment.status}`)}
         </span>
         <span className="text-rymx-cream/40 font-mono text-xs">
-          {shipment.createdAt.toLocaleString()}
+          {shipment.createdAt.toLocaleString(locale)}
         </span>
       </div>
       <ul className="text-rymx-cream/80 font-mono text-sm">
@@ -75,18 +78,18 @@ function ShipmentRow({
         <form onSubmit={onMarkShipped} className="flex flex-wrap items-end gap-3">
           <Field
             id={`carrier-${shipment.id}`}
-            label="Carrier"
+            label={t("carrier")}
             value={carrier}
             onChange={(e) => setCarrier(e.target.value)}
           />
           <Field
             id={`tracking-${shipment.id}`}
-            label="Tracking number"
+            label={t("trackingNumber")}
             value={trackingNumber}
             onChange={(e) => setTrackingNumber(e.target.value)}
           />
           <Button type="submit" disabled={busy} className="w-fit justify-center">
-            Mark shipped
+            {t("markShipped")}
           </Button>
         </form>
       )}
@@ -102,15 +105,17 @@ function ShipmentRow({
             onClick={onMarkDelivered}
             className="text-rymx-cream/60 hover:text-rymx-cream font-mono text-xs tracking-[0.1em] uppercase disabled:opacity-50"
           >
-            Mark delivered
+            {t("markDelivered")}
           </button>
         </div>
       )}
 
       {shipment.status === "delivered" && (
         <p className="text-rymx-cream/60 font-mono text-xs">
-          {shipment.carrier} — {shipment.trackingNumber} — delivered{" "}
-          {shipment.deliveredAt?.toLocaleString()}
+          {shipment.carrier} — {shipment.trackingNumber} —{" "}
+          {t("deliveredMeta", {
+            when: shipment.deliveredAt ? shipment.deliveredAt.toLocaleString(locale) : "",
+          })}
         </p>
       )}
 
@@ -130,6 +135,7 @@ export function ShipmentPanel({
   order: Order;
   shipments: Shipment[];
 }) {
+  const t = useTranslations("shipments");
   const router = useRouter();
   const [shipments, setShipments] = useState(initial);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
@@ -150,7 +156,7 @@ export function ShipmentPanel({
       .filter(([, quantity]) => quantity > 0)
       .map(([variantId, quantity]) => ({ variantId, quantity }));
     if (items.length === 0) {
-      setError("Enter a quantity for at least one item.");
+      setError(t("enterQuantity"));
       return;
     }
 
@@ -168,7 +174,7 @@ export function ShipmentPanel({
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-display text-rymx-cream text-lg font-bold">Shipments</h2>
+      <h2 className="font-display text-rymx-cream text-lg font-bold">{t("heading")}</h2>
 
       {shipments.length > 0 && (
         <ul className="flex flex-col gap-3">
@@ -187,14 +193,14 @@ export function ShipmentPanel({
       {fulfillableItems.length > 0 ? (
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           <h3 className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-            Create shipment
+            {t("createHeading")}
           </h3>
           {fulfillableItems.map((item) => {
             const max = remaining.get(item.variantId) ?? 0;
             return (
               <div key={item.variantId} className="flex items-center justify-between gap-4">
                 <span className="text-rymx-cream/80 font-mono text-sm">
-                  {item.title} ({max} unfulfilled)
+                  {t("unfulfilledCount", { title: item.title, count: max })}
                 </span>
                 <div className="w-20">
                   <NumberField
@@ -218,13 +224,11 @@ export function ShipmentPanel({
             </p>
           )}
           <Button type="submit" disabled={saving} className="w-fit justify-center">
-            {saving ? "Creating…" : "Create shipment"}
+            {saving ? t("creating") : t("createShipment")}
           </Button>
         </form>
       ) : (
-        <p className="text-rymx-cream/50 font-mono text-sm">
-          Every item on this order has been shipped.
-        </p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{t("allShipped")}</p>
       )}
     </section>
   );

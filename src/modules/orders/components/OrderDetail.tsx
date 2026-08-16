@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { formatEGP } from "@/lib/money";
 import { RequestReturnForm } from "@/modules/returns/components/RequestReturnForm";
 import { returnReasonLabel, type Return } from "@/modules/returns/schema";
@@ -10,6 +10,9 @@ import { OrderSummary } from "./OrderSummary";
 
 export function OrderDetail({ order, returns }: { order: Order; returns: Return[] }) {
   const t = useTranslations("orderDetail");
+  const tReasons = useTranslations("returns");
+  const tOrderStatus = useTranslations("orderStatus");
+  const locale = useLocale();
   const remaining = remainingToReturn(order.items, returns);
   const canRequestReturn =
     order.status === "delivered" &&
@@ -22,7 +25,10 @@ export function OrderDetail({ order, returns }: { order: Order; returns: Return[
           {t("orderNumber", { id: order.id })}
         </h1>
         <p className="text-rymx-cream/60 mt-2 font-mono text-sm">
-          {t("orderMeta", { when: order.createdAt.toLocaleString(), status: order.status })}
+          {t("orderMeta", {
+            when: order.createdAt.toLocaleString(locale),
+            status: tOrderStatus(order.status),
+          })}
         </p>
       </div>
       <OrderSummary order={order} />
@@ -45,16 +51,17 @@ export function OrderDetail({ order, returns }: { order: Order; returns: Return[
               >
                 <div className="flex items-center justify-between">
                   <span className="text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase">
-                    {ret.status}
+                    {tReasons(`status.${ret.status}`)}
                   </span>
                   <span className="text-rymx-cream/40 font-mono text-xs">
-                    {ret.createdAt.toLocaleString()}
+                    {ret.createdAt.toLocaleString(locale)}
                   </span>
                 </div>
                 <ul className="text-rymx-cream/80 font-mono text-sm">
                   {ret.items.map((item) => (
                     <li key={item.variantId}>
-                      {item.title} × {item.quantity} — {returnReasonLabel(item)}
+                      {item.title} × {item.quantity} —{" "}
+                      {returnReasonLabel(item, (key) => tReasons(`reasons.${key}`))}
                     </li>
                   ))}
                 </ul>
