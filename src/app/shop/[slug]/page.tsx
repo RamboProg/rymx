@@ -39,6 +39,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       "@type": "AggregateOffer",
       priceCurrency: "EGP",
       lowPrice: (product.minPriceMinor / 100).toFixed(2),
+      ...(product.compareAtMinor != null && product.compareAtMinor > product.minPriceMinor
+        ? { highPrice: (product.compareAtMinor / 100).toFixed(2) }
+        : {}),
       offerCount: variants.length,
     },
   };

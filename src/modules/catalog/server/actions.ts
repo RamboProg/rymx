@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import {
   categoryInputSchema,
   categoryReorderSchema,
@@ -20,6 +21,7 @@ import {
   deleteVariant,
   importParsedProduct,
   reorderCategories,
+  setAllVariantPrices,
   updateCategory,
   updateProduct,
   updateVariant,
@@ -84,9 +86,15 @@ export async function finishCsvImportAction(): Promise<VoidActionResult> {
   return { ok: true };
 }
 
+const productPricingSchema = z.object({
+  priceMinor: z.number().int().nonnegative("Price can't be negative"),
+  compareAtMinor: z.number().int().nonnegative().nullable(),
+});
+
 export async function updateProductAction(
   productId: string,
   rawInput: unknown,
+  rawPricing?: unknown,
 ): Promise<ProductActionResult> {
   if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
 
@@ -94,10 +102,26 @@ export async function updateProductAction(
   if (!parsed.success)
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
 
+  let pricing: z.infer<typeof productPricingSchema> | undefined;
+  if (rawPricing !== undefined && rawPricing !== null) {
+    const pricingParsed = productPricingSchema.safeParse(rawPricing);
+    if (!pricingParsed.success)
+      return { ok: false, error: pricingParsed.error.issues[0]?.message ?? "Invalid pricing" };
+    if (
+      pricingParsed.data.compareAtMinor !== null &&
+      pricingParsed.data.compareAtMinor <= pricingParsed.data.priceMinor
+    ) {
+      return { ok: false, error: "Compare-at must be higher than the sale price" };
+    }
+    pricing = pricingParsed.data;
+  }
+
   try {
     const product = await updateProduct(productId, parsed.data);
+    if (pricing) await setAllVariantPrices(productId, pricing);
     revalidatePath("/admin/products");
     revalidatePath(`/admin/products/${productId}`);
+    revalidatePath("/admin/inventory");
     revalidatePath("/shop");
     revalidatePath(`/shop/${product.slug}`);
     return { ok: true, product };

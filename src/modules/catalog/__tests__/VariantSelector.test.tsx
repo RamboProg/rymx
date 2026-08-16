@@ -35,6 +35,7 @@ const product: Product = {
   media: [],
   options: [{ name: "Size", values: ["S", "M", "XL"] }],
   minPriceMinor: 65000,
+  compareAtMinor: null,
   createdAt: new Date("2026-01-01"),
   publishAt: null,
 };

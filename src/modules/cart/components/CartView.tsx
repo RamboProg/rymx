@@ -63,7 +63,14 @@ export function CartView({ shippingSettings }: { shippingSettings: ShippingSetti
                     </p>
                   )}
                 </div>
-                <p className="text-rymx-gold font-mono text-sm">{formatEGP(line.lineTotalMinor)}</p>
+                <div className="flex flex-col items-end gap-0.5">
+                  <p className="text-rymx-gold font-mono text-sm">{formatEGP(line.lineTotalMinor)}</p>
+                  {line.compareAtMinor != null && (
+                    <p className="text-rymx-cream/40 font-mono text-xs line-through">
+                      {formatEGP(line.compareAtMinor * line.quantity)}
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <label className="sr-only" htmlFor={`qty-${line.variantId}`}>

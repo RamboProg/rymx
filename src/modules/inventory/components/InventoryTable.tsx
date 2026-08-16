@@ -9,6 +9,22 @@ import { Select } from "@/components/ui/Select";
 import { adjustStockAction } from "../server/actions";
 import { LOW_STOCK_THRESHOLD, type VariantStockRow } from "../schema";
 
+const SIZE_KEYS = new Set(["size", "sizes", "المقاس", "مقاس"]);
+
+function sizeFromOptions(optionValues: Record<string, string>): string {
+  for (const [key, value] of Object.entries(optionValues)) {
+    if (SIZE_KEYS.has(key.trim().toLowerCase())) return value;
+  }
+  return "—";
+}
+
+function otherOptions(optionValues: Record<string, string>): string {
+  const rest = Object.entries(optionValues)
+    .filter(([key]) => !SIZE_KEYS.has(key.trim().toLowerCase()))
+    .map(([, value]) => value);
+  return rest.length > 0 ? rest.join(" / ") : "—";
+}
+
 function AdjustRow({
   row,
   onAdjusted,
@@ -18,7 +34,6 @@ function AdjustRow({
 }) {
   const [delta, setDelta] = useState("");
   const [reason, setReason] = useState("");
-  const [addQty, setAddQty] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const t = useTranslations("inventory");
@@ -48,36 +63,10 @@ function AdjustRow({
     setReason("");
   }
 
-  // Quick positive-only "receive stock" path: adds units and records a ledger
-  // entry with a fixed reason, without needing the ± / reason fields.
-  async function onAddStock() {
-    setError(null);
-    const qty = Number(addQty);
-    if (!Number.isInteger(qty) || qty <= 0) {
-      setError(t("errPositive"));
-      return;
-    }
-    setPending(true);
-    const result = await adjustStockAction({
-      productId: row.productId,
-      variantId: row.variantId,
-      delta: qty,
-      reason: t("receivedStock"),
-    });
-    setPending(false);
-
-    if (!result.ok) {
-      setError(result.error);
-      return;
-    }
-    onAdjusted(result.newStock);
-    setAddQty("");
-  }
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
-        <div className="w-20">
+        <div className="w-24">
           <NumberField
             value={delta}
             onChange={(e) => setDelta(e.target.value)}
@@ -98,25 +87,6 @@ function AdjustRow({
           className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-3 py-1 font-mono text-xs uppercase hover:text-[#12100a] disabled:opacity-50"
         >
           {t("colAdjust")}
-        </button>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="w-20">
-          <NumberField
-            value={addQty}
-            onChange={(e) => setAddQty(e.target.value)}
-            placeholder={t("addQtyPlaceholder")}
-            min={1}
-            className="py-1 pe-7 text-xs"
-          />
-        </div>
-        <button
-          type="button"
-          disabled={pending}
-          onClick={onAddStock}
-          className="border-rymx-cream/30 text-rymx-cream/80 hover:border-rymx-gold hover:text-rymx-gold rounded-md border px-3 py-1 font-mono text-xs uppercase disabled:opacity-50"
-        >
-          {t("addStock")}
         </button>
       </div>
       {error && <p className="w-full font-mono text-xs text-red-400">{error}</p>}
@@ -146,7 +116,7 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
     const query = search.trim().toLowerCase();
     return rows.filter((row) => {
       if (query) {
-        const haystack = `${row.productTitle} ${row.sku}`.toLowerCase();
+        const haystack = `${row.productTitle} ${row.sku} ${sizeFromOptions(row.optionValues)}`.toLowerCase();
         if (!haystack.includes(query)) return false;
       }
       if (categoryFilter !== "all" && row.category !== categoryFilter) return false;
@@ -191,6 +161,7 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
           <tr>
             <Th>{t("colProduct")}</Th>
             <Th>{t("colSku")}</Th>
+            <Th>{t("colSize")}</Th>
             <Th>{t("colOptions")}</Th>
             <Th>{t("colStock")}</Th>
             <Th>{t("colAdjust")}</Th>
@@ -201,7 +172,8 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
             <tr key={row.variantId}>
               <Td>{row.productTitle}</Td>
               <Td>{row.sku}</Td>
-              <Td>{Object.values(row.optionValues).join(" / ")}</Td>
+              <Td>{sizeFromOptions(row.optionValues)}</Td>
+              <Td>{otherOptions(row.optionValues)}</Td>
               <Td>
                 <span className={row.stock <= LOW_STOCK_THRESHOLD ? "text-red-400" : undefined}>
                   {row.stock}

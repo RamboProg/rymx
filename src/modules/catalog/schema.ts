@@ -38,6 +38,9 @@ export const productSchema = z.object({
   // Phase 3 seed script) so /shop can filter and sort without a per-product
   // subcollection read.
   minPriceMinor: z.number().int().nonnegative(),
+  // Denormalized compare-at when every variant shares the same sale pricing
+  // (product-level sale). Null when not on sale.
+  compareAtMinor: z.number().int().nonnegative().nullable().default(null),
   createdAt: z.date(),
   // Scheduled drop: while status is "draft" and publishAt is set, the
   // /api/cron/publish route flips status to "active" once publishAt passes.

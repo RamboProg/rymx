@@ -24,6 +24,7 @@ export const resolvedCartLineSchema = z.object({
   optionValues: z.record(z.string(), z.string()).default({}),
   quantity: z.number().int().positive(),
   unitPriceMinor: z.number().int().nonnegative(),
+  compareAtMinor: z.number().int().nonnegative().nullable().default(null),
   lineTotalMinor: z.number().int().nonnegative(),
   stock: z.number().int().nonnegative(),
   available: z.boolean(),

@@ -57,6 +57,10 @@ export async function resolveCartItems(items: readonly CartItem[]): Promise<Reso
       optionValues: variant.optionValues,
       quantity,
       unitPriceMinor: variant.priceMinor,
+      compareAtMinor:
+        variant.compareAtMinor != null && variant.compareAtMinor > variant.priceMinor
+          ? variant.compareAtMinor
+          : null,
       lineTotalMinor: variant.priceMinor * quantity,
       stock: variant.stock,
       available: true,

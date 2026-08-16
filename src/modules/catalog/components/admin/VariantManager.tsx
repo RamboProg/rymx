@@ -120,7 +120,15 @@ export function VariantManager({
               <tr key={variant.id}>
                 <Td>{variant.sku}</Td>
                 <Td>{Object.values(variant.optionValues).join(" / ")}</Td>
-                <Td>{formatEGP(variant.priceMinor)}</Td>
+                <Td>
+                  <span>{formatEGP(variant.priceMinor)}</span>
+                  {variant.compareAtMinor != null &&
+                    variant.compareAtMinor > variant.priceMinor && (
+                      <span className="text-rymx-cream/40 ms-2 line-through">
+                        {formatEGP(variant.compareAtMinor)}
+                      </span>
+                    )}
+                </Td>
                 <Td>{variant.stock}</Td>
                 <Td>
                   <div className="flex gap-3">

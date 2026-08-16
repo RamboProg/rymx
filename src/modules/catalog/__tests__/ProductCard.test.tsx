@@ -14,6 +14,7 @@ const baseProduct: Product = {
   media: [],
   options: [],
   minPriceMinor: 285000,
+  compareAtMinor: null,
   createdAt: new Date("2026-01-01"),
   publishAt: null,
 };
@@ -27,8 +28,14 @@ describe("ProductCard", () => {
     expect(screen.getByRole("link")).toHaveAttribute("href", "/shop/cairo-bomber-jacket");
   });
 
-  it("shows a placeholder wordmark when there is no media", () => {
-    render(<ProductCard product={baseProduct} />);
-    expect(screen.getByText("RYMX")).toBeInTheDocument();
+  it("shows the compare-at price struck through when the product is on sale", () => {
+    render(
+      <ProductCard
+        product={{ ...baseProduct, minPriceMinor: 200000, compareAtMinor: 285000 }}
+      />,
+    );
+
+    expect(screen.getByText(/^EGP\s2,000\.00$/)).toBeInTheDocument();
+    expect(screen.getByText(/^EGP\s2,850\.00$/)).toBeInTheDocument();
   });
 });

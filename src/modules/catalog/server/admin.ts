@@ -59,6 +59,7 @@ export async function createProduct(input: ProductFormInput): Promise<Product> {
     media: input.media,
     options: input.options,
     minPriceMinor: 0,
+    compareAtMinor: null,
     createdAt: new Date(),
     publishAt: input.publishAt,
   };
@@ -90,9 +91,26 @@ export async function updateProduct(id: string, input: ProductFormInput): Promis
 
 async function recomputeMinPrice(productId: string): Promise<void> {
   const snap = await adminDb.collection(`products/${productId}/variants`).get();
-  const prices = snap.docs.map((d) => d.data().priceMinor as number);
+  const variants = snap.docs.map((d) => d.data());
+  const prices = variants.map((d) => d.priceMinor as number);
   const minPriceMinor = prices.length > 0 ? Math.min(...prices) : 0;
-  await adminDb.doc(`products/${productId}`).update({ minPriceMinor });
+
+  // Product-level sales set the same compare-at on every variant — denormalize
+  // that onto the product so shop cards can show the struck-through original.
+  let compareAtMinor: number | null = null;
+  if (variants.length > 0) {
+    const first = variants[0]!;
+    const shared =
+      typeof first.compareAtMinor === "number" &&
+      first.compareAtMinor > (first.priceMinor as number) &&
+      variants.every(
+        (v) =>
+          v.priceMinor === first.priceMinor && v.compareAtMinor === first.compareAtMinor,
+      );
+    if (shared) compareAtMinor = first.compareAtMinor as number;
+  }
+
+  await adminDb.doc(`products/${productId}`).update({ minPriceMinor, compareAtMinor });
 }
 
 // Appends a row to the inventoryAdjustments ledger so every stock movement is
@@ -182,6 +200,31 @@ export async function updateVariant(
     });
   }
   return parseVariant(variantId, { ...input, sku });
+}
+
+// Sets the same selling price (+ optional compare-at) on every variant of a
+// product — used by the product-level sale controls so all sizes share one price.
+export async function setAllVariantPrices(
+  productId: string,
+  pricing: { priceMinor: number; compareAtMinor: number | null },
+): Promise<void> {
+  const snap = await adminDb.collection(`products/${productId}/variants`).get();
+  if (snap.empty) return;
+  await Promise.all(
+    snap.docs.map((d) =>
+      d.ref.update({
+        priceMinor: pricing.priceMinor,
+        compareAtMinor: pricing.compareAtMinor,
+      }),
+    ),
+  );
+  await adminDb.doc(`products/${productId}`).update({
+    minPriceMinor: pricing.priceMinor,
+    compareAtMinor:
+      pricing.compareAtMinor !== null && pricing.compareAtMinor > pricing.priceMinor
+        ? pricing.compareAtMinor
+        : null,
+  });
 }
 
 export async function deleteVariant(productId: string, variantId: string): Promise<void> {

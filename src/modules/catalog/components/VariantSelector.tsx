@@ -75,9 +75,16 @@ export function VariantSelector({ product, variants }: { product: Product; varia
       ))}
 
       <div className="flex flex-col gap-3">
-        <p className="text-rymx-gold font-mono text-lg">
-          {formatEGP(variant ? variant.priceMinor : product.minPriceMinor)}
-        </p>
+        <div className="flex flex-wrap items-baseline gap-3">
+          <p className="text-rymx-gold font-mono text-lg">
+            {formatEGP(variant ? variant.priceMinor : product.minPriceMinor)}
+          </p>
+          {variant?.compareAtMinor != null && variant.compareAtMinor > variant.priceMinor && (
+            <p className="text-rymx-cream/40 font-mono text-sm line-through">
+              {formatEGP(variant.compareAtMinor)}
+            </p>
+          )}
+        </div>
         {variant && variant.stock === 0 && (
           <p className="font-mono text-xs text-red-400 uppercase">{t("outOfStock")}</p>
         )}

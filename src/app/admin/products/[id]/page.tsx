@@ -27,7 +27,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         <p className="text-rymx-cream/50 font-mono text-xs">/shop/{product.slug}</p>
       </div>
 
-      <ProductForm product={product} categories={categories} existingOptions={existingOptions} />
+      <ProductForm
+        product={product}
+        categories={categories}
+        existingOptions={existingOptions}
+        variants={variants}
+      />
 
       <section className="flex flex-col gap-4">
         <h2 className="font-display text-rymx-cream text-lg font-bold">{t("title")}</h2>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { DateTimePicker } from "@/components/ui/DateTimePicker";
-import { Field } from "@/components/ui/Input";
+import { Field, NumberField } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { slugify } from "@/lib/slug";
 import { MediaManager } from "@/modules/media/components/MediaManager";
@@ -17,6 +17,7 @@ import {
   type Product,
   type ProductOption,
   type ProductStatus,
+  type Variant,
 } from "../../schema";
 import {
   createCategoryAction,
@@ -25,6 +26,35 @@ import {
 } from "../../server/actions";
 
 const NEW_OPTION_VALUE = "__new__";
+
+function egpFromMinor(minor: number): string {
+  const egp = minor / 100;
+  return Number.isInteger(egp) ? String(egp) : egp.toFixed(2);
+}
+
+function percentFromPrices(compareAtMinor: number, priceMinor: number): string {
+  if (compareAtMinor <= 0) return "";
+  const pct = ((compareAtMinor - priceMinor) / compareAtMinor) * 100;
+  return Number.isInteger(pct) ? String(pct) : pct.toFixed(1).replace(/\.0$/, "");
+}
+
+function initSaleFields(variants: Variant[]): {
+  compareAt: string;
+  price: string;
+  percent: string;
+} {
+  const first = variants[0];
+  if (!first) return { compareAt: "", price: "", percent: "" };
+  const price = egpFromMinor(first.priceMinor);
+  if (first.compareAtMinor && first.compareAtMinor > first.priceMinor) {
+    return {
+      compareAt: egpFromMinor(first.compareAtMinor),
+      price,
+      percent: percentFromPrices(first.compareAtMinor, first.priceMinor),
+    };
+  }
+  return { compareAt: "", price, percent: "" };
+}
 
 type OptionRow = ProductOption & { isNewName: boolean };
 
@@ -188,10 +218,12 @@ export function ProductForm({
   product,
   categories,
   existingOptions,
+  variants = [],
 }: {
   product?: Product;
   categories: Category[];
   existingOptions: Record<string, string[]>;
+  variants?: Variant[];
 }) {
   const router = useRouter();
   const [title, setTitle] = useState(product?.title ?? "");
@@ -206,6 +238,10 @@ export function ProductForm({
   const [media, setMedia] = useState<MediaAsset[]>(product?.media ?? []);
   const [publishAt, setPublishAt] = useState<Date | null>(product?.publishAt ?? null);
   const [categoryList, setCategoryList] = useState(categories);
+  const initialSale = initSaleFields(variants);
+  const [compareAt, setCompareAt] = useState(initialSale.compareAt);
+  const [salePrice, setSalePrice] = useState(initialSale.price);
+  const [salePercent, setSalePercent] = useState(initialSale.percent);
 
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -237,6 +273,48 @@ export function ProductForm({
         ? { name: "", values: [], isNewName: false }
         : emptyOptionRow(),
     ]);
+  }
+
+  function onCompareAtChange(value: string) {
+    setCompareAt(value);
+    const compare = Number(value);
+    const pct = Number(salePercent);
+    if (value && Number.isFinite(compare) && compare > 0 && Number.isFinite(pct) && salePercent) {
+      const next = compare * (1 - pct / 100);
+      setSalePrice(Number.isInteger(next) ? String(next) : next.toFixed(2));
+    } else if (value && salePrice) {
+      const price = Number(salePrice);
+      if (Number.isFinite(compare) && compare > 0 && Number.isFinite(price)) {
+        setSalePercent(percentFromPrices(Math.round(compare * 100), Math.round(price * 100)));
+      }
+    }
+  }
+
+  function onPercentChange(value: string) {
+    setSalePercent(value);
+    const compare = Number(compareAt);
+    const pct = Number(value);
+    if (compareAt && Number.isFinite(compare) && compare > 0 && Number.isFinite(pct) && value) {
+      const next = compare * (1 - pct / 100);
+      setSalePrice(Number.isInteger(next) ? String(next) : next.toFixed(2));
+    }
+  }
+
+  function onSalePriceChange(value: string) {
+    setSalePrice(value);
+    const compare = Number(compareAt);
+    const price = Number(value);
+    if (compareAt && Number.isFinite(compare) && compare > 0 && Number.isFinite(price) && value) {
+      setSalePercent(percentFromPrices(Math.round(compare * 100), Math.round(price * 100)));
+    }
+  }
+
+  function onClearSale() {
+    if (compareAt) {
+      setSalePrice(compareAt);
+    }
+    setCompareAt("");
+    setSalePercent("");
   }
 
   async function onAddCategory() {
@@ -276,9 +354,27 @@ export function ProductForm({
       return;
     }
 
+    let pricing: { priceMinor: number; compareAtMinor: number | null } | undefined;
+    if (product && variants.length > 0 && salePrice.trim()) {
+      const priceMinor = Math.round(Number(salePrice) * 100);
+      if (!Number.isFinite(priceMinor) || priceMinor < 0) {
+        setError(t("sale.invalidPrice"));
+        return;
+      }
+      let compareAtMinor: number | null = null;
+      if (compareAt.trim()) {
+        compareAtMinor = Math.round(Number(compareAt) * 100);
+        if (!Number.isFinite(compareAtMinor) || compareAtMinor <= priceMinor) {
+          setError(t("sale.invalidCompareAt"));
+          return;
+        }
+      }
+      pricing = { priceMinor, compareAtMinor };
+    }
+
     setSaving(true);
     const result = product
-      ? await updateProductAction(product.id, parsed.data)
+      ? await updateProductAction(product.id, parsed.data, pricing)
       : await createProductAction(parsed.data);
     setSaving(false);
 
@@ -382,6 +478,52 @@ export function ProductForm({
         onChange={(e) => setTagsText(e.target.value)}
         description={t("fields.tagsHelp")}
       />
+
+      {product && variants.length > 0 && (
+        <div className="border-rymx-cream/20 flex flex-col gap-4 rounded-md border p-4">
+          <div className="flex flex-col gap-1">
+            <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
+              {t("sale.heading")}
+            </span>
+            <p className="text-rymx-cream/40 font-sans text-xs">{t("sale.help")}</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <NumberField
+              id="sale-compareAt"
+              label={t("sale.compareAt")}
+              step="0.01"
+              value={compareAt}
+              onChange={(e) => onCompareAtChange(e.target.value)}
+              description={t("sale.compareAtHelp")}
+            />
+            <NumberField
+              id="sale-percent"
+              label={t("sale.percent")}
+              step="0.1"
+              value={salePercent}
+              onChange={(e) => onPercentChange(e.target.value)}
+              description={t("sale.percentHelp")}
+            />
+            <NumberField
+              id="sale-price"
+              label={t("sale.price")}
+              step="0.01"
+              value={salePrice}
+              onChange={(e) => onSalePriceChange(e.target.value)}
+              description={t("sale.priceHelp")}
+            />
+          </div>
+          {(compareAt || salePercent) && (
+            <button
+              type="button"
+              onClick={onClearSale}
+              className="text-rymx-cream/50 hover:text-rymx-cream w-fit font-mono text-xs tracking-[0.1em] uppercase"
+            >
+              {t("sale.clear")}
+            </button>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col gap-3">
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
