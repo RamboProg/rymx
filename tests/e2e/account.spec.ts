@@ -42,6 +42,7 @@ test.describe("account", () => {
     await page.getByLabel("Phone number").fill("01099998888");
     await page.getByRole("button", { name: "Save profile" }).click();
     await expect(page.getByText("Saved")).toBeVisible();
+    await page.waitForTimeout(500);
 
     await page.reload();
     await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Sara Updated");
