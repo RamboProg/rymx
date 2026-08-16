@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { requireAdminPermission } from "@/modules/rbac/server";
 import { collectionInputSchema, type Collection } from "../schema";
 import { createCollection, deleteCollection, updateCollection, updateCollectionDoc } from "./admin";
@@ -21,6 +22,7 @@ export async function createCollectionAction(rawInput: unknown): Promise<Collect
 
   try {
     const collection = await createCollection(parsed.data);
+    invalidateCacheTags(CACHE_TAGS.collections);
     revalidatePath("/admin/collections");
     revalidatePath("/collections");
     return { ok: true, collection };
@@ -41,6 +43,7 @@ export async function updateCollectionAction(
 
   try {
     const collection = await updateCollection(collectionId, parsed.data);
+    invalidateCacheTags(CACHE_TAGS.collections);
     revalidatePath("/admin/collections");
     revalidatePath(`/admin/collections/${collectionId}`);
     revalidatePath("/collections");
@@ -54,6 +57,7 @@ export async function updateCollectionAction(
 export async function deleteCollectionAction(collectionId: string): Promise<VoidActionResult> {
   if (!(await requireCollectionsWrite())) return { ok: false, error: "Forbidden" };
   await deleteCollection(collectionId);
+  invalidateCacheTags(CACHE_TAGS.collections);
   revalidatePath("/admin/collections");
   revalidatePath("/collections");
   return { ok: true };
@@ -66,6 +70,7 @@ export async function setCollectionActiveAction(
   if (!(await requireCollectionsWrite())) return { ok: false, error: "Forbidden" };
 
   await updateCollectionDoc(id, { active });
+  invalidateCacheTags(CACHE_TAGS.collections);
   revalidatePath("/admin/collections");
   revalidatePath("/collections");
   return { ok: true };

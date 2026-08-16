@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { applyStockDeltasInTransaction } from "@/modules/inventory/server";
 import { getOrderById } from "@/modules/orders/server";
@@ -221,5 +222,6 @@ export async function restockReturnAction(returnId: string): Promise<ReturnActio
 
   revalidatePath(`/admin/orders/${ret.orderId}`);
   revalidatePath("/admin/inventory");
+  invalidateCacheTags(CACHE_TAGS.inventory, CACHE_TAGS.products, CACHE_TAGS.orders);
   return { ok: true, ret: { ...ret, status: "restocked", refunded: true } };
 }

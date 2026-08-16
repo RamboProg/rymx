@@ -1,6 +1,8 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
 import type { DocumentData, Transaction } from "firebase-admin/firestore";
+import { CACHE_TAGS } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { toDateFallback } from "@/lib/firebase/toDate";
 import { listAllProducts } from "@/modules/catalog/server/admin";
@@ -20,26 +22,32 @@ function parseAdjustment(id: string, data: DocumentData): StockAdjustment {
 // MVP-scale: loops per product rather than a collection-group query — fine
 // while the catalog is small (same tradeoff as catalog's listShopProducts).
 export async function listVariantsAcrossProducts(): Promise<VariantStockRow[]> {
-  const products = await listAllProducts();
-  const rows = await Promise.all(
-    products.map(async (product) => {
-      const snap = await adminDb.collection(`products/${product.id}/variants`).get();
-      return snap.docs.map((d) => {
-        const data = d.data();
-        return {
-          productId: product.id,
-          productTitle: product.title,
-          category: product.category,
-          variantId: d.id,
-          sku: data.sku as string,
-          optionValues: (data.optionValues as Record<string, string>) ?? {},
-          stock: data.stock as number,
-          priceMinor: data.priceMinor as number,
-        };
-      });
-    }),
-  );
-  return rows.flat();
+  return unstable_cache(
+    async () => {
+      const products = await listAllProducts();
+      const rows = await Promise.all(
+        products.map(async (product) => {
+          const snap = await adminDb.collection(`products/${product.id}/variants`).get();
+          return snap.docs.map((d) => {
+            const data = d.data();
+            return {
+              productId: product.id,
+              productTitle: product.title,
+              category: product.category,
+              variantId: d.id,
+              sku: data.sku as string,
+              optionValues: (data.optionValues as Record<string, string>) ?? {},
+              stock: data.stock as number,
+              priceMinor: data.priceMinor as number,
+            };
+          });
+        }),
+      );
+      return rows.flat();
+    },
+    ["inventory-variant-rows"],
+    { revalidate: 30, tags: [CACHE_TAGS.inventory, CACHE_TAGS.products] },
+  )();
 }
 
 export async function listLowStock(threshold = LOW_STOCK_THRESHOLD): Promise<VariantStockRow[]> {
@@ -51,12 +59,18 @@ export async function listLowStock(threshold = LOW_STOCK_THRESHOLD): Promise<Var
 // reads (listVariantsAcrossProducts). Requires a single-field index on
 // `variants.stock` which Firestore usually auto-suggests on first use.
 export async function countLowStockVariants(threshold = LOW_STOCK_THRESHOLD): Promise<number> {
-  const snap = await adminDb
-    .collectionGroup("variants")
-    .where("stock", "<=", threshold)
-    .select()
-    .get();
-  return snap.size;
+  return unstable_cache(
+    async () => {
+      const snap = await adminDb
+        .collectionGroup("variants")
+        .where("stock", "<=", threshold)
+        .select()
+        .get();
+      return snap.size;
+    },
+    ["inventory-low-stock-count", String(threshold)],
+    { revalidate: 30, tags: [CACHE_TAGS.inventory] },
+  )();
 }
 
 export async function listAdjustments(limit = 50): Promise<StockAdjustment[]> {

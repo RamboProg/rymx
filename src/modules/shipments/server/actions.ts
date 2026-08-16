@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { getOrderById } from "@/modules/orders/server";
 import { requireAdminPermission } from "@/modules/rbac/server";
@@ -67,6 +68,7 @@ export async function createShipmentAction(rawInput: unknown): Promise<ShipmentA
     await adminDb.doc(`orders/${orderId}`).update({ status: "confirmed" });
   }
 
+  invalidateCacheTags(CACHE_TAGS.orders);
   revalidatePath(`/admin/orders/${orderId}`);
   return { ok: true, shipment: shipmentSchema.parse({ ...data, id: ref.id }) };
 }
@@ -94,6 +96,7 @@ export async function markShippedAction(rawInput: unknown): Promise<ShipmentActi
     await adminDb.doc(`orders/${shipment.orderId}`).update({ status: "shipped" });
   }
 
+  invalidateCacheTags(CACHE_TAGS.orders);
   revalidatePath(`/admin/orders/${shipment.orderId}`);
   return {
     ok: true,
@@ -123,6 +126,7 @@ export async function markDeliveredAction(shipmentId: string): Promise<ShipmentA
     }
   }
 
+  invalidateCacheTags(CACHE_TAGS.orders);
   revalidatePath(`/admin/orders/${shipment.orderId}`);
   return { ok: true, shipment: updatedShipment };
 }

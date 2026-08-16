@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getSessionClaims } from "@/modules/rbac/server";
@@ -33,6 +34,7 @@ export async function adjustStockAction(rawInput: unknown): Promise<AdjustStockR
       }),
     );
 
+    invalidateCacheTags(CACHE_TAGS.inventory, CACHE_TAGS.products);
     revalidatePath("/admin/inventory");
     revalidatePath(`/admin/products/${productId}`);
     return { ok: true, newStock };

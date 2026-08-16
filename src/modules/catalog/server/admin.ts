@@ -1,5 +1,8 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+import { cache } from "react";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { toDate } from "@/lib/firebase/toDate";
 import { uniqueSlug } from "@/lib/firebase/uniqueSlug";
@@ -14,20 +17,51 @@ import {
 } from "../schema";
 import { parseShopifyProductsCsv, type ParsedProduct } from "../services/csvImport";
 import { isDueToPublish } from "../services/publish";
-import { parseProduct, parseVariant } from "./index";
+import { listCategories, parseProduct, parseVariant } from "./index";
 
-export async function listAllProducts(): Promise<Product[]> {
-  const snap = await adminDb.collection("products").get();
-  const products: Product[] = [];
-  for (const d of snap.docs) {
-    try {
-      products.push(parseProduct(d.id, d.data()));
-    } catch (err) {
-      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
-    }
-  }
-  return products.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+type CachedProduct = Omit<Product, "createdAt" | "publishAt"> & {
+  createdAt: string;
+  publishAt: string | null;
+};
+
+function dehydrateProduct(p: Product): CachedProduct {
+  return {
+    ...p,
+    createdAt: p.createdAt.toISOString(),
+    publishAt: p.publishAt?.toISOString() ?? null,
+  };
 }
+
+function hydrateProduct(p: CachedProduct): Product {
+  return {
+    ...p,
+    createdAt: new Date(p.createdAt),
+    publishAt: p.publishAt ? new Date(p.publishAt) : null,
+  };
+}
+
+const getCachedAllProducts = unstable_cache(
+  async (): Promise<CachedProduct[]> => {
+    const snap = await adminDb.collection("products").get();
+    const products: Product[] = [];
+    for (const d of snap.docs) {
+      try {
+        products.push(parseProduct(d.id, d.data()));
+      } catch (err) {
+        console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
+      }
+    }
+    return products
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .map(dehydrateProduct);
+  },
+  ["catalog-all-products"],
+  { revalidate: 30, tags: [CACHE_TAGS.products] },
+);
+
+export const listAllProducts = cache(async (): Promise<Product[]> => {
+  return (await getCachedAllProducts()).map(hydrateProduct);
+});
 
 export async function listAllOptions(): Promise<Record<string, string[]>> {
   const products = await listAllProducts();
@@ -239,10 +273,7 @@ export async function deleteVariant(productId: string, variantId: string): Promi
 }
 
 export async function listCategoriesForAdmin(): Promise<Category[]> {
-  const snap = await adminDb.collection("categories").get();
-  return snap.docs
-    .map((d) => categorySchema.parse({ id: d.id, ...d.data() }))
-    .sort((a, b) => a.order - b.order);
+  return listCategories();
 }
 
 export async function createCategory(input: CategoryInput): Promise<Category> {
@@ -303,7 +334,11 @@ export async function publishScheduledProducts(now: Date = new Date()): Promise<
   );
 
   await Promise.all(due.map((d) => d.ref.update({ status: "active" })));
-  return due.map((d) => d.id);
+  const ids = due.map((d) => d.id);
+  if (ids.length > 0) {
+    invalidateCacheTags(CACHE_TAGS.products);
+  }
+  return ids;
 }
 
 export type CsvImportSummary = {

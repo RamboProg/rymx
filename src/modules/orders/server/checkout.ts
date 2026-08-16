@@ -2,6 +2,7 @@
 
 import { FieldValue } from "firebase-admin/firestore";
 import { headers } from "next/headers";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { checkRateLimit } from "@/lib/security/rateLimit";
 import {
@@ -222,7 +223,10 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
     // Awaited (not fire-and-forget) since sendEmail never throws internally,
     // and a serverless function can be frozen/torn down before a detached
     // promise resolves — this guarantees the send attempt actually happens.
-    if (isNew) await sendOrderConfirmationEmail(order);
+    if (isNew) {
+      invalidateCacheTags(CACHE_TAGS.orders, CACHE_TAGS.inventory, CACHE_TAGS.products);
+      await sendOrderConfirmationEmail(order);
+    }
     return { ok: true, order };
   } catch (err) {
     if (err instanceof CheckoutError) return { ok: false, error: err.message };

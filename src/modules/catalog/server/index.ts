@@ -1,6 +1,9 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import type { DocumentData } from "firebase-admin/firestore";
+import { CACHE_TAGS } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { toDate, toDateFallback } from "@/lib/firebase/toDate";
 import { listAllOrders } from "@/modules/orders/server";
@@ -42,16 +45,41 @@ export function parseVariant(id: string, data: DocumentData): Variant {
   return variantSchema.parse({ id, ...data });
 }
 
-export async function listCategories(): Promise<Category[]> {
-  const snap = await adminDb.collection("categories").get();
-  return snap.docs
-    .map((d) => categorySchema.parse({ id: d.id, ...d.data() }))
-    .sort((a, b) => a.order - b.order);
+type CachedProduct = Omit<Product, "createdAt" | "publishAt"> & {
+  createdAt: string;
+  publishAt: string | null;
+};
+
+function dehydrateProduct(p: Product): CachedProduct {
+  return {
+    ...p,
+    createdAt: p.createdAt.toISOString(),
+    publishAt: p.publishAt?.toISOString() ?? null,
+  };
 }
 
-// Every live product, unpaginated/unfiltered — for the sitemap generator,
-// which needs every public URL, not a shop-page's worth.
-export async function listAllActiveProducts(): Promise<Product[]> {
+function hydrateProduct(p: CachedProduct): Product {
+  return {
+    ...p,
+    createdAt: new Date(p.createdAt),
+    publishAt: p.publishAt ? new Date(p.publishAt) : null,
+  };
+}
+
+const getCachedCategories = unstable_cache(
+  async (): Promise<Category[]> => {
+    const snap = await adminDb.collection("categories").get();
+    return snap.docs
+      .map((d) => categorySchema.parse({ id: d.id, ...d.data() }))
+      .sort((a, b) => a.order - b.order);
+  },
+  ["catalog-categories"],
+  { revalidate: 300, tags: [CACHE_TAGS.categories] },
+);
+
+export const listCategories = cache(async (): Promise<Category[]> => getCachedCategories());
+
+async function fetchActiveProductsRaw(): Promise<CachedProduct[]> {
   const snap = await adminDb.collection("products").where("status", "==", "active").get();
   const products: Product[] = [];
   for (const d of snap.docs) {
@@ -61,24 +89,44 @@ export async function listAllActiveProducts(): Promise<Product[]> {
       console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
     }
   }
-  return products;
+  const enriched = await enrichProductsWithSalePricing(products);
+  return enriched.map(dehydrateProduct);
 }
 
+const getCachedActiveProducts = unstable_cache(fetchActiveProductsRaw, ["catalog-active-products"], {
+  revalidate: 60,
+  tags: [CACHE_TAGS.products],
+});
+
+// Every live product, unpaginated/unfiltered — for the sitemap generator,
+// which needs every public URL, not a shop-page's worth.
+export const listAllActiveProducts = cache(async (): Promise<Product[]> => {
+  return (await getCachedActiveProducts()).map(hydrateProduct);
+});
+
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const snap = await adminDb
-    .collection("products")
-    .where("slug", "==", slug)
-    .where("status", "==", "active")
-    .limit(1)
-    .get();
-  if (snap.empty) return null;
-  const doc = snap.docs[0]!;
-  return parseProduct(doc.id, doc.data());
+  const cached = await unstable_cache(
+    async (): Promise<CachedProduct | null> => {
+      const snap = await adminDb
+        .collection("products")
+        .where("slug", "==", slug)
+        .where("status", "==", "active")
+        .limit(1)
+        .get();
+      if (snap.empty) return null;
+      const doc = snap.docs[0]!;
+      return dehydrateProduct(parseProduct(doc.id, doc.data()));
+    },
+    ["product-by-slug", slug],
+    { revalidate: 60, tags: [CACHE_TAGS.products] },
+  )();
+  return cached ? hydrateProduct(cached) : null;
 }
 
 // Unlike getProductBySlug, not status-scoped: callers (cart/checkout re-pricing)
 // need to see a product that was added while active but has since been
 // archived, so they can surface "no longer available" instead of a 404.
+// Left uncached — cart/checkout needs fresh availability.
 export async function getProductById(productId: string): Promise<Product | null> {
   const doc = await adminDb.doc(`products/${productId}`).get();
   if (!doc.exists) return null;
@@ -86,10 +134,17 @@ export async function getProductById(productId: string): Promise<Product | null>
 }
 
 export async function listVariants(productId: string): Promise<Variant[]> {
-  const snap = await adminDb.collection(`products/${productId}/variants`).get();
-  return snap.docs.map((d) => parseVariant(d.id, d.data()));
+  return unstable_cache(
+    async () => {
+      const snap = await adminDb.collection(`products/${productId}/variants`).get();
+      return snap.docs.map((d) => parseVariant(d.id, d.data()));
+    },
+    ["product-variants", productId],
+    { revalidate: 30, tags: [CACHE_TAGS.products, CACHE_TAGS.inventory] },
+  )();
 }
 
+// Live stock/price for cart + checkout — do not cache.
 export async function getVariantById(
   productId: string,
   variantId: string,
@@ -122,9 +177,7 @@ async function enrichProductsWithSalePricing(products: Product[]): Promise<Produ
       if (
         typeof compareAt === "number" &&
         compareAt > price &&
-        variants.every(
-          (v) => v.priceMinor === price && v.compareAtMinor === compareAt,
-        )
+        variants.every((v) => v.priceMinor === price && v.compareAtMinor === compareAt)
       ) {
         byId.set(product.id, {
           ...product,
@@ -144,15 +197,7 @@ export async function listShopProducts(
   params: ShopSearchParams,
   productIdFilter?: readonly string[] | null,
 ): Promise<ShopPage> {
-  const snap = await adminDb.collection("products").where("status", "==", "active").get();
-  let products: Product[] = [];
-  for (const d of snap.docs) {
-    try {
-      products.push(parseProduct(d.id, d.data()));
-    } catch (err) {
-      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
-    }
-  }
+  let products = await listAllActiveProducts();
 
   if (productIdFilter) {
     const allowed = new Set(productIdFilter);
@@ -162,7 +207,6 @@ export async function listShopProducts(
     products = products.filter((p) => p.category === params.category);
   }
 
-  products = await enrichProductsWithSalePricing(products);
   const sortCtx = await resolveSortContext(params.sort);
   products = sortProducts(products, params.sort, sortCtx);
   return paginate(products, params.page);
@@ -175,16 +219,24 @@ export type SortContext = {
   manualOrderIds: readonly string[];
 };
 
-export async function getProductSoldQuantities(): Promise<Map<string, number>> {
-  const orders = await listAllOrders();
-  const map = new Map<string, number>();
-  for (const order of orders) {
-    if (order.status === "cancelled") continue;
-    for (const item of order.items) {
-      map.set(item.productId, (map.get(item.productId) ?? 0) + item.quantity);
+const getCachedSoldQuantities = unstable_cache(
+  async (): Promise<Record<string, number>> => {
+    const orders = await listAllOrders();
+    const map: Record<string, number> = {};
+    for (const order of orders) {
+      if (order.status === "cancelled") continue;
+      for (const item of order.items) {
+        map[item.productId] = (map[item.productId] ?? 0) + item.quantity;
+      }
     }
-  }
-  return map;
+    return map;
+  },
+  ["product-sold-quantities"],
+  { revalidate: 120, tags: [CACHE_TAGS.orders] },
+);
+
+export async function getProductSoldQuantities(): Promise<Map<string, number>> {
+  return new Map(Object.entries(await getCachedSoldQuantities()));
 }
 
 async function resolveSortContext(sort: ShopSort): Promise<SortContext> {
@@ -201,25 +253,16 @@ async function resolveSortContext(sort: ShopSort): Promise<SortContext> {
 export async function listShopProductsByCategory(
   sort: ShopSort = "newest",
 ): Promise<ShopCategorySection[]> {
-  const [snap, categories, sortCtx] = await Promise.all([
-    adminDb.collection("products").where("status", "==", "active").get(),
+  const [products, categories, sortCtx] = await Promise.all([
+    listAllActiveProducts(),
     listCategories(),
     resolveSortContext(sort),
   ]);
-  const products: Product[] = [];
-  for (const d of snap.docs) {
-    try {
-      products.push(parseProduct(d.id, d.data()));
-    } catch (err) {
-      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
-    }
-  }
-  const enriched = await enrichProductsWithSalePricing(products);
   return categories
     .map((category) => ({
       category,
       products: sortProducts(
-        enriched.filter((p) => p.category === category.slug),
+        products.filter((p) => p.category === category.slug),
         sort,
         sortCtx,
       ),

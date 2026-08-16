@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import {
   categoryInputSchema,
   categoryReorderSchema,
@@ -51,6 +52,7 @@ export async function createProductAction(rawInput: unknown): Promise<ProductAct
 
   try {
     const product = await createProduct(parsed.data);
+    invalidateCacheTags(CACHE_TAGS.products, CACHE_TAGS.inventory);
     revalidatePath("/admin/products");
     revalidatePath("/shop");
     return { ok: true, product };
@@ -79,6 +81,7 @@ export async function importParsedProductAction(
 
 export async function finishCsvImportAction(): Promise<VoidActionResult> {
   if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+  invalidateCacheTags(CACHE_TAGS.products, CACHE_TAGS.categories, CACHE_TAGS.inventory);
   revalidatePath("/admin/products");
   revalidatePath("/admin/categories");
   revalidatePath("/admin/inventory");
@@ -119,6 +122,7 @@ export async function updateProductAction(
   try {
     const product = await updateProduct(productId, parsed.data);
     if (pricing) await setAllVariantPrices(productId, pricing);
+    invalidateCacheTags(CACHE_TAGS.products, CACHE_TAGS.inventory);
     revalidatePath("/admin/products");
     revalidatePath(`/admin/products/${productId}`);
     revalidatePath("/admin/inventory");
@@ -143,6 +147,7 @@ export async function createVariantAction(
 
   try {
     const variant = await createVariant(productId, parsed.data, claims.uid);
+    invalidateCacheTags(CACHE_TAGS.products, CACHE_TAGS.inventory);
     revalidatePath(`/admin/products/${productId}`);
     revalidatePath("/admin/inventory");
     revalidatePath("/shop");
@@ -166,6 +171,7 @@ export async function updateVariantAction(
 
   try {
     const variant = await updateVariant(productId, variantId, parsed.data, claims.uid);
+    invalidateCacheTags(CACHE_TAGS.products, CACHE_TAGS.inventory);
     revalidatePath(`/admin/products/${productId}`);
     revalidatePath("/admin/inventory");
     revalidatePath("/shop");
@@ -181,6 +187,7 @@ export async function deleteVariantAction(
 ): Promise<VoidActionResult> {
   if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
   await deleteVariant(productId, variantId);
+  invalidateCacheTags(CACHE_TAGS.products, CACHE_TAGS.inventory);
   revalidatePath(`/admin/products/${productId}`);
   revalidatePath("/admin/inventory");
   revalidatePath("/shop");
@@ -196,6 +203,7 @@ export async function createCategoryAction(rawInput: unknown): Promise<CategoryA
 
   try {
     const category = await createCategory(parsed.data);
+    invalidateCacheTags(CACHE_TAGS.categories, CACHE_TAGS.products);
     revalidatePath("/admin/products");
     revalidatePath("/admin/categories");
     revalidatePath("/shop");
@@ -217,6 +225,7 @@ export async function updateCategoryAction(
 
   try {
     const category = await updateCategory(id, parsed.data);
+    invalidateCacheTags(CACHE_TAGS.categories);
     revalidatePath("/admin/categories");
     revalidatePath("/shop");
     return { ok: true, category };
@@ -229,6 +238,7 @@ export async function deleteCategoryAction(id: string): Promise<VoidActionResult
   if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
   try {
     await deleteCategory(id);
+    invalidateCacheTags(CACHE_TAGS.categories, CACHE_TAGS.products);
     revalidatePath("/admin/categories");
     revalidatePath("/shop");
     return { ok: true };
@@ -246,6 +256,7 @@ export async function reorderCategoriesAction(rawInput: unknown): Promise<VoidAc
 
   try {
     await reorderCategories(parsed.data.orderedIds);
+    invalidateCacheTags(CACHE_TAGS.categories);
     revalidatePath("/admin/categories");
     revalidatePath("/shop");
     return { ok: true };

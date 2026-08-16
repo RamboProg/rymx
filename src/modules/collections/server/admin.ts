@@ -3,12 +3,9 @@ import "server-only";
 import { adminDb } from "@/lib/firebase/admin";
 import { uniqueSlug } from "@/lib/firebase/uniqueSlug";
 import type { Collection, CollectionInput } from "../schema";
-import { parseCollection } from "./index";
+import { listAllCollectionsAdmin, parseCollection } from "./index";
 
-export async function listAllCollectionsAdmin(): Promise<Collection[]> {
-  const snap = await adminDb.collection("collections").get();
-  return snap.docs.map((d) => parseCollection(d.id, d.data()));
-}
+export { listAllCollectionsAdmin };
 
 export async function getCollectionForAdmin(id: string): Promise<Collection | null> {
   const doc = await adminDb.doc(`collections/${id}`).get();

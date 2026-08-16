@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { applyStockDeltasInTransaction } from "@/modules/inventory/server";
 import { sendOrderConfirmationEmail } from "@/modules/notifications/server";
@@ -26,6 +27,7 @@ export async function confirmOrderAction(orderId: string): Promise<OrderActionRe
   }
 
   await adminDb.doc(`orders/${orderId}`).update({ status: "confirmed" });
+  invalidateCacheTags(CACHE_TAGS.orders);
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/orders");
   return { ok: true, order: { ...order, status: "confirmed" } };
@@ -55,6 +57,7 @@ export async function cancelOrderAction(orderId: string): Promise<OrderActionRes
     tx.update(adminDb.doc(`orders/${orderId}`), { status: "cancelled" });
   });
 
+  invalidateCacheTags(CACHE_TAGS.orders, CACHE_TAGS.inventory, CACHE_TAGS.products);
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/orders");
   revalidatePath("/admin/inventory");

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { checkAdminMutationRateLimit } from "@/lib/security/rateLimit";
 import { getSessionClaims } from "@/modules/rbac/server";
@@ -24,6 +25,7 @@ export async function updateContentSettingsAction(rawInput: unknown): Promise<Co
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
 
   await adminDb.doc("content/homepage").set(parsed.data);
+  invalidateCacheTags(CACHE_TAGS.content);
   revalidatePath("/admin/settings");
   revalidatePath("/");
   return { ok: true };
