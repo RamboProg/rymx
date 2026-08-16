@@ -15,6 +15,7 @@ const DEMO_CUSTOMER_PASSWORD = "password123";
 // exercisable without hand-rolling custom claims in every test run.
 export const DEMO_OWNER_EMAIL = "demo-owner@rymx.test";
 export const DEMO_RESTRICTED_STAFF_EMAIL = "demo-staff@rymx.test";
+export const DEMO_ADMIN_EMAILS = ["demo-admin-1@rymx.test", "demo-admin-2@rymx.test"] as const;
 const DEMO_ADMIN_PASSWORD = "password123";
 
 type SeedVariant = {
@@ -245,11 +246,16 @@ async function seed() {
   });
 
   console.log("Seeding demo owner + restricted staff...");
+  // Elevated (staff/admin/owner) roles skip email verification — access is
+  // already gated by role-based permissions (see src/modules/rbac), not
+  // verification status, so there's nothing extra it would protect here.
+  // Customers (demo customer below) go through the real unverified flow.
   const ownerUser = await auth.getUserByEmail(DEMO_OWNER_EMAIL).catch(() =>
     auth.createUser({
       email: DEMO_OWNER_EMAIL,
       password: DEMO_ADMIN_PASSWORD,
       displayName: "Demo Owner",
+      emailVerified: true,
     }),
   );
   await auth.setCustomUserClaims(ownerUser.uid, {
@@ -271,6 +277,7 @@ async function seed() {
       email: DEMO_RESTRICTED_STAFF_EMAIL,
       password: DEMO_ADMIN_PASSWORD,
       displayName: "Demo Staff",
+      emailVerified: true,
     }),
   );
   await auth.setCustomUserClaims(staffUser.uid, {
@@ -286,6 +293,32 @@ async function seed() {
     },
     { merge: true },
   );
+
+  console.log("Seeding admin accounts...");
+  for (const [i, email] of DEMO_ADMIN_EMAILS.entries()) {
+    const displayName = `Demo Admin ${i + 1}`;
+    const adminUser = await auth.getUserByEmail(email).catch(() =>
+      auth.createUser({
+        email,
+        password: DEMO_ADMIN_PASSWORD,
+        displayName,
+        emailVerified: true,
+      }),
+    );
+    await auth.setCustomUserClaims(adminUser.uid, {
+      role: "admin",
+      permissions: DEFAULT_ROLE_PERMISSIONS.admin,
+    });
+    await db.doc(`users/${adminUser.uid}`).set(
+      {
+        email,
+        displayName,
+        role: "admin",
+        createdAt: new Date().toISOString(),
+      },
+      { merge: true },
+    );
+  }
 
   console.log("Done.");
 }
