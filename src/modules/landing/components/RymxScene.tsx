@@ -6,6 +6,7 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { REVEAL_DURATION_MS } from "../revealTiming";
 
 const GOLD = new THREE.Color("#e8c170");
 const WHITE = new THREE.Color("#f4f1ea");
@@ -14,8 +15,6 @@ const STL_PATH = "/rymx_3d_logo.stl";
 export type RymxSceneHandle = {
   reveal: () => void;
 };
-
-const REVEAL_DURATION_MS = 1300;
 
 let geomPromise: Promise<THREE.BufferGeometry> | undefined;
 function loadGeom(): Promise<THREE.BufferGeometry> {
@@ -143,12 +142,15 @@ export const RymxScene = forwardRef<RymxSceneHandle, { className?: string }>(fun
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const revealRef = useRef({ active: false, start: 0 });
+  const revealRef = useRef({ active: false, start: 0, held: false });
   const [fallback, setFallback] = useState(false);
 
   useImperativeHandle(ref, () => ({
     reveal: () => {
-      revealRef.current = { active: true, start: performance.now() };
+      // Ignore re-clicks once a reveal is already running or held — restarting
+      // would snap the logo back to idle mid-transition.
+      if (revealRef.current.active || revealRef.current.held) return;
+      revealRef.current = { active: true, start: performance.now(), held: false };
     },
   }));
 
@@ -277,20 +279,23 @@ export const RymxScene = forwardRef<RymxSceneHandle, { className?: string }>(fun
       let burst = 0;
       let revBloom = 0;
       const reveal = revealRef.current;
-      if (reveal.active) {
-        let rp = (now - reveal.start) / REVEAL_DURATION_MS;
+      if (reveal.active || reveal.held) {
+        let rp = reveal.held ? 1 : (now - reveal.start) / REVEAL_DURATION_MS;
         if (rp >= 1) {
           rp = 1;
+          // Hold the climax (expanded logo + full gold flash) until this
+          // component unmounts on navigation — never ease back to idle.
           reveal.active = false;
+          reveal.held = true;
         }
-        burst = Math.sin(rp * Math.PI);
+        // Ease up to 1 and stay there (unlike sin(π·t), which returns to 0).
+        burst = 1 - Math.pow(1 - rp, 3);
         let fo: number;
         if (rp < 0.38) fo = 0;
         else if (rp < 0.6) fo = (rp - 0.38) / 0.22;
-        else if (rp < 0.72) fo = 1;
-        else fo = Math.max(0, 1 - (rp - 0.72) / 0.28);
+        else fo = 1;
         flashMat.opacity = fo;
-        revBloom = Math.sin(rp * Math.PI) * 2.6;
+        revBloom = burst * 2.6;
       } else {
         flashMat.opacity = 0;
       }

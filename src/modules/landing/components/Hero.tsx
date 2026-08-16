@@ -4,17 +4,12 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { Button } from "@/components/ui/Button";
+import { REVEAL_DURATION_MS } from "../revealTiming";
 import type { RymxSceneHandle } from "./RymxScene";
 
 const RymxScene = dynamic(() => import("./RymxScene").then((m) => m.RymxScene), {
   ssr: false,
 });
-
-// The flash plane inside RymxScene floods the frame ~800ms into the reveal
-// burst (see REVEAL_DURATION_MS in RymxScene.tsx) — navigating right at that
-// peak lets the gold flash itself conceal the page transition, matching the
-// design's "the 3D scene doubles as the transition" intent.
-const NAVIGATE_AT_MS = 800;
 
 export function Hero({
   eyebrow = "RYMX — CAIRO / SS26",
@@ -27,14 +22,19 @@ export function Hero({
 }) {
   const sceneRef = useRef<RymxSceneHandle>(null);
   const router = useRouter();
+  const navigatingRef = useRef(false);
 
   function onRevealClick(e: React.MouseEvent<HTMLElement>) {
     // Middle-click / cmd-click / ctrl-click open in a new tab and never
     // reach this handler, so href="/shop" keeps working for those and for
     // no-JS/crawlers; a plain left-click gets the delayed reveal instead.
     e.preventDefault();
+    if (navigatingRef.current) return;
+    navigatingRef.current = true;
     sceneRef.current?.reveal();
-    setTimeout(() => router.push("/shop"), NAVIGATE_AT_MS);
+    // Wait for the burst to finish and hold on the gold flash, then swap to
+    // /shop while that flash still covers the frame (no idle-state snap-back).
+    setTimeout(() => router.push("/shop"), REVEAL_DURATION_MS);
   }
 
   return (
