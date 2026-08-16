@@ -1,6 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
+import { useToast } from "@/components/ui/Toast";
 import { formatEGP } from "@/lib/money";
 import { useCart } from "@/modules/cart/hooks/useCart";
 import type { Product, Variant } from "../schema";
@@ -16,6 +18,7 @@ function matchVariant(variants: Variant[], selected: Record<string, string>): Va
 }
 
 export function VariantSelector({ product, variants }: { product: Product; variants: Variant[] }) {
+  const t = useTranslations("productCard");
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
     product.options.forEach((opt) => {
@@ -26,15 +29,19 @@ export function VariantSelector({ product, variants }: { product: Product; varia
 
   const variant = useMemo(() => matchVariant(variants, selected), [variants, selected]);
   const { add, pending } = useCart();
+  const toast = useToast();
   // Tracks which variant the "Added to cart" confirmation applies to, so
   // switching size/color resets it without needing an effect.
   const [addedFor, setAddedFor] = useState<string | null>(null);
   const added = addedFor !== null && addedFor === variant?.id;
 
-  function onAddToCart() {
+  async function onAddToCart() {
     if (!variant) return;
-    add({ productId: product.id, variantId: variant.id, quantity: 1 });
-    setAddedFor(variant.id);
+    const ok = await add({ productId: product.id, variantId: variant.id, quantity: 1 });
+    if (ok) {
+      setAddedFor(variant.id);
+      toast.success(t("addedToCart"));
+    }
   }
 
   return (
@@ -72,7 +79,7 @@ export function VariantSelector({ product, variants }: { product: Product; varia
           {formatEGP(variant ? variant.priceMinor : product.minPriceMinor)}
         </p>
         {variant && variant.stock === 0 && (
-          <p className="font-mono text-xs text-red-400 uppercase">Out of stock</p>
+          <p className="font-mono text-xs text-red-400 uppercase">{t("outOfStock")}</p>
         )}
         <button
           type="button"
@@ -80,7 +87,7 @@ export function VariantSelector({ product, variants }: { product: Product; varia
           disabled={!variant || variant.stock === 0 || pending}
           className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold disabled:border-rymx-cream/20 disabled:text-rymx-cream/30 rounded-full border px-6 py-3 font-mono text-xs tracking-[0.1em] uppercase transition-colors hover:text-[#12100a] disabled:pointer-events-none"
         >
-          {pending ? "Adding…" : added ? "Added to cart" : "Add to cart"}
+          {pending ? t("adding") : added ? t("added") : t("addToCart")}
         </button>
       </div>
     </div>

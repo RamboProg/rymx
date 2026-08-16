@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -10,17 +11,18 @@ import { computeShippingFeeMinor } from "@/modules/settings/services/shipping";
 import { useCart } from "../hooks/useCart";
 
 export function CartView({ shippingSettings }: { shippingSettings: ShippingSettings }) {
+  const t = useTranslations("cart");
   const { cart, loading, pending, updateQuantity, remove } = useCart();
 
   if (loading) {
-    return <p className="text-rymx-cream/60 font-mono text-sm">Loading your cart…</p>;
+    return <p className="text-rymx-cream/60 font-mono text-sm">{t("loading")}</p>;
   }
 
   if (cart.lines.length === 0) {
     return (
       <div className="flex flex-col items-start gap-6">
-        <p className="text-rymx-cream/60 font-mono text-sm">Your cart is empty.</p>
-        <Button href="/shop">Shop the collection</Button>
+        <p className="text-rymx-cream/60 font-mono text-sm">{t("empty")}</p>
+        <Button href="/shop">{t("shopTheCollection")}</Button>
       </div>
     );
   }
@@ -65,7 +67,7 @@ export function CartView({ shippingSettings }: { shippingSettings: ShippingSetti
               </div>
               <div className="flex items-center gap-3">
                 <label className="sr-only" htmlFor={`qty-${line.variantId}`}>
-                  Quantity for {line.title}
+                  {t("quantityFor", { title: line.title })}
                 </label>
                 <div className="w-20">
                   <Select
@@ -84,7 +86,7 @@ export function CartView({ shippingSettings }: { shippingSettings: ShippingSetti
                   onClick={() => remove(line.variantId)}
                   className="text-rymx-cream/50 font-mono text-xs tracking-[0.1em] uppercase hover:text-red-400"
                 >
-                  Remove
+                  {t("remove")}
                 </button>
               </div>
             </div>
@@ -94,20 +96,22 @@ export function CartView({ shippingSettings }: { shippingSettings: ShippingSetti
 
       <div className="border-rymx-cream/10 bg-rymx-card flex h-fit flex-col gap-4 rounded-md border p-6">
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-          <span>Subtotal</span>
+          <span>{t("subtotal")}</span>
           <span>{formatEGP(cart.subtotalMinor)}</span>
         </div>
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-          <span>Shipping</span>
-          <span>{shippingFeeMinor === 0 ? "Free" : formatEGP(shippingFeeMinor)}</span>
+          <span>{t("shipping")}</span>
+          <span>{shippingFeeMinor === 0 ? t("free") : formatEGP(shippingFeeMinor)}</span>
         </div>
         {shippingFeeMinor > 0 && shippingSettings.freeShippingThresholdMinor !== null && (
           <p className="text-rymx-cream/40 font-mono text-xs">
-            Free shipping over {formatEGP(shippingSettings.freeShippingThresholdMinor)}
+            {t("freeShippingOver", {
+              amount: formatEGP(shippingSettings.freeShippingThresholdMinor),
+            })}
           </p>
         )}
         <Button href="/checkout" className="justify-center">
-          Continue to checkout
+          {t("continueToCheckout")}
         </Button>
       </div>
     </div>

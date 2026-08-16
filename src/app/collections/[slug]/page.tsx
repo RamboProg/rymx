@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ProductGrid } from "@/modules/catalog/components/ProductGrid";
 import { shopSearchParamsSchema } from "@/modules/catalog/schema";
@@ -12,7 +13,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const collection = await getLiveCollectionBySlug(slug);
-  if (!collection) return { title: "Collection not found — RYMX" };
+  if (!collection) {
+    const t = await getTranslations("collectionsPublic");
+    return { title: t("notFoundTitle") };
+  }
   return { title: `${collection.title} — RYMX`, description: collection.description };
 }
 

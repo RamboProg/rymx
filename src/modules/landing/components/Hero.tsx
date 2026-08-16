@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -12,14 +13,20 @@ const RymxScene = dynamic(() => import("./RymxScene").then((m) => m.RymxScene), 
 });
 
 export function Hero({
-  eyebrow = "RYMX — CAIRO / SS26",
-  headline = "Reveal your mistakes.",
-  cta = "Reveal the collection",
+  eyebrow,
+  headline,
+  cta,
 }: {
   eyebrow?: string;
   headline?: string;
   cta?: string;
 }) {
+  // CMS-supplied copy (props) always wins; these are just the localized
+  // fallbacks shown until content settings override them.
+  const t = useTranslations("home");
+  const resolvedEyebrow = eyebrow ?? t("eyebrow");
+  const resolvedHeadline = headline ?? t("headline");
+  const resolvedCta = cta ?? t("cta");
   const sceneRef = useRef<RymxSceneHandle>(null);
   const router = useRouter();
   const navigatingRef = useRef(false);
@@ -48,16 +55,16 @@ export function Hero({
 
       <div className="absolute top-8 left-6 max-w-[80%] sm:top-11 sm:left-11 sm:max-w-[62%]">
         <p className="text-rymx-gold font-mono text-[11px] font-medium tracking-[0.32em]">
-          {eyebrow}
+          {resolvedEyebrow}
         </p>
         <h1 className="font-shoulders text-rymx-cream mt-4 text-[13vw] leading-[0.92] font-extrabold tracking-[-0.005em] uppercase sm:text-6xl lg:text-7xl">
-          {headline}
+          {resolvedHeadline}
         </h1>
       </div>
 
       <div className="absolute right-6 bottom-8 sm:right-11 sm:bottom-11">
         <Button href="/shop" onClick={onRevealClick}>
-          {cta} <span aria-hidden="true">→</span>
+          {resolvedCta} <span aria-hidden="true">→</span>
         </Button>
       </div>
     </section>

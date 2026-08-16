@@ -1,8 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function ShopPagination({ page, hasMore }: { page: number; hasMore: boolean }) {
+  const t = useTranslations("shop");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -23,16 +25,16 @@ export function ShopPagination({ page, hasMore }: { page: number; hasMore: boole
         onClick={() => goTo(page - 1)}
         className="text-rymx-cream/70 hover:text-rymx-gold disabled:pointer-events-none disabled:opacity-30"
       >
-        Previous
+        {t("previous")}
       </button>
-      <span className="text-rymx-cream/40">Page {page}</span>
+      <span className="text-rymx-cream/40">{t("pageNumber", { page })}</span>
       <button
         type="button"
         disabled={!hasMore}
         onClick={() => goTo(page + 1)}
         className="text-rymx-cream/70 hover:text-rymx-gold disabled:pointer-events-none disabled:opacity-30"
       >
-        Next
+        {t("next")}
       </button>
     </div>
   );

@@ -1,5 +1,5 @@
-// Shared locale constants for the admin i18n layer. Public pages stay English;
-// only the admin area reads/writes the `locale` cookie and switches language.
+// Shared locale constants for the site-wide i18n layer. Any page can read/write
+// the `locale` cookie via LocaleToggle to switch language.
 export const LOCALES = ["en", "ar"] as const;
 export type Locale = (typeof LOCALES)[number];
 

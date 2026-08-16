@@ -1,6 +1,7 @@
 "use client";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +14,7 @@ import { completeGoogleRedirectIfPresent, signInWithGoogle } from "../lib/google
 import { loginSchema } from "../schema";
 
 export function LoginForm() {
+  const t = useTranslations("login");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,21 +34,21 @@ export function LoginForm() {
       } catch (err) {
         console.error("[auth] Google redirect completion failed", err);
         if (!cancelled) {
-          setError(authErrorMessage(err, "Google sign-in failed"));
+          setError(authErrorMessage(err, t("googleSignInFailed")));
         }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, [router, t]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     const parsed = loginSchema.safeParse({ email, password });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? t("invalidInput"));
       return;
     }
     setPending(true);
@@ -56,7 +58,7 @@ export function LoginForm() {
       router.push(destination);
       router.refresh();
     } catch {
-      setError("Invalid email or password");
+      setError(t("invalidCredentials"));
     } finally {
       setPending(false);
     }
@@ -71,7 +73,7 @@ export function LoginForm() {
       router.push(result.destination);
       router.refresh();
     } catch (err) {
-      const message = authErrorMessage(err, "Google sign-in failed");
+      const message = authErrorMessage(err, t("googleSignInFailed"));
       if (message) console.error("[auth] Google sign-in failed", err);
       setError(message);
     } finally {
@@ -87,7 +89,7 @@ export function LoginForm() {
     <form onSubmit={onSubmit} method="post" className="flex w-full flex-col gap-4" noValidate>
       <Field
         id="email"
-        label="Email"
+        label={t("email")}
         type="email"
         autoComplete="email"
         value={email}
@@ -97,7 +99,7 @@ export function LoginForm() {
           serialize it into the URL. It's driven by React state only. */}
       <Field
         id="password"
-        label="Password"
+        label={t("password")}
         type="password"
         autoComplete="current-password"
         value={password}
@@ -109,7 +111,7 @@ export function LoginForm() {
         </p>
       )}
       <Button type="submit" disabled={pending || !hydrated} className="justify-center">
-        {pending ? "Signing in…" : "Sign in"}
+        {pending ? t("signingIn") : t("signIn")}
       </Button>
       <button
         type="button"
@@ -117,7 +119,7 @@ export function LoginForm() {
         disabled={pending}
         className="border-rymx-cream/20 text-rymx-cream hover:border-rymx-gold hover:text-rymx-gold rounded-full border px-6 py-3 font-mono text-xs tracking-[0.1em] uppercase transition-colors disabled:pointer-events-none disabled:opacity-50"
       >
-        Continue with Google
+        {t("continueWithGoogle")}
       </button>
     </form>
   );

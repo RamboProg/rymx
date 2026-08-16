@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import type { Order } from "../schema";
@@ -23,6 +24,7 @@ function readStoredOrder(orderId: string): StoredOrder | null {
 }
 
 export function OrderConfirmation() {
+  const t = useTranslations("orderConfirmation");
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order");
   const order = orderId ? readStoredOrder(orderId) : null;
@@ -30,8 +32,8 @@ export function OrderConfirmation() {
   if (!order) {
     return (
       <div className="flex flex-col items-start gap-6">
-        <p className="text-rymx-cream/60 font-mono text-sm">We couldn&apos;t find that order.</p>
-        <Button href="/shop">Continue shopping</Button>
+        <p className="text-rymx-cream/60 font-mono text-sm">{t("notFound")}</p>
+        <Button href="/shop">{t("continueShopping")}</Button>
       </div>
     );
   }
@@ -39,18 +41,23 @@ export function OrderConfirmation() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase">Order placed</p>
+        <p className="text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase">
+          {t("orderPlaced")}
+        </p>
         <h1 className="font-display text-rymx-cream text-3xl font-bold">
-          Thank you, {order.shipping.fullName}
+          {t("thankYou", { name: order.shipping.fullName })}
         </h1>
         <p className="text-rymx-cream/60 mt-2 font-mono text-sm">
-          Order #{order.id} · Cash on delivery · {new Date(order.createdAt).toLocaleString()}
+          {t("orderMeta", {
+            id: order.id,
+            when: new Date(order.createdAt).toLocaleString(),
+          })}
         </p>
       </div>
 
       <OrderSummary order={order} />
 
-      <Button href="/shop">Continue shopping</Button>
+      <Button href="/shop">{t("continueShopping")}</Button>
     </div>
   );
 }

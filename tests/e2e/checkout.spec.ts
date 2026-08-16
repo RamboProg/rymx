@@ -68,6 +68,46 @@ test.describe("checkout", () => {
     await expect(page.getByRole("heading", { name: /Thank you, Sara Ahmed/ })).toBeVisible();
   });
 
+  test("prefills checkout from a signed-in customer's saved default address", async ({
+    page,
+  }) => {
+    const email = `checkout-prefill-${Date.now()}@rymx.test`;
+    await page.goto("/register");
+    await page.getByLabel("Email").fill(email);
+    await page.getByLabel("Password", { exact: true }).fill("password123");
+    await page.getByLabel("Confirm password").fill("password123");
+    await page.getByRole("button", { name: /create account/i }).click();
+    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+
+    // Save one address up front — the first address a customer saves becomes
+    // their default automatically.
+    await page.goto("/account");
+    await page.getByLabel("Full name").fill("Nour Khaled");
+    // Exact match: "Phone" is also a substring of ProfileForm's "Phone number"
+    // field, which is visible on the same page.
+    await page.getByLabel("Phone", { exact: true }).fill("01098765432");
+    await page.getByLabel("Governorate").fill("Giza");
+    await page.getByLabel("City").fill("Dokki");
+    await page.getByLabel("Address").fill("4 Tahrir St.");
+    await page.getByRole("button", { name: "Add address" }).click();
+    await expect(page.getByText("Default")).toBeVisible();
+
+    await addToCart(page, "nile-tee", ["M"]);
+    await page.goto("/checkout");
+
+    // Every field arrives pre-populated from the saved default address, and
+    // remains editable to confirm/change before placing the order.
+    await expect(page.getByLabel("Full name")).toHaveValue("Nour Khaled");
+    await expect(page.getByLabel("Phone")).toHaveValue("01098765432");
+    await expect(page.getByLabel("Governorate")).toHaveValue("Giza");
+    await expect(page.getByLabel("City")).toHaveValue("Dokki");
+    await expect(page.getByLabel("Address")).toHaveValue("4 Tahrir St.");
+
+    await page.getByRole("button", { name: "Place order (COD)" }).click();
+    await expect(page).toHaveURL(/\/checkout\/confirmation\?order=/);
+    await expect(page.getByRole("heading", { name: /Thank you, Nour Khaled/ })).toBeVisible();
+  });
+
   test("rejects an invalid promo code", async ({ page }) => {
     await addToCart(page, "nile-tee", ["S"]);
     await page.goto("/checkout");

@@ -1,6 +1,7 @@
 "use client";
 
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
@@ -9,6 +10,7 @@ import { auth } from "@/lib/firebase/client";
 import { resetSchema } from "../schema";
 
 export function ResetForm() {
+  const t = useTranslations("reset");
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -20,7 +22,7 @@ export function ResetForm() {
     setError(null);
     const parsed = resetSchema.safeParse({ email });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? t("invalidInput"));
       return;
     }
     setPending(true);
@@ -39,7 +41,7 @@ export function ResetForm() {
   if (sent) {
     return (
       <p className="text-rymx-cream/70 font-mono text-sm">
-        If an account exists for {email}, a reset link is on its way.
+        {t("sentMessage", { email })}
       </p>
     );
   }
@@ -50,7 +52,7 @@ export function ResetForm() {
     <form onSubmit={onSubmit} method="post" className="flex w-full flex-col gap-4" noValidate>
       <Field
         id="email"
-        label="Email"
+        label={t("email")}
         type="email"
         autoComplete="email"
         value={email}
@@ -62,7 +64,7 @@ export function ResetForm() {
         </p>
       )}
       <Button type="submit" disabled={pending || !hydrated} className="justify-center">
-        {pending ? "Sending…" : "Send reset link"}
+        {pending ? t("sending") : t("sendResetLink")}
       </Button>
     </form>
   );

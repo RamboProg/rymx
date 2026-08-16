@@ -44,7 +44,12 @@ export async function addAddressAction(rawInput: unknown): Promise<AddressListAc
   if (!parsed.success)
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
 
-  await adminDb.collection(`users/${uid}/addresses`).add(parsed.data);
+  // The first address a customer saves becomes their default automatically;
+  // later ones are added as non-default until explicitly set.
+  const existing = await listAddresses(uid);
+  await adminDb
+    .collection(`users/${uid}/addresses`)
+    .add({ ...parsed.data, isDefault: existing.length === 0 });
   revalidatePath("/account");
   return { ok: true, addresses: await listAddresses(uid) };
 }
@@ -56,6 +61,31 @@ export async function removeAddressAction(rawAddressId: unknown): Promise<Addres
     return { ok: false, error: "Invalid address" };
 
   await adminDb.doc(`users/${uid}/addresses/${rawAddressId}`).delete();
+  revalidatePath("/account");
+  return { ok: true, addresses: await listAddresses(uid) };
+}
+
+export async function setDefaultAddressAction(
+  rawAddressId: unknown,
+): Promise<AddressListActionResult> {
+  const uid = await requireUid();
+  if (!uid) return { ok: false, error: "Sign in required" };
+  if (typeof rawAddressId !== "string" || !rawAddressId)
+    return { ok: false, error: "Invalid address" };
+
+  const addresses = await listAddresses(uid);
+  if (!addresses.some((a) => a.id === rawAddressId)) {
+    return { ok: false, error: "Invalid address" };
+  }
+
+  const batch = adminDb.batch();
+  for (const address of addresses) {
+    batch.update(adminDb.doc(`users/${uid}/addresses/${address.id}`), {
+      isDefault: address.id === rawAddressId,
+    });
+  }
+  await batch.commit();
+
   revalidatePath("/account");
   return { ok: true, addresses: await listAddresses(uid) };
 }

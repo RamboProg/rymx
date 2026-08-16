@@ -20,6 +20,7 @@ export const addressSchema = z.object({
   governorate: z.string().min(1),
   city: z.string().min(1),
   addressLine: z.string().min(1),
+  isDefault: z.boolean().default(false),
 });
 export type Address = z.infer<typeof addressSchema>;
 

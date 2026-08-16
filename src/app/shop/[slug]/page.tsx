@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ProductGallery } from "@/modules/catalog/components/ProductGallery";
 import { VariantSelector } from "@/modules/catalog/components/VariantSelector";
@@ -11,7 +12,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Product not found — RYMX" };
+  if (!product) {
+    const t = await getTranslations("shop");
+    return { title: t("productNotFoundTitle") };
+  }
   return { title: `${product.title} — RYMX`, description: product.description };
 }
 

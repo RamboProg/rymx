@@ -1,10 +1,12 @@
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { formatEGP } from "@/lib/money";
 import type { Order } from "../schema";
 
-export function OrderHistoryList({ orders }: { orders: Order[] }) {
+export async function OrderHistoryList({ orders }: { orders: Order[] }) {
+  const t = await getTranslations("account");
   if (orders.length === 0) {
-    return <p className="text-rymx-cream/50 font-mono text-sm">No orders yet.</p>;
+    return <p className="text-rymx-cream/50 font-mono text-sm">{t("noOrdersYet")}</p>;
   }
 
   return (
@@ -16,7 +18,7 @@ export function OrderHistoryList({ orders }: { orders: Order[] }) {
             className="border-rymx-cream/10 bg-rymx-card hover:border-rymx-gold flex items-center justify-between gap-4 rounded-md border p-4 transition-colors"
           >
             <div className="text-rymx-cream/70 font-mono text-xs">
-              <p className="text-rymx-cream">Order #{order.id}</p>
+              <p className="text-rymx-cream">{t("orderNumber", { id: order.id })}</p>
               <p>{order.createdAt.toLocaleDateString()}</p>
             </div>
             <p className="text-rymx-gold font-mono text-sm">{formatEGP(order.totalMinor)}</p>

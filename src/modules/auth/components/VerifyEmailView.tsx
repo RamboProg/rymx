@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { LocaleToggle } from "@/components/admin/LocaleToggle";
 import { Button } from "@/components/ui/Button";
 import { auth } from "@/lib/firebase/client";
 import { getSiteUrl } from "@/lib/siteUrl";
@@ -71,10 +70,7 @@ export function VerifyEmailView() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
-        <LocaleToggle />
-      </div>
+      <h1 className="font-display text-rymx-cream text-2xl font-bold">{t("title")}</h1>
       <p className="text-rymx-cream/70 text-sm">{t("body", { email: user.email ?? "" })}</p>
       <p className="text-rymx-cream/50 font-mono text-xs">{t("spamNote")}</p>
 

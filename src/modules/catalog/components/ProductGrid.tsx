@@ -1,11 +1,13 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { Product } from "../schema";
 import { ProductCard } from "./ProductCard";
 
 export function ProductGrid({ products }: { products: Product[] }) {
+  const t = useTranslations("shop");
   if (products.length === 0) {
-    return (
-      <p className="text-rymx-cream/50 font-mono text-sm">No products match these filters yet.</p>
-    );
+    return <p className="text-rymx-cream/50 font-mono text-sm">{t("noMatches")}</p>;
   }
 
   return (

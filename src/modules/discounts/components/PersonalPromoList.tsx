@@ -1,11 +1,11 @@
+import { getTranslations } from "next-intl/server";
 import { formatEGP } from "@/lib/money";
 import type { Discount } from "../schema";
 
-export function PersonalPromoList({ discounts }: { discounts: Discount[] }) {
+export async function PersonalPromoList({ discounts }: { discounts: Discount[] }) {
+  const t = await getTranslations("account");
   if (discounts.length === 0) {
-    return (
-      <p className="text-rymx-cream/50 font-mono text-sm">No personal promo codes right now.</p>
-    );
+    return <p className="text-rymx-cream/50 font-mono text-sm">{t("noPersonalPromoCodes")}</p>;
   }
 
   return (
@@ -20,8 +20,8 @@ export function PersonalPromoList({ discounts }: { discounts: Discount[] }) {
           </span>
           <span className="text-rymx-cream/70 font-mono text-xs">
             {discount.type === "percent"
-              ? `${discount.value}% off`
-              : `${formatEGP(discount.value)} off`}
+              ? t("percentOff", { value: discount.value })
+              : t("amountOff", { amount: formatEGP(discount.value) })}
           </span>
         </li>
       ))}

@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { formatEGP } from "@/lib/money";
 import { RequestReturnForm } from "@/modules/returns/components/RequestReturnForm";
 import { returnReasonLabel, type Return } from "@/modules/returns/schema";
@@ -6,6 +9,7 @@ import type { Order } from "../schema";
 import { OrderSummary } from "./OrderSummary";
 
 export function OrderDetail({ order, returns }: { order: Order; returns: Return[] }) {
+  const t = useTranslations("orderDetail");
   const remaining = remainingToReturn(order.items, returns);
   const canRequestReturn =
     order.status === "delivered" &&
@@ -14,9 +18,11 @@ export function OrderDetail({ order, returns }: { order: Order; returns: Return[
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="font-display text-rymx-cream text-2xl font-bold">Order #{order.id}</h1>
+        <h1 className="font-display text-rymx-cream text-2xl font-bold">
+          {t("orderNumber", { id: order.id })}
+        </h1>
         <p className="text-rymx-cream/60 mt-2 font-mono text-sm">
-          Cash on delivery · {order.createdAt.toLocaleString()} · {order.status}
+          {t("orderMeta", { when: order.createdAt.toLocaleString(), status: order.status })}
         </p>
       </div>
       <OrderSummary order={order} />
@@ -30,7 +36,7 @@ export function OrderDetail({ order, returns }: { order: Order; returns: Return[
 
       {returns.length > 0 && (
         <section className="flex flex-col gap-3">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">Returns</h2>
+          <h2 className="font-display text-rymx-cream text-lg font-bold">{t("returns")}</h2>
           <ul className="flex flex-col gap-3">
             {returns.map((ret) => (
               <li
@@ -53,7 +59,7 @@ export function OrderDetail({ order, returns }: { order: Order; returns: Return[
                   ))}
                 </ul>
                 <p className="text-rymx-cream/60 font-mono text-xs">
-                  Refund: {formatEGP(ret.refundMinor)}
+                  {t("refund", { amount: formatEGP(ret.refundMinor) })}
                 </p>
               </li>
             ))}
@@ -63,7 +69,7 @@ export function OrderDetail({ order, returns }: { order: Order; returns: Return[
 
       {canRequestReturn && (
         <section className="flex flex-col gap-3">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">Request a return</h2>
+          <h2 className="font-display text-rymx-cream text-lg font-bold">{t("requestReturn")}</h2>
           <RequestReturnForm order={order} returns={returns} />
         </section>
       )}

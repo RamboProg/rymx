@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { formatEGP } from "@/lib/money";
 import type { Order } from "../schema";
 
@@ -14,6 +17,7 @@ type OrderTotals = Pick<
 >;
 
 export function OrderSummary({ order }: { order: OrderTotals }) {
+  const t = useTranslations("orderSummary");
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -32,33 +36,35 @@ export function OrderSummary({ order }: { order: OrderTotals }) {
 
       <div className="border-rymx-cream/10 flex flex-col gap-2 border-t pt-4">
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-          <span>Subtotal</span>
+          <span>{t("subtotal")}</span>
           <span>{formatEGP(order.subtotalMinor)}</span>
         </div>
         {order.discountMinor > 0 && (
           <div className="text-rymx-gold flex justify-between font-mono text-sm">
-            <span>Discount {order.discountCode ? `(${order.discountCode})` : ""}</span>
+            <span>
+              {t("discount")} {order.discountCode ? `(${order.discountCode})` : ""}
+            </span>
             <span>-{formatEGP(order.discountMinor)}</span>
           </div>
         )}
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-          <span>Shipping</span>
-          <span>{order.shippingFeeMinor === 0 ? "Free" : formatEGP(order.shippingFeeMinor)}</span>
+          <span>{t("shipping")}</span>
+          <span>{order.shippingFeeMinor === 0 ? t("free") : formatEGP(order.shippingFeeMinor)}</span>
         </div>
         {order.taxMinor > 0 && (
           <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-            <span>Tax</span>
+            <span>{t("tax")}</span>
             <span>{formatEGP(order.taxMinor)}</span>
           </div>
         )}
         {order.codFeeMinor > 0 && (
           <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-            <span>COD fee</span>
+            <span>{t("codFee")}</span>
             <span>{formatEGP(order.codFeeMinor)}</span>
           </div>
         )}
         <div className="text-rymx-cream flex justify-between font-mono text-sm font-semibold">
-          <span>Total</span>
+          <span>{t("total")}</span>
           <span>{formatEGP(order.totalMinor)}</span>
         </div>
       </div>

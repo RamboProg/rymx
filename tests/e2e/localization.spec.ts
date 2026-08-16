@@ -73,17 +73,21 @@ test.describe("admin localization", () => {
     await page.getByRole("button", { name: "EN" }).click();
   });
 
-  test("public shop stays English even when the admin locale is Arabic", async ({ page }) => {
+  test("public shop follows the same locale as the admin area", async ({ page }) => {
     await loginAsOwner(page);
     await page.goto("/admin");
     await page.getByRole("button", { name: "ع" }).click();
     await expect(page.locator("[dir]").first()).toHaveAttribute("dir", "rtl");
 
+    // Public pages now share the same locale cookie as admin — switching in
+    // one place localizes the whole site.
     await page.goto("/shop");
-    await expect(page.getByRole("heading", { level: 1, name: "Shop" })).toBeVisible();
+    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+    await expect(page.getByRole("heading", { level: 1, name: "المتجر" })).toBeVisible();
 
-    await page.goto("/admin");
     await page.getByRole("button", { name: "EN" }).click();
+    await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
+    await expect(page.getByRole("heading", { level: 1, name: "Shop" })).toBeVisible();
   });
 });
 

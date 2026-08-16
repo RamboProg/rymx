@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { CategorySection } from "@/modules/catalog/components/CategorySection";
 import { ProductGrid } from "@/modules/catalog/components/ProductGrid";
 import { ShopFilters } from "@/modules/catalog/components/ShopFilters";
 import { ShopPagination } from "@/modules/catalog/components/ShopPagination";
@@ -25,6 +27,7 @@ export default async function ShopPage({
   const params = parsed.success ? parsed.data : shopSearchParamsSchema.parse({});
 
   const categories = await listCategories();
+  const t = await getTranslations("shop");
 
   // With a category selected, keep the flat, paginated single-category grid.
   if (params.category) {
@@ -32,7 +35,7 @@ export default async function ShopPage({
     const hasMore = params.page * SHOP_PAGE_SIZE < total;
     return (
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 sm:px-8">
-        <h1 className="font-display text-rymx-cream text-3xl font-bold">Shop</h1>
+        <h1 className="font-display text-rymx-cream text-3xl font-bold">{t("title")}</h1>
         <ShopFilters categories={categories} />
         <ProductGrid products={products} />
         <ShopPagination page={params.page} hasMore={hasMore} />
@@ -40,23 +43,23 @@ export default async function ShopPage({
     );
   }
 
-  // Default view: a section per category (big heading + grid), in category order.
+  // Default view: a section per category (big heading + grid, capped at 10
+  // with "View all"), in category order.
   const sections = await listShopProductsByCategory(params.sort);
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-12 px-6 py-12 sm:px-8">
-      <h1 className="font-display text-rymx-cream text-3xl font-bold">Shop</h1>
+      <h1 className="font-display text-rymx-cream text-3xl font-bold">{t("title")}</h1>
       <ShopFilters categories={categories} />
       {sections.length === 0 ? (
-        <p className="text-rymx-cream/50 font-mono text-sm">No products yet.</p>
+        <p className="text-rymx-cream/50 font-mono text-sm">{t("noProductsYet")}</p>
       ) : (
         sections.map((section) => (
-          <section key={section.category.id} className="flex flex-col gap-6">
-            <h2 className="font-display text-rymx-cream text-2xl font-bold tracking-tight uppercase">
-              {section.category.title}
-            </h2>
-            <ProductGrid products={section.products} />
-          </section>
+          <CategorySection
+            key={section.category.id}
+            category={section.category}
+            products={section.products}
+          />
         ))
       )}
     </div>

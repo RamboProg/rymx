@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useState } from "react";
 import { z } from "zod";
@@ -17,15 +18,15 @@ import { establishSession } from "../lib/establishSession";
 import { completeGoogleRedirectIfPresent, signInWithGoogle } from "../lib/googleSignIn";
 import { registerSchema } from "../schema";
 
-const registerFormSchema = registerSchema
-  .extend({ confirmPassword: z.string() })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
 export function RegisterForm() {
+  const t = useTranslations("register");
   const router = useRouter();
+  const registerFormSchema = registerSchema
+    .extend({ confirmPassword: z.string() })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("passwordsDoNotMatch"),
+      path: ["confirmPassword"],
+    });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -45,21 +46,21 @@ export function RegisterForm() {
       } catch (err) {
         console.error("[auth] Google redirect completion failed", err);
         if (!cancelled) {
-          setError(authErrorMessage(err, "Google sign-up failed"));
+          setError(authErrorMessage(err, t("googleSignUpFailed")));
         }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, [router, t]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     const parsed = registerFormSchema.safeParse({ email, password, confirmPassword });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError(parsed.error.issues[0]?.message ?? t("invalidInput"));
       return;
     }
     setPending(true);
@@ -77,11 +78,7 @@ export function RegisterForm() {
       router.refresh();
     } catch (err) {
       const code = (err as { code?: string }).code;
-      setError(
-        code === "auth/email-already-in-use"
-          ? "An account with this email already exists"
-          : "Registration failed",
-      );
+      setError(code === "auth/email-already-in-use" ? t("emailInUse") : t("registrationFailed"));
     } finally {
       setPending(false);
     }
@@ -97,7 +94,7 @@ export function RegisterForm() {
       router.push(result.destination);
       router.refresh();
     } catch (err) {
-      const message = authErrorMessage(err, "Google sign-up failed");
+      const message = authErrorMessage(err, t("googleSignUpFailed"));
       if (message) console.error("[auth] Google sign-up failed", err);
       setError(message);
     } finally {
@@ -112,7 +109,7 @@ export function RegisterForm() {
     <form onSubmit={onSubmit} method="post" className="flex w-full flex-col gap-4" noValidate>
       <Field
         id="email"
-        label="Email"
+        label={t("email")}
         type="email"
         autoComplete="email"
         value={email}
@@ -122,7 +119,7 @@ export function RegisterForm() {
           serialize them into the URL. React state only. */}
       <Field
         id="password"
-        label="Password"
+        label={t("password")}
         type="password"
         autoComplete="new-password"
         value={password}
@@ -130,7 +127,7 @@ export function RegisterForm() {
       />
       <Field
         id="confirmPassword"
-        label="Confirm password"
+        label={t("confirmPassword")}
         type="password"
         autoComplete="new-password"
         value={confirmPassword}
@@ -142,7 +139,7 @@ export function RegisterForm() {
         </p>
       )}
       <Button type="submit" disabled={pending || !hydrated} className="justify-center">
-        {pending ? "Creating account…" : "Create account"}
+        {pending ? t("creatingAccount") : t("createAccount")}
       </Button>
       <button
         type="button"
@@ -150,7 +147,7 @@ export function RegisterForm() {
         disabled={pending}
         className="border-rymx-cream/20 text-rymx-cream hover:border-rymx-gold hover:text-rymx-gold rounded-full border px-6 py-3 font-mono text-xs tracking-[0.1em] uppercase transition-colors disabled:pointer-events-none disabled:opacity-50"
       >
-        Continue with Google
+        {t("continueWithGoogle")}
       </button>
     </form>
   );

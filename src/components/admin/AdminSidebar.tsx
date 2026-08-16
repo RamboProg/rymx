@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LocaleToggle } from "./LocaleToggle";
 
 const NAV_ITEMS = [
   { href: "/admin", key: "dashboard" },
@@ -25,9 +24,6 @@ export function AdminSidebar() {
 
   return (
     <nav aria-label={t("label")} className="flex w-48 shrink-0 flex-col gap-1">
-      <div className="mb-3 flex justify-end">
-        <LocaleToggle />
-      </div>
       {NAV_ITEMS.map((item) => {
         const isActive =
           item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);

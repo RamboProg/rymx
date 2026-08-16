@@ -1,10 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
 import { formatEGP } from "@/lib/money";
+import type { Address, Profile } from "@/modules/account/schema";
 import { useCart } from "@/modules/cart/hooks/useCart";
 import { previewDiscountAction } from "@/modules/discounts/server/actions";
 import type { ShippingSettings, StoreSettings } from "@/modules/settings/schema";
@@ -22,16 +25,51 @@ const EMPTY_SHIPPING: ShippingAddress = {
   notes: "",
 };
 
+function shippingFromAddress(address: Address): ShippingAddress {
+  return {
+    fullName: address.fullName,
+    phone: address.phone,
+    governorate: address.governorate,
+    city: address.city,
+    addressLine: address.addressLine,
+    notes: "",
+  };
+}
+
+// Prefill priority for a signed-in customer: their default saved address, else
+// the first saved address, else just their profile name/phone with the rest
+// left blank. Every field stays editable afterwards — this is a starting
+// point for the customer to confirm, not a locked-in value.
+function initialShipping(profile: Profile | null, addresses: Address[]): ShippingAddress {
+  if (addresses.length > 0) {
+    const preferred = addresses.find((a) => a.isDefault) ?? addresses[0]!;
+    return shippingFromAddress(preferred);
+  }
+  if (profile && (profile.displayName || profile.phone)) {
+    return { ...EMPTY_SHIPPING, fullName: profile.displayName ?? "", phone: profile.phone ?? "" };
+  }
+  return EMPTY_SHIPPING;
+}
+
 export function CheckoutView({
   shippingSettings,
   storeSettings,
+  profile,
+  addresses,
 }: {
   shippingSettings: ShippingSettings;
   storeSettings: StoreSettings;
+  profile: Profile | null;
+  addresses: Address[];
 }) {
+  const t = useTranslations("checkout");
   const router = useRouter();
   const { cart, loading, signedIn, clear } = useCart();
-  const [shipping, setShipping] = useState<ShippingAddress>(EMPTY_SHIPPING);
+  const [shipping, setShipping] = useState<ShippingAddress>(() =>
+    initialShipping(profile, addresses),
+  );
+  const defaultAddressId = addresses.find((a) => a.isDefault)?.id ?? addresses[0]?.id ?? "";
+  const [selectedAddressId, setSelectedAddressId] = useState(defaultAddressId);
   const [guestEmail, setGuestEmail] = useState("");
   const [promoCode, setPromoCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<{
@@ -44,6 +82,12 @@ export function CheckoutView({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const idempotencyKey = useRef(crypto.randomUUID());
+
+  function onSelectAddress(addressId: string) {
+    setSelectedAddressId(addressId);
+    const address = addresses.find((a) => a.id === addressId);
+    if (address) setShipping((s) => ({ ...shippingFromAddress(address), notes: s.notes }));
+  }
 
   const shippingFeeMinor = useMemo(
     () => resolveShippingFeeMinor(cart.subtotalMinor, shipping.governorate, shippingSettings),
@@ -106,7 +150,7 @@ export function CheckoutView({
     setFormErrors({});
 
     if (!signedIn && !guestEmail.trim()) {
-      setSubmitError("Email is required for guest checkout.");
+      setSubmitError(t("emailRequired"));
       return;
     }
 
@@ -135,22 +179,37 @@ export function CheckoutView({
   }
 
   if (loading) {
-    return <p className="text-rymx-cream/60 font-mono text-sm">Loading your cart…</p>;
+    return <p className="text-rymx-cream/60 font-mono text-sm">{t("loadingCart")}</p>;
   }
 
   if (cart.lines.length === 0) {
-    return <p className="text-rymx-cream/60 font-mono text-sm">Your cart is empty.</p>;
+    return <p className="text-rymx-cream/60 font-mono text-sm">{t("emptyCart")}</p>;
   }
 
   return (
     <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px]">
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">Shipping details</h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("shippingDetails")}</h2>
+
+        {signedIn && addresses.length > 1 && (
+          <Select
+            id="shipTo"
+            label={t("shipTo")}
+            value={selectedAddressId}
+            onValueChange={onSelectAddress}
+            options={addresses.map((a) => ({
+              value: a.id,
+              label: a.isDefault
+                ? t("addressOptionDefault", { name: a.fullName })
+                : a.fullName,
+            }))}
+          />
+        )}
 
         {!signedIn && (
           <Field
             id="guestEmail"
-            label="Email"
+            label={t("email")}
             type="email"
             autoComplete="email"
             value={guestEmail}
@@ -159,7 +218,7 @@ export function CheckoutView({
         )}
         <Field
           id="fullName"
-          label="Full name"
+          label={t("fullName")}
           autoComplete="name"
           value={shipping.fullName}
           error={formErrors.fullName}
@@ -167,7 +226,7 @@ export function CheckoutView({
         />
         <Field
           id="phone"
-          label="Phone"
+          label={t("phone")}
           type="tel"
           autoComplete="tel"
           value={shipping.phone}
@@ -177,14 +236,14 @@ export function CheckoutView({
         <div className="grid grid-cols-2 gap-4">
           <Field
             id="governorate"
-            label="Governorate"
+            label={t("governorate")}
             value={shipping.governorate}
             error={formErrors.governorate}
             onChange={(e) => setShipping((s) => ({ ...s, governorate: e.target.value }))}
           />
           <Field
             id="city"
-            label="City"
+            label={t("city")}
             value={shipping.city}
             error={formErrors.city}
             onChange={(e) => setShipping((s) => ({ ...s, city: e.target.value }))}
@@ -192,7 +251,7 @@ export function CheckoutView({
         </div>
         <Field
           id="addressLine"
-          label="Address"
+          label={t("address")}
           autoComplete="street-address"
           value={shipping.addressLine}
           error={formErrors.addressLine}
@@ -200,18 +259,18 @@ export function CheckoutView({
         />
         <Field
           id="notes"
-          label="Notes (optional)"
+          label={t("notesOptional")}
           value={shipping.notes}
           onChange={(e) => setShipping((s) => ({ ...s, notes: e.target.value }))}
         />
 
         <p className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
-          Payment: Cash on delivery
+          {t("paymentCod")}
         </p>
 
         {!storeSettings.codEnabled && (
           <p role="alert" className="font-mono text-sm text-red-400">
-            We&rsquo;re not accepting new orders right now. Please check back soon.
+            {t("codDisabled")}
           </p>
         )}
 
@@ -226,7 +285,7 @@ export function CheckoutView({
           disabled={submitting || !storeSettings.codEnabled}
           className="justify-center"
         >
-          {submitting ? "Placing order…" : "Place order (COD)"}
+          {submitting ? t("placingOrder") : t("placeOrder")}
         </Button>
       </form>
 
@@ -236,7 +295,7 @@ export function CheckoutView({
             htmlFor="promoCode"
             className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase"
           >
-            Promo code
+            {t("promoCode")}
           </label>
           <div className="flex gap-2">
             <input
@@ -251,7 +310,7 @@ export function CheckoutView({
               onClick={onApplyPromo}
               className="border-rymx-gold text-rymx-gold hover:bg-rymx-gold rounded-md border px-3 py-2 font-mono text-xs uppercase hover:text-[#12100a] disabled:pointer-events-none disabled:opacity-50"
             >
-              Apply
+              {t("apply")}
             </button>
           </div>
           {promoError && (
@@ -260,38 +319,40 @@ export function CheckoutView({
             </p>
           )}
           {appliedDiscount && (
-            <p className="text-rymx-gold font-mono text-xs">Code {appliedDiscount.code} applied</p>
+            <p className="text-rymx-gold font-mono text-xs">
+              {t("codeApplied", { code: appliedDiscount.code })}
+            </p>
           )}
         </div>
 
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-          <span>Subtotal</span>
+          <span>{t("subtotal")}</span>
           <span>{formatEGP(cart.subtotalMinor)}</span>
         </div>
         {appliedDiscount && (
           <div className="text-rymx-gold flex justify-between font-mono text-sm">
-            <span>Discount</span>
+            <span>{t("discount")}</span>
             <span>-{formatEGP(appliedDiscount.discountMinor)}</span>
           </div>
         )}
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-          <span>Shipping</span>
-          <span>{shippingFeeMinor === 0 ? "Free" : formatEGP(shippingFeeMinor)}</span>
+          <span>{t("shipping")}</span>
+          <span>{shippingFeeMinor === 0 ? t("free") : formatEGP(shippingFeeMinor)}</span>
         </div>
         {taxMinor > 0 && (
           <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-            <span>Tax ({storeSettings.taxPercent}%)</span>
+            <span>{t("tax", { percent: storeSettings.taxPercent })}</span>
             <span>{formatEGP(taxMinor)}</span>
           </div>
         )}
         {codFeeMinor > 0 && (
           <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
-            <span>COD fee</span>
+            <span>{t("codFee")}</span>
             <span>{formatEGP(codFeeMinor)}</span>
           </div>
         )}
         <div className="border-rymx-cream/10 text-rymx-cream flex justify-between border-t pt-4 font-mono text-sm font-semibold">
-          <span>Total</span>
+          <span>{t("total")}</span>
           <span>{formatEGP(totalMinor)}</span>
         </div>
       </div>
