@@ -1,13 +1,15 @@
 "use client";
 
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
 import { useHydrated } from "@/lib/hooks/useHydrated";
 import { auth } from "@/lib/firebase/client";
+import { authErrorMessage } from "../lib/authErrors";
 import { establishSession } from "../lib/establishSession";
+import { completeGoogleRedirectIfPresent, signInWithGoogle } from "../lib/googleSignIn";
 import { loginSchema } from "../schema";
 
 export function LoginForm() {
@@ -17,6 +19,27 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const hydrated = useHydrated();
+
+  // Finish Google redirect sign-in if the user just returned from accounts.google.com.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const destination = await completeGoogleRedirectIfPresent();
+        if (cancelled || !destination) return;
+        router.push(destination);
+        router.refresh();
+      } catch (err) {
+        console.error("[auth] Google redirect completion failed", err);
+        if (!cancelled) {
+          setError(authErrorMessage(err, "Google sign-in failed"));
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -43,12 +66,14 @@ export function LoginForm() {
     setError(null);
     setPending(true);
     try {
-      const cred = await signInWithPopup(auth, new GoogleAuthProvider());
-      const destination = await establishSession(await cred.user.getIdToken());
-      router.push(destination);
+      const result = await signInWithGoogle();
+      if (result.kind === "redirecting") return; // full-page nav to Google
+      router.push(result.destination);
       router.refresh();
-    } catch {
-      setError("Google sign-in failed");
+    } catch (err) {
+      const message = authErrorMessage(err, "Google sign-in failed");
+      if (message) console.error("[auth] Google sign-in failed", err);
+      setError(message);
     } finally {
       setPending(false);
     }

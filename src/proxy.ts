@@ -42,12 +42,19 @@ const USES_EMULATORS = process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS === "true"
 function buildCsp(nonce: string): string {
   const directives = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://apis.google.com https://connect.facebook.net https://analytics.tiktok.com${IS_DEV_SERVER ? " 'unsafe-eval'" : ""}`,
+    // Hosts listed after 'strict-dynamic' are ignored by browsers for
+    // script-src (nonce/hash + strict-dynamic only). They're kept as
+    // documentation of third-party script origins the app intentionally
+    // loads via nonce'd next/script (Meta/TikTok) or Firebase Auth.
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://apis.google.com https://www.gstatic.com https://connect.facebook.net https://analytics.tiktok.com${IS_DEV_SERVER ? " 'unsafe-eval'" : ""}`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob: https://res.cloudinary.com https://www.facebook.com",
+    "img-src 'self' data: blob: https://res.cloudinary.com https://www.facebook.com https://*.googleusercontent.com",
     "font-src 'self' data:",
-    `connect-src 'self' https://*.googleapis.com https://connect.facebook.net https://www.facebook.com https://analytics.tiktok.com${USES_EMULATORS ? " http://127.0.0.1:* ws://127.0.0.1:*" : ""}`,
-    "frame-src https://accounts.google.com https://*.firebaseapp.com",
+    // Google Auth (popup + redirect) talks to accounts.google.com and
+    // *.googleapis.com (identitytoolkit / securetoken). Firebase Auth also
+    // loads its handler iframe from *.firebaseapp.com / *.web.app.
+    `connect-src 'self' https://*.googleapis.com https://apis.google.com https://accounts.google.com https://*.firebaseapp.com https://*.web.app https://connect.facebook.net https://www.facebook.com https://analytics.tiktok.com${USES_EMULATORS ? " http://127.0.0.1:* ws://127.0.0.1:*" : ""}`,
+    "frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.web.app https://www.gstatic.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
