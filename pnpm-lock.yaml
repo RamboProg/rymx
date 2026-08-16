@@ -10,6 +10,7 @@ overrides:
   fast-uri: '>=3.1.5'
   nanoid: ^3.3.18
   sharp: '>=0.35.0'
+  jwks-rsa>jose: 5.10.0
 
 importers:
 
@@ -4555,6 +4556,9 @@ packages:
 
   join-path@1.1.1:
     resolution: {integrity: sha512-jnt9OC34sLXMLJ6YfPQ2ZEKrR9mB5ZbSnQb4LPaOx1c5rTzxpR33L18jjp0r75mGGTJmsil3qwN1B5IBeTnSSA==}
+
+  jose@5.10.0:
+    resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
   jose@6.2.3:
     resolution: {integrity: sha512-YYVDInQKFJfR/xa3ojUTl8c2KoTwiL1R5Wg9YCydwH0x0B9grbzlg5HC7mMjCtUJjbQ/YnGEZIhI5tCgfTb4Hw==}
@@ -11471,6 +11475,8 @@ snapshots:
       url-join: 0.0.1
       valid-url: 1.0.9
 
+  jose@5.10.0: {}
+
   jose@6.2.3: {}
 
   js-tokens@10.0.0: {}
@@ -11571,7 +11577,7 @@ snapshots:
     dependencies:
       '@types/jsonwebtoken': 9.0.10
       debug: 4.4.3
-      jose: 6.2.3
+      jose: 5.10.0
       limiter: 1.1.5
       lru-cache: 11.5.2
       lru-memoizer: 3.0.0
