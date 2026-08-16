@@ -12,7 +12,7 @@ import {
   type Variant,
   type VariantInput,
 } from "../schema";
-import { parseShopifyProductsCsv } from "../services/csvImport";
+import { parseShopifyProductsCsv, type ParsedProduct } from "../services/csvImport";
 import { isDueToPublish } from "../services/publish";
 import { parseProduct, parseVariant } from "./index";
 
@@ -264,12 +264,56 @@ export type CsvImportSummary = {
   skipped: { handle: string; reason: string }[];
 };
 
+export type CsvImportProductResult = {
+  productsCreated: number;
+  variantsCreated: number;
+  categoriesCreated: number;
+};
+
+// Creates one product (+ variants, media, and a missing category if needed)
+// from a parsed Shopify CSV row-group. Same createProduct/createVariant path
+// as the admin form, so slugs/SKUs/min-price stay consistent.
+export async function importParsedProduct(
+  parsed: ParsedProduct,
+  staffUid: string,
+): Promise<CsvImportProductResult> {
+  const existingCategories = await listCategoriesForAdmin();
+  const match = existingCategories.find(
+    (c) => c.title.toLowerCase() === parsed.category.toLowerCase(),
+  );
+  let categoriesCreated = 0;
+  let categorySlug: string;
+  if (match) {
+    categorySlug = match.slug;
+  } else {
+    const created = await createCategory({ title: parsed.category });
+    categorySlug = created.slug;
+    categoriesCreated = 1;
+  }
+
+  const product = await createProduct({
+    title: parsed.title,
+    description: parsed.description,
+    status: parsed.status,
+    tags: parsed.tags,
+    category: categorySlug,
+    media: parsed.media,
+    options: parsed.options,
+    publishAt: null,
+  });
+
+  let variantsCreated = 0;
+  for (const variant of parsed.variants) {
+    await createVariant(product.id, variant, staffUid);
+    variantsCreated += 1;
+  }
+
+  return { productsCreated: 1, variantsCreated, categoriesCreated };
+}
+
 // Bulk-creates products (+ variants, media, and any missing categories) from
 // a Shopify "Export products" CSV — see services/csvImport.ts for the actual
-// row-grouping/parsing. Each parsed product goes through the same
-// createProduct/createVariant path a staff member using the form would, so
-// slugs, SKUs, and the min-price denormalization all stay consistent with a
-// manually-created product. One row's failure doesn't abort the rest — it's
+// row-grouping/parsing. One row's failure doesn't abort the rest — it's
 // recorded in `skipped` and the import continues.
 export async function importProductsFromCsv(
   csvText: string,
@@ -278,43 +322,16 @@ export async function importProductsFromCsv(
   const { products, skipped: parseSkipped } = parseShopifyProductsCsv(csvText);
   const skipped = [...parseSkipped];
 
-  // Category resolution is case-insensitive and cached across the whole
-  // import so e.g. two products both tagged "T-shirt" only create it once.
-  const existingCategories = await listCategoriesForAdmin();
-  const categoryBySlug = new Map(existingCategories.map((c) => [c.title.toLowerCase(), c]));
-  let categoriesCreated = 0;
-
-  async function resolveCategorySlug(title: string): Promise<string> {
-    const existing = categoryBySlug.get(title.toLowerCase());
-    if (existing) return existing.slug;
-    const created = await createCategory({ title });
-    categoryBySlug.set(title.toLowerCase(), created);
-    categoriesCreated += 1;
-    return created.slug;
-  }
-
   let productsCreated = 0;
   let variantsCreated = 0;
+  let categoriesCreated = 0;
 
   for (const parsed of products) {
     try {
-      const categorySlug = await resolveCategorySlug(parsed.category);
-      const product = await createProduct({
-        title: parsed.title,
-        description: parsed.description,
-        status: parsed.status,
-        tags: parsed.tags,
-        category: categorySlug,
-        media: parsed.media,
-        options: parsed.options,
-        publishAt: null,
-      });
-      productsCreated += 1;
-
-      for (const variant of parsed.variants) {
-        await createVariant(product.id, variant, staffUid);
-        variantsCreated += 1;
-      }
+      const result = await importParsedProduct(parsed, staffUid);
+      productsCreated += result.productsCreated;
+      variantsCreated += result.variantsCreated;
+      categoriesCreated += result.categoriesCreated;
     } catch (err) {
       skipped.push({
         handle: parsed.handle,

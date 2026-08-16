@@ -44,8 +44,8 @@ export default async function ShopPage({
   }
 
   // Default view: a section per category (big heading + grid, capped at 10
-  // with "View all"), in category order.
-  const sections = await listShopProductsByCategory(params.sort);
+  // with "View all"), in category order. Newest products first in each section.
+  const sections = await listShopProductsByCategory();
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-12 px-6 py-12 sm:px-8">

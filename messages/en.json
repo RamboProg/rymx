@@ -150,6 +150,8 @@
     "new": "New product",
     "importCsv": "Import CSV",
     "empty": "No products yet.",
+    "noMatch": "No products match.",
+    "searchPlaceholder": "Search title, slug, category, tag…",
     "colTitle": "Title",
     "colStatus": "Status",
     "colCategory": "Category",
@@ -514,6 +516,7 @@
     "cancelled": "Cancelled"
   },
   "productStatus": {
+    "all": "All",
     "draft": "Draft",
     "active": "Active",
     "archived": "Archived"
@@ -718,6 +721,12 @@
     "importing": "Importing…",
     "importButton": "Import",
     "noFile": "Choose a CSV file first.",
+    "emptyFile": "The file is empty.",
+    "fileTooLarge": "File is too large (max 10 MB).",
+    "importFailed": "Import failed.",
+    "preparing": "Preparing import…",
+    "progressLabel": "Import progress",
+    "progress": "Importing {current} of {total}",
     "summary": "Imported {products} products ({variants} variants, {categories} new categories).",
     "skippedHeading": "Skipped ({count})"
   }

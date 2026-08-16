@@ -1,5 +1,6 @@
+import { z } from "zod";
 import { parseCsvRecords } from "@/lib/csv";
-import type { MediaAsset, ProductOption } from "../schema";
+import { mediaAssetSchema, productOptionSchema, type MediaAsset, type ProductOption } from "../schema";
 
 // Handles the columns Shopify's own "Export products" CSV produces — the
 // same file format staff already have from a previous store, so import
@@ -8,24 +9,26 @@ import type { MediaAsset, ProductOption } from "../schema";
 // (Title, Body, category, tags, status); every row (including the first)
 // can carry one variant (Option values + price + stock) and/or one more
 // product image.
-export type ParsedVariant = {
-  optionValues: Record<string, string>;
-  priceMinor: number;
-  compareAtMinor: number | null;
-  stock: number;
-};
+export const parsedVariantSchema = z.object({
+  optionValues: z.record(z.string(), z.string()),
+  priceMinor: z.number().int().nonnegative(),
+  compareAtMinor: z.number().int().nonnegative().nullable(),
+  stock: z.number().int().nonnegative(),
+});
+export type ParsedVariant = z.infer<typeof parsedVariantSchema>;
 
-export type ParsedProduct = {
-  handle: string;
-  title: string;
-  description: string;
-  category: string;
-  tags: string[];
-  status: "draft" | "active";
-  options: ProductOption[];
-  variants: ParsedVariant[];
-  media: MediaAsset[];
-};
+export const parsedProductSchema = z.object({
+  handle: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string(),
+  category: z.string().min(1),
+  tags: z.array(z.string()),
+  status: z.enum(["draft", "active"]),
+  options: z.array(productOptionSchema),
+  variants: z.array(parsedVariantSchema).min(1),
+  media: z.array(mediaAssetSchema),
+});
+export type ParsedProduct = z.infer<typeof parsedProductSchema>;
 
 export type CsvImportResult = {
   products: ParsedProduct[];

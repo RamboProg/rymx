@@ -103,11 +103,10 @@ export async function listShopProducts(
 export type ShopCategorySection = { category: Category; products: Product[] };
 
 // Groups every active product under its category, for the default /shop view
-// (one heading + grid per category, in the categories' `order`). Same MVP
-// in-memory approach as listShopProducts. Empty categories are omitted.
-export async function listShopProductsByCategory(
-  sort: ShopSearchParams["sort"],
-): Promise<ShopCategorySection[]> {
+// (one heading + grid per category, in the categories' `order`). Within each
+// category, newest products always come first — the global price sort only
+// applies when a single category is selected (listShopProducts).
+export async function listShopProductsByCategory(): Promise<ShopCategorySection[]> {
   const [snap, categories] = await Promise.all([
     adminDb.collection("products").where("status", "==", "active").get(),
     listCategories(),
@@ -118,7 +117,7 @@ export async function listShopProductsByCategory(
       category,
       products: sortProducts(
         products.filter((p) => p.category === category.slug),
-        sort,
+        "newest",
       ),
     }))
     .filter((section) => section.products.length > 0);
@@ -126,9 +125,21 @@ export async function listShopProductsByCategory(
 
 function sortProducts(products: Product[], sort: ShopSearchParams["sort"]): Product[] {
   const sorted = [...products];
-  if (sort === "price-asc") sorted.sort((a, b) => a.minPriceMinor - b.minPriceMinor);
-  else if (sort === "price-desc") sorted.sort((a, b) => b.minPriceMinor - a.minPriceMinor);
-  else sorted.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  if (sort === "price-asc") {
+    sorted.sort(
+      (a, b) => a.minPriceMinor - b.minPriceMinor || b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+  } else if (sort === "price-desc") {
+    sorted.sort(
+      (a, b) => b.minPriceMinor - a.minPriceMinor || b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+  } else {
+    // Newest first; slug tie-break keeps order stable when timestamps match
+    // (e.g. rapid CSV import).
+    sorted.sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime() || a.slug.localeCompare(b.slug),
+    );
+  }
   return sorted;
 }
 

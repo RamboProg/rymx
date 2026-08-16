@@ -150,6 +150,8 @@
     "new": "منتج جديد",
     "importCsv": "استيراد CSV",
     "empty": "لا توجد منتجات بعد.",
+    "noMatch": "لا توجد منتجات مطابقة.",
+    "searchPlaceholder": "ابحث بالاسم أو الرابط أو الفئة أو الوسم…",
     "colTitle": "الاسم",
     "colStatus": "الحالة",
     "colCategory": "الفئة",
@@ -514,6 +516,7 @@
     "cancelled": "ملغي"
   },
   "productStatus": {
+    "all": "الكل",
     "draft": "مسودة",
     "active": "نشِط",
     "archived": "مؤرشف"
@@ -718,6 +721,12 @@
     "importing": "جارٍ الاستيراد…",
     "importButton": "استيراد",
     "noFile": "اختر ملف CSV أولًا.",
+    "emptyFile": "الملف فارغ.",
+    "fileTooLarge": "الملف كبير جدًا (الحد الأقصى 10 ميغابايت).",
+    "importFailed": "فشل الاستيراد.",
+    "preparing": "جارٍ تجهيز الاستيراد…",
+    "progressLabel": "تقدم الاستيراد",
+    "progress": "استيراد {current} من {total}",
     "summary": "تم استيراد {products} منتج ({variants} متغيّر، {categories} فئة جديدة).",
     "skippedHeading": "تم تخطيه ({count})"
   }
