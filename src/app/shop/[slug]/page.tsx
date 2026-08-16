@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ProductGallery } from "@/modules/catalog/components/ProductGallery";
 import { VariantSelector } from "@/modules/catalog/components/VariantSelector";
 import { getProductBySlug, listVariants } from "@/modules/catalog/server";
+import { productSeoDescription, productSeoTitle } from "@/modules/catalog/services/seo";
 
 export async function generateMetadata({
   params,
@@ -16,7 +17,10 @@ export async function generateMetadata({
     const t = await getTranslations("shop");
     return { title: t("productNotFoundTitle") };
   }
-  return { title: `${product.title} — RYMX`, description: product.description };
+  return {
+    title: productSeoTitle(product.title),
+    description: productSeoDescription(product.title, product.description),
+  };
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {

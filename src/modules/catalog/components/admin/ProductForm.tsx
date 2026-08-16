@@ -204,8 +204,6 @@ export function ProductForm({
     toOptionRows(product?.options ?? [], existingOptions),
   );
   const [media, setMedia] = useState<MediaAsset[]>(product?.media ?? []);
-  const [seoTitle, setSeoTitle] = useState(product?.seoTitle ?? "");
-  const [seoDescription, setSeoDescription] = useState(product?.seoDescription ?? "");
   const [publishAt, setPublishAt] = useState<Date | null>(product?.publishAt ?? null);
   const [categoryList, setCategoryList] = useState(categories);
 
@@ -265,8 +263,6 @@ export function ProductForm({
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
-      seoTitle,
-      seoDescription,
       publishAt,
       media,
       options: options
@@ -407,23 +403,6 @@ export function ProductForm({
         >
           {t("addOption")}
         </button>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field
-          id="seoTitle"
-          label={t("fields.seoTitle")}
-          value={seoTitle}
-          onChange={(e) => setSeoTitle(e.target.value)}
-          description={t("fields.seoTitleHelp")}
-        />
-        <Field
-          id="seoDescription"
-          label={t("fields.seoDescription")}
-          value={seoDescription}
-          onChange={(e) => setSeoDescription(e.target.value)}
-          description={t("fields.seoDescriptionHelp")}
-        />
       </div>
 
       <div className="flex flex-col gap-2">

@@ -39,8 +39,6 @@ export const productSchema = z.object({
   // subcollection read.
   minPriceMinor: z.number().int().nonnegative(),
   createdAt: z.date(),
-  seoTitle: z.string().nullable().default(null),
-  seoDescription: z.string().nullable().default(null),
   // Scheduled drop: while status is "draft" and publishAt is set, the
   // /api/cron/publish route flips status to "active" once publishAt passes.
   // Has no effect once status is already "active" or "archived".
@@ -51,15 +49,15 @@ export type Product = z.infer<typeof productSchema>;
 // Note: `slug` is intentionally absent — it's never client-supplied. The server
 // derives it from `title` on create and freezes it thereafter (see
 // createProduct in server/admin.ts). `category` is required: every product must
-// belong to a category (the shop groups by category, admin manages them).
+// belong to a category (the shop groups by category, admin manages them). SEO
+// title/description aren't here either — admin handles the business side only;
+// see modules/catalog/services/seo.ts for how those are derived from the title.
 export const productInputSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
   description: z.string().default(""),
   status: productStatusSchema.default("draft"),
   tags: z.array(z.string()).default([]),
   category: z.string().trim().min(1, "Category is required"),
-  seoTitle: z.string().trim().default(""),
-  seoDescription: z.string().trim().default(""),
   publishAt: z.date().nullable().default(null),
 });
 export type ProductInput = z.infer<typeof productInputSchema>;
@@ -83,8 +81,11 @@ export const variantSchema = z.object({
 });
 export type Variant = z.infer<typeof variantSchema>;
 
+// SKU is deliberately absent — it's never admin-supplied. The server derives
+// it from the product id on create and freezes it thereafter (see
+// createVariant in server/admin.ts), the same way a product's slug is derived
+// from its title.
 export const variantInputSchema = z.object({
-  sku: z.string().trim().min(1, "SKU is required"),
   optionValues: z.record(z.string(), z.string()).default({}),
   priceMinor: z.number().int().nonnegative("Price can't be negative"),
   compareAtMinor: z.number().int().nonnegative().nullable().default(null),

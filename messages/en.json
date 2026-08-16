@@ -120,11 +120,7 @@
       "addValue": "Add a value…",
       "newOption": "+ New option",
       "selectOption": "Select an option",
-      "media": "Media",
-      "seoTitle": "SEO title",
-      "seoTitleHelp": "Overrides the browser tab / search title. Optional.",
-      "seoDescription": "SEO description",
-      "seoDescriptionHelp": "Meta description for search results. Optional."
+      "media": "Media"
     },
     "selectCategory": "Select a category",
     "addOption": "Add option",
@@ -149,8 +145,6 @@
     "saving": "Saving…",
     "editTitle": "Edit variant",
     "addTitle": "Add variant",
-    "sku": "SKU",
-    "skuHelp": "Unique stock-keeping code for this variant.",
     "price": "Price (EGP)",
     "priceHelp": "The selling price for this variant.",
     "compareAt": "Compare-at (EGP, optional)",

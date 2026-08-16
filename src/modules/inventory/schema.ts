@@ -23,7 +23,13 @@ export const adjustStockInputSchema = z.object({
     .number()
     .int()
     .refine((n) => n !== 0, "Adjustment can't be zero"),
-  reason: z.string().trim().min(1, "A reason is required"),
+  // Optional — a blank reason still gets a readable fallback in the ledger
+  // rather than blocking the adjustment.
+  reason: z
+    .string()
+    .trim()
+    .default("")
+    .transform((r) => r || "Manual adjustment"),
 });
 export type AdjustStockInput = z.infer<typeof adjustStockInputSchema>;
 

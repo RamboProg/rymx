@@ -1,17 +1,14 @@
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { LogoutButton } from "@/modules/auth/components/LogoutButton";
 import { CartBadge } from "@/modules/cart/components/CartBadge";
 import { LocaleToggle } from "./LocaleToggle";
 
-export async function HeaderNav({
-  signedIn,
-  staff = false,
-}: {
-  signedIn: boolean;
-  staff?: boolean;
-}) {
-  const t = await getTranslations("header");
+// Stays a plain (non-async) component — useTranslations works in Server
+// Components too, but keeping this synchronous is what lets it render in
+// RTL unit tests (see Header.test.tsx) the same way it always has.
+export function HeaderNav({ signedIn, staff = false }: { signedIn: boolean; staff?: boolean }) {
+  const t = useTranslations("header");
   return (
     <header className="border-rymx-cream/10 bg-rymx-bg/80 sticky top-0 z-40 border-b backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-8">

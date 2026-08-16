@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { Button } from "@/components/ui/Button";
-import { Field, NumberField } from "@/components/ui/Input";
+import { NumberField } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { formatEGP } from "@/lib/money";
 import { variantInputSchema, type ProductOption, type Variant } from "../../schema";
@@ -34,7 +34,6 @@ export function VariantManager({
   const t = useTranslations("variants");
   const [variants, setVariants] = useState(initialVariants);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [sku, setSku] = useState("");
   const [optionValues, setOptionValues] = useState<Record<string, string>>(
     emptyOptionValues(options),
   );
@@ -46,7 +45,6 @@ export function VariantManager({
 
   function resetForm() {
     setEditingId(null);
-    setSku("");
     setOptionValues(emptyOptionValues(options));
     setPrice("");
     setCompareAt("");
@@ -55,7 +53,6 @@ export function VariantManager({
 
   function startEdit(variant: Variant) {
     setEditingId(variant.id);
-    setSku(variant.sku);
     setOptionValues({ ...emptyOptionValues(options), ...variant.optionValues });
     setPrice((variant.priceMinor / 100).toString());
     setCompareAt(variant.compareAtMinor ? (variant.compareAtMinor / 100).toString() : "");
@@ -67,7 +64,6 @@ export function VariantManager({
     setError(null);
 
     const parsed = variantInputSchema.safeParse({
-      sku,
       optionValues,
       priceMinor: Math.round(Number(price) * 100),
       compareAtMinor: compareAt ? Math.round(Number(compareAt) * 100) : null,
@@ -154,13 +150,6 @@ export function VariantManager({
           {editingId ? t("editTitle") : t("addTitle")}
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field
-            id="variant-sku"
-            label={t("sku")}
-            value={sku}
-            onChange={(e) => setSku(e.target.value)}
-            description={t("skuHelp")}
-          />
           {options.map((option) => (
             <Select
               key={option.name}

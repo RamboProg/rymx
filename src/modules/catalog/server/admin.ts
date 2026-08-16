@@ -59,8 +59,6 @@ export async function createProduct(input: ProductFormInput): Promise<Product> {
     options: input.options,
     minPriceMinor: 0,
     createdAt: new Date(),
-    seoTitle: input.seoTitle || null,
-    seoDescription: input.seoDescription || null,
     publishAt: input.publishAt,
   };
   await ref.set(data);
@@ -82,8 +80,6 @@ export async function updateProduct(id: string, input: ProductFormInput): Promis
     category: input.category,
     media: input.media,
     options: input.options,
-    seoTitle: input.seoTitle || null,
-    seoDescription: input.seoDescription || null,
     publishAt: input.publishAt,
   });
 
@@ -127,11 +123,13 @@ export async function createVariant(
   const productSnap = await productRef.get();
   if (!productSnap.exists) throw new Error("Product not found.");
 
-  const ref = adminDb.collection(`products/${productId}/variants`).doc(input.sku);
-  if ((await ref.get()).exists) {
-    throw new Error(`A variant with SKU "${input.sku}" already exists on this product.`);
-  }
-  await ref.set(input);
+  // SKU is never admin-entered — it's the product id, deduped the same way a
+  // product's own slug is (productId, then productId-2, productId-3, …), and
+  // it doubles as the variant's doc id like before.
+  const sku = await uniqueSlug(`products/${productId}/variants`, productId);
+  const ref = adminDb.collection(`products/${productId}/variants`).doc(sku);
+  const data = { ...input, sku };
+  await ref.set(data);
   await recomputeMinPrice(productId);
 
   // Record the opening stock so a new variant's inventory has a ledger origin.
@@ -140,14 +138,14 @@ export async function createVariant(
       productId,
       productTitle: productSnap.data()!.title as string,
       variantId: ref.id,
-      sku: input.sku,
+      sku,
       delta: input.stock,
       newStock: input.stock,
       reason: "initial stock",
       staffUid,
     });
   }
-  return parseVariant(ref.id, input);
+  return parseVariant(ref.id, data);
 }
 
 export async function updateVariant(
@@ -161,7 +159,9 @@ export async function updateVariant(
   const [productSnap, existing] = await Promise.all([productRef.get(), ref.get()]);
   if (!existing.exists) throw new Error("Variant not found.");
 
+  // sku isn't part of the input — frozen at creation, same as a product's slug.
   const oldStock = existing.data()!.stock as number;
+  const sku = existing.data()!.sku as string;
   await ref.update(input);
   await recomputeMinPrice(productId);
 
@@ -173,14 +173,14 @@ export async function updateVariant(
       productId,
       productTitle: (productSnap.data()?.title as string) ?? "",
       variantId,
-      sku: input.sku,
+      sku,
       delta,
       newStock: input.stock,
       reason: "manual edit",
       staffUid,
     });
   }
-  return parseVariant(variantId, input);
+  return parseVariant(variantId, { ...input, sku });
 }
 
 export async function deleteVariant(productId: string, variantId: string): Promise<void> {

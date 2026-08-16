@@ -115,12 +115,12 @@ test.describe("admin", () => {
       await expect(page.getByText("Saved")).toBeVisible();
     }
 
-    // Add a variant.
-    await page.getByLabel("SKU").fill("E2E-TEE-S");
+    // Add a variant. SKU isn't a field — it's derived server-side from the
+    // product id/slug, so the first variant's SKU is just the slug itself.
     await page.getByLabel("Price (EGP)").fill("500");
     await page.getByLabel("Stock", { exact: true }).fill("10");
     await page.getByRole("button", { name: "Add variant" }).click();
-    await expect(page.getByText("E2E-TEE-S")).toBeVisible();
+    await expect(page.getByText(slug)).toBeVisible();
 
     await page.goto(`/shop/${slug}`);
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
@@ -149,15 +149,15 @@ test.describe("admin", () => {
     await page.getByRole("button", { name: "Create product" }).click();
     await expect(page).toHaveURL((url) => url.pathname.endsWith(`/admin/products/${slug}`));
 
-    const sku = `E2E-LEDGER-${Date.now()}`;
-    await page.getByLabel("SKU").fill(sku);
+    // SKU is derived server-side from the product id — the first variant's
+    // SKU is just the product slug.
     await page.getByLabel("Price (EGP)").fill("300");
     await page.getByLabel("Stock", { exact: true }).fill("8");
     await page.getByRole("button", { name: "Add variant" }).click();
-    await expect(page.getByText(sku)).toBeVisible();
+    await expect(page.getByText(slug)).toBeVisible();
 
     await page.goto("/admin/inventory");
-    const ledgerRow = page.locator("tr", { hasText: sku }).filter({ hasText: "initial stock" });
+    const ledgerRow = page.locator("tr", { hasText: slug }).filter({ hasText: "initial stock" });
     await expect(ledgerRow).toContainText("+8");
   });
 

@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
+import messages from "../../../../messages/en.json";
 import { HeaderNav } from "../HeaderNav";
 
 vi.mock("next/navigation", () => ({
@@ -12,9 +14,17 @@ vi.mock("@/modules/cart/hooks/useCart", () => ({
   useCart: () => ({ cart: { lines: [], subtotalMinor: 0, itemCount: 0, issues: [] } }),
 }));
 
+function renderHeaderNav(props: { signedIn: boolean; staff?: boolean }) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <HeaderNav {...props} />
+    </NextIntlClientProvider>,
+  );
+}
+
 describe("HeaderNav", () => {
   it("renders the wordmark linking home and primary nav links", () => {
-    render(<HeaderNav signedIn={false} />);
+    renderHeaderNav({ signedIn: false });
 
     expect(screen.getByRole("link", { name: "RYMX" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "Shop" })).toHaveAttribute("href", "/shop");
@@ -25,14 +35,14 @@ describe("HeaderNav", () => {
   });
 
   it("shows a sign-in link when signed out", () => {
-    render(<HeaderNav signedIn={false} />);
+    renderHeaderNav({ signedIn: false });
 
     expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute("href", "/login");
     expect(screen.queryByRole("link", { name: "Account" })).not.toBeInTheDocument();
   });
 
   it("shows account + sign out when signed in", () => {
-    render(<HeaderNav signedIn={true} />);
+    renderHeaderNav({ signedIn: true });
 
     expect(screen.getByRole("link", { name: "Account" })).toHaveAttribute("href", "/account");
     expect(screen.getByRole("button", { name: "Sign out" })).toBeInTheDocument();
@@ -40,16 +50,20 @@ describe("HeaderNav", () => {
   });
 
   it("shows a Dashboard link for staff", () => {
-    render(<HeaderNav signedIn={true} staff={true} />);
+    renderHeaderNav({ signedIn: true, staff: true });
 
     expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("href", "/admin");
   });
 
   it("hides the Dashboard link from customers and signed-out visitors", () => {
-    const { rerender } = render(<HeaderNav signedIn={true} staff={false} />);
+    const { rerender } = renderHeaderNav({ signedIn: true, staff: false });
     expect(screen.queryByRole("link", { name: "Dashboard" })).not.toBeInTheDocument();
 
-    rerender(<HeaderNav signedIn={false} />);
+    rerender(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <HeaderNav signedIn={false} />
+      </NextIntlClientProvider>,
+    );
     expect(screen.queryByRole("link", { name: "Dashboard" })).not.toBeInTheDocument();
   });
 });

@@ -120,11 +120,7 @@
       "addValue": "أضف قيمة…",
       "newOption": "+ خيار جديد",
       "selectOption": "اختر خيارًا",
-      "media": "الوسائط",
-      "seoTitle": "عنوان SEO",
-      "seoTitleHelp": "يتجاوز عنوان التبويب/البحث. اختياري.",
-      "seoDescription": "وصف SEO",
-      "seoDescriptionHelp": "وصف ميتا لنتائج البحث. اختياري."
+      "media": "الوسائط"
     },
     "selectCategory": "اختر فئة",
     "addOption": "إضافة خيار",
@@ -149,8 +145,6 @@
     "saving": "جارٍ الحفظ…",
     "editTitle": "تعديل المتغيّر",
     "addTitle": "إضافة متغيّر",
-    "sku": "الرمز (SKU)",
-    "skuHelp": "رمز مخزون فريد لهذا المتغيّر.",
     "price": "السعر (ج.م)",
     "priceHelp": "سعر البيع لهذا المتغيّر.",
     "compareAt": "السعر قبل الخصم (ج.م، اختياري)",

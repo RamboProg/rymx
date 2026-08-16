@@ -1,13 +1,28 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
+import messages from "../../../../messages/en.json";
 import { VariantSelector } from "../components/VariantSelector";
 import type { Product, Variant } from "../schema";
 
-const addMock = vi.fn();
+const addMock = vi.fn().mockResolvedValue(true);
 vi.mock("@/modules/cart/hooks/useCart", () => ({
   useCart: () => ({ add: addMock, pending: false }),
 }));
+
+const toastMock = { success: vi.fn(), error: vi.fn() };
+vi.mock("@/components/ui/Toast", () => ({
+  useToast: () => toastMock,
+}));
+
+function renderVariantSelector(product: Product, variants: Variant[]) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <VariantSelector product={product} variants={variants} />
+    </NextIntlClientProvider>,
+  );
+}
 
 const product: Product = {
   id: "p1",
@@ -21,8 +36,6 @@ const product: Product = {
   options: [{ name: "Size", values: ["S", "M", "XL"] }],
   minPriceMinor: 65000,
   createdAt: new Date("2026-01-01"),
-  seoTitle: null,
-  seoDescription: null,
   publishAt: null,
 };
 
@@ -55,14 +68,14 @@ const variants: Variant[] = [
 
 describe("VariantSelector", () => {
   it("defaults to the first option value and shows its price", () => {
-    render(<VariantSelector product={product} variants={variants} />);
+    renderVariantSelector(product, variants);
     expect(screen.getByRole("button", { name: "S" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByText(/^EGP\s650\.00$/)).toBeInTheDocument();
   });
 
   it("shows an out-of-stock notice when the selected variant has zero stock", async () => {
     const user = userEvent.setup();
-    render(<VariantSelector product={product} variants={variants} />);
+    renderVariantSelector(product, variants);
 
     await user.click(screen.getByRole("button", { name: "XL" }));
 
@@ -73,7 +86,7 @@ describe("VariantSelector", () => {
 
   it("adds the selected variant to the cart", async () => {
     const user = userEvent.setup();
-    render(<VariantSelector product={product} variants={variants} />);
+    renderVariantSelector(product, variants);
 
     await user.click(screen.getByRole("button", { name: "Add to cart" }));
 

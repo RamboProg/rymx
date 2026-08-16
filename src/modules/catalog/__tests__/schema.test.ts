@@ -57,7 +57,7 @@ describe("productFormSchema", () => {
 });
 
 describe("variantInputSchema", () => {
-  const valid = { sku: "NT-S", priceMinor: 65000, stock: 20 };
+  const valid = { priceMinor: 65000, stock: 20 };
 
   it("accepts a valid variant", () => {
     expect(variantInputSchema.safeParse(valid).success).toBe(true);
@@ -68,8 +68,10 @@ describe("variantInputSchema", () => {
     expect(variantInputSchema.safeParse({ ...valid, stock: -1 }).success).toBe(false);
   });
 
-  it("rejects an empty SKU", () => {
-    expect(variantInputSchema.safeParse({ ...valid, sku: "" }).success).toBe(false);
+  it("does not accept a client-supplied SKU (server derives it from the product id)", () => {
+    const parsed = variantInputSchema.safeParse({ ...valid, sku: "anything" });
+    expect(parsed.success).toBe(true);
+    expect(parsed.success && "sku" in parsed.data).toBe(false);
   });
 });
 
