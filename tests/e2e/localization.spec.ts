@@ -86,3 +86,46 @@ test.describe("admin localization", () => {
     await page.getByRole("button", { name: "EN" }).click();
   });
 });
+
+// The verify-email page (src/app/(auth)/verify-email/page.tsx) reuses the
+// same locale cookie + LocaleToggle as the admin area, extended to a public
+// route for the first time — separate suite since it needs its own
+// (non-owner) signed-in customer, not the seeded admin fixture above.
+test.describe("verify-email localization", () => {
+  test.beforeEach(async ({}, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "chromium",
+      "Locale cookie flow runs once (chromium only).",
+    );
+  });
+
+  test("toggles the verify-email page between English and Arabic (RTL) and persists", async ({
+    page,
+  }) => {
+    const email = `test-locale-${Date.now()}@rymx.test`;
+    const password = "password123";
+
+    await page.goto("/register");
+    const createAccount = page.getByRole("button", { name: /create account/i });
+    await expect(createAccount).toBeEnabled();
+    await page.getByLabel("Email").fill(email);
+    await page.getByLabel("Password", { exact: true }).fill(password);
+    await page.getByLabel("Confirm password").fill(password);
+    await createAccount.click();
+    await expect(page).toHaveURL(/\/verify-email/);
+
+    await expect(page.locator("[dir]").first()).toHaveAttribute("dir", "ltr");
+    await expect(page.getByRole("heading", { name: "Verify your email" })).toBeVisible();
+
+    await page.getByRole("button", { name: "ع" }).click();
+    await expect(page.locator("[dir]").first()).toHaveAttribute("dir", "rtl");
+    await expect(page.getByRole("heading", { name: "تحقق من بريدك الإلكتروني" })).toBeVisible();
+
+    // Persists across reload (cookie-backed, same mechanism as admin).
+    await page.reload();
+    await expect(page.locator("[dir]").first()).toHaveAttribute("dir", "rtl");
+
+    await page.getByRole("button", { name: "EN" }).click();
+    await expect(page.locator("[dir]").first()).toHaveAttribute("dir", "ltr");
+  });
+});

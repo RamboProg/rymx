@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Big_Shoulders, JetBrains_Mono, Syne } from "next/font/google";
+import { PixelScripts } from "@/components/analytics/PixelScripts";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -54,6 +55,7 @@ export default function RootLayout({
       className={`h-full antialiased ${syne.variable} ${archivo.variable} ${bigShouldersDisplay.variable} ${jetbrainsMono.variable}`}
     >
       <body className="flex min-h-svh flex-col font-sans">
+        <PixelScripts />
         <CartProvider>
           <AnnouncementBar />
           <HideOnLanding>

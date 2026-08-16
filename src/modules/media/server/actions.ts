@@ -6,6 +6,14 @@ import { getSessionClaims } from "@/modules/rbac/server";
 import { isStaff } from "@/modules/rbac/services/permissions";
 
 const ALLOWED_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+// Enforced again below via Cloudinary's own `allowed_formats` — the browser's
+// file.type check above is client-supplied and spoofable (an attacker can
+// label any bytes "image/png"). Cloudinary sniffs the actual file signature
+// server-side and rejects anything outside this list regardless of what was
+// claimed, which is what actually determines the stored format — this is the
+// authoritative check. Deliberately excludes SVG: Cloudinary treats it as an
+// image format, but it can carry embedded <script> (stored-XSS vector).
+const ALLOWED_CLOUDINARY_FORMATS = ["jpg", "jpeg", "png", "webp", "gif"];
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
 // Product/collection imagery lives under this Cloudinary folder.
@@ -59,11 +67,18 @@ export async function uploadMediaAction(formData: FormData): Promise<UploadMedia
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: UPLOAD_FOLDER,
       resource_type: "image",
+      allowed_formats: ALLOWED_CLOUDINARY_FORMATS,
     });
     return { ok: true, asset: { url: result.secure_url, alt: "" } };
-  } catch {
+  } catch (err) {
     // Cloudinary's error can carry request details; surface a generic message
-    // rather than leaking them to the client.
+    // rather than leaking them to the client, except the one case worth
+    // distinguishing — the actual (sniffed) format didn't match what the
+    // browser claimed and got rejected by allowed_formats above.
+    const message = err instanceof Error ? err.message : String(err);
+    if (/format/i.test(message)) {
+      return { ok: false, error: "Unsupported file type — use JPEG, PNG, WebP, or GIF" };
+    }
     return { ok: false, error: "Upload failed. Please try again." };
   }
 }

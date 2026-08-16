@@ -9,6 +9,10 @@ import { hasPermission } from "../services/permissions";
 export type SessionClaims = {
   uid: string;
   email: string | null;
+  // Sourced from the Admin-SDK-verified session cookie's `email_verified`
+  // claim (server-trusted, never client input) — used only to show the
+  // /account nag banner; verification is never gated on it.
+  emailVerified: boolean;
 } & import("../schema").Claims;
 
 export async function getSessionClaims(): Promise<SessionClaims | null> {
@@ -25,7 +29,12 @@ export async function getSessionClaims(): Promise<SessionClaims | null> {
   });
   if (!parsed.success) return null;
 
-  return { uid: decoded.uid, email: decoded.email ?? null, ...parsed.data };
+  return {
+    uid: decoded.uid,
+    email: decoded.email ?? null,
+    emailVerified: decoded.email_verified ?? false,
+    ...parsed.data,
+  };
 }
 
 // Shared by every module's per-action gate (`requireXxxWrite`, `requireXxxManage`,

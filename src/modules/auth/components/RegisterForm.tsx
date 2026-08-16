@@ -1,6 +1,11 @@
 "use client";
 
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithPopup,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { z } from "zod";
@@ -8,6 +13,8 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
 import { useHydrated } from "@/lib/hooks/useHydrated";
 import { auth } from "@/lib/firebase/client";
+import { getSiteUrl } from "@/lib/siteUrl";
+import { establishSession } from "../lib/establishSession";
 import { registerSchema } from "../schema";
 
 const registerFormSchema = registerSchema
@@ -41,15 +48,11 @@ export function RegisterForm() {
         parsed.data.email,
         parsed.data.password,
       );
-      await sendEmailVerification(cred.user);
-      const idToken = await cred.user.getIdToken();
-      const res = await fetch("/api/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-      });
-      if (!res.ok) throw new Error("Failed to establish session");
-      router.push("/account");
+      // Fixed, hardcoded continue URL — never user-supplied — so this can't be
+      // used as an open redirect via the verification email link.
+      await sendEmailVerification(cred.user, { url: `${getSiteUrl()}/login` });
+      await establishSession(await cred.user.getIdToken());
+      router.push("/verify-email");
       router.refresh();
     } catch (err) {
       const code = (err as { code?: string }).code;
@@ -58,6 +61,22 @@ export function RegisterForm() {
           ? "An account with this email already exists"
           : "Registration failed",
       );
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function onGoogle() {
+    setError(null);
+    setPending(true);
+    try {
+      const cred = await signInWithPopup(auth, new GoogleAuthProvider());
+      // Google accounts are pre-verified by Google — no interstitial needed.
+      const destination = await establishSession(await cred.user.getIdToken());
+      router.push(destination);
+      router.refresh();
+    } catch {
+      setError("Google sign-up failed");
     } finally {
       setPending(false);
     }
@@ -102,6 +121,14 @@ export function RegisterForm() {
       <Button type="submit" disabled={pending || !hydrated} className="justify-center">
         {pending ? "Creating account…" : "Create account"}
       </Button>
+      <button
+        type="button"
+        onClick={onGoogle}
+        disabled={pending}
+        className="border-rymx-cream/20 text-rymx-cream hover:border-rymx-gold hover:text-rymx-gold rounded-full border px-6 py-3 font-mono text-xs tracking-[0.1em] uppercase transition-colors disabled:pointer-events-none disabled:opacity-50"
+      >
+        Continue with Google
+      </button>
     </form>
   );
 }

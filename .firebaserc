@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "rymx-dev",
-    "dev": "rymx-dev",
-    "prod": "rymx-prod"
+    "default": "rymx-f7b45",
+    "dev": "rymx-f7b45",
+    "prod": "rymx-f7b45"
   }
 }

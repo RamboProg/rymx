@@ -238,5 +238,18 @@
     "saved": "Saved",
     "save": "Save collection",
     "create": "Create collection"
+  },
+  "verifyEmail": {
+    "title": "Verify your email",
+    "body": "We've sent a verification link to {email}. Click it to confirm your address.",
+    "spamNote": "Didn't get it? Check your spam or junk folder — verification emails sometimes land there.",
+    "resend": "Resend email",
+    "resending": "Sending…",
+    "resent": "Email sent",
+    "resendCooldown": "You can resend in {seconds}s",
+    "resendError": "Couldn't resend the email — try again in a moment.",
+    "continue": "Continue to your account",
+    "bannerText": "Verify your email — check your inbox (and spam folder).",
+    "bannerLink": "Resend / verify"
   }
 }
