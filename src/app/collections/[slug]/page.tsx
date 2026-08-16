@@ -5,6 +5,7 @@ import { ProductGrid } from "@/modules/catalog/components/ProductGrid";
 import { shopSearchParamsSchema } from "@/modules/catalog/schema";
 import { listShopProducts } from "@/modules/catalog/server";
 import { getLiveCollectionBySlug } from "@/modules/collections/server";
+import { getCatalogDisplay } from "@/modules/settings/server";
 
 export async function generateMetadata({
   params,
@@ -25,8 +26,9 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
   const collection = await getLiveCollectionBySlug(slug);
   if (!collection) notFound();
 
+  const display = await getCatalogDisplay();
   const { products } = await listShopProducts(
-    shopSearchParamsSchema.parse({}),
+    shopSearchParamsSchema.parse({ sort: display.defaultSort }),
     collection.productIds,
   );
 

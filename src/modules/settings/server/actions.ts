@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { adminDb } from "@/lib/firebase/admin";
 import { requireAdminPermission } from "@/modules/rbac/server";
 import {
+  catalogDisplaySchema,
   emailTemplatesSchema,
   policiesSchema,
   shippingSettingsSchema,
@@ -12,6 +13,10 @@ import {
 
 async function requireSettingsManage(): Promise<boolean> {
   return (await requireAdminPermission("settings:manage")) !== null;
+}
+
+async function requireProductsWrite(): Promise<boolean> {
+  return (await requireAdminPermission("products:write")) !== null;
 }
 
 export type SettingsActionResult = { ok: true } | { ok: false; error: string };
@@ -65,5 +70,19 @@ export async function updateEmailTemplatesAction(rawInput: unknown): Promise<Set
 
   await adminDb.doc("settings/emailTemplates").set(parsed.data);
   revalidatePath("/admin/settings");
+  return { ok: true };
+}
+
+export async function updateCatalogDisplayAction(
+  rawInput: unknown,
+): Promise<SettingsActionResult> {
+  if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
+  const parsed = catalogDisplaySchema.safeParse(rawInput);
+  if (!parsed.success)
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+
+  await adminDb.doc("settings/catalogDisplay").set(parsed.data);
+  revalidatePath("/admin/merchandising");
+  revalidatePath("/shop");
   return { ok: true };
 }

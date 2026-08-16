@@ -2,10 +2,12 @@ import "server-only";
 
 import { adminDb } from "@/lib/firebase/admin";
 import {
+  catalogDisplaySchema,
   emailTemplatesSchema,
   policiesSchema,
   shippingSettingsSchema,
   storeSettingsSchema,
+  type CatalogDisplay,
   type EmailTemplates,
   type Policies,
   type ShippingSettings,
@@ -34,4 +36,9 @@ export async function getPolicies(): Promise<Policies> {
 export async function getEmailTemplates(): Promise<EmailTemplates> {
   const snap = await adminDb.doc("settings/emailTemplates").get();
   return emailTemplatesSchema.parse(snap.data() ?? {});
+}
+
+export async function getCatalogDisplay(): Promise<CatalogDisplay> {
+  const snap = await adminDb.doc("settings/catalogDisplay").get();
+  return catalogDisplaySchema.parse(snap.data() ?? {});
 }

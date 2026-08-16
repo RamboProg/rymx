@@ -18,9 +18,15 @@ import { parseProduct, parseVariant } from "./index";
 
 export async function listAllProducts(): Promise<Product[]> {
   const snap = await adminDb.collection("products").get();
-  return snap.docs
-    .map((d) => parseProduct(d.id, d.data()))
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  const products: Product[] = [];
+  for (const d of snap.docs) {
+    try {
+      products.push(parseProduct(d.id, d.data()));
+    } catch (err) {
+      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
+    }
+  }
+  return products.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
 
 export async function listAllOptions(): Promise<Record<string, string[]>> {

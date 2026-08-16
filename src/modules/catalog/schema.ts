@@ -40,7 +40,14 @@ export const productSchema = z.object({
   minPriceMinor: z.number().int().nonnegative(),
   // Denormalized compare-at when every variant shares the same sale pricing
   // (product-level sale). Null when not on sale.
-  compareAtMinor: z.number().int().nonnegative().nullable().default(null),
+  compareAtMinor: z
+    .number()
+    .int()
+    .nonnegative()
+    .nullable()
+    .optional()
+    .transform((v) => v ?? null)
+    .catch(null),
   createdAt: z.date(),
   // Scheduled drop: while status is "draft" and publishAt is set, the
   // /api/cron/publish route flips status to "active" once publishAt passes.
@@ -120,7 +127,13 @@ export const categoryReorderSchema = z.object({
 });
 export type CategoryReorderInput = z.infer<typeof categoryReorderSchema>;
 
-export const shopSortSchema = z.enum(["newest", "price-asc", "price-desc"]);
+export const shopSortSchema = z.enum([
+  "newest",
+  "best-selling",
+  "price-asc",
+  "price-desc",
+  "manual",
+]);
 export type ShopSort = z.infer<typeof shopSortSchema>;
 
 export const shopSearchParamsSchema = z.object({

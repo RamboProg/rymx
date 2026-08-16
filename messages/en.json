@@ -29,6 +29,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "products": "Products",
+    "merchandising": "Merchandising",
     "categories": "Categories",
     "collections": "Collections",
     "inventory": "Inventory",
@@ -156,6 +157,38 @@
     "colStatus": "Status",
     "colCategory": "Category",
     "colPrice": "Price"
+  },
+  "merchandising": {
+    "title": "Merchandising",
+    "description": "Choose how products are ordered on the shop by default, and preview what customers see first.",
+    "modeLabel": "Default shop order",
+    "modes": {
+      "newest": "Newest",
+      "bestSelling": "Best selling",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "manual": "Manual"
+    },
+    "modeHelp": {
+      "newest": "Newest products appear first within each category.",
+      "bestSelling": "Products with the most units sold appear first.",
+      "priceAsc": "Cheapest products appear first.",
+      "priceDesc": "Most expensive products appear first.",
+      "manual": "You set the exact order with the arrows below."
+    },
+    "manualHint": "Use the arrows to move products. Position 1 is shown first on the storefront.",
+    "empty": "No active products yet.",
+    "colPosition": "#",
+    "colReorder": "Reorder",
+    "colTitle": "Title",
+    "colStatus": "Status",
+    "colPrice": "Price",
+    "colSold": "Sold",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "saving": "Saving…",
+    "saved": "Saved — shop order updated.",
+    "save": "Save shop order"
   },
   "productForm": {
     "newTitle": "New product",
@@ -355,8 +388,10 @@
     "allCategories": "All categories",
     "sortProducts": "Sort products",
     "sortNewest": "Newest",
+    "sortBestSelling": "Best selling",
     "sortPriceAsc": "Price: low to high",
     "sortPriceDesc": "Price: high to low",
+    "sortManual": "Featured order",
     "previous": "Previous",
     "next": "Next",
     "pageNumber": "Page {page}"

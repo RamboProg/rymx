@@ -53,8 +53,8 @@ function buildCsp(nonce: string): string {
     // Google Auth (popup + redirect) talks to accounts.google.com and
     // *.googleapis.com (identitytoolkit / securetoken). Firebase Auth also
     // loads its handler iframe from *.firebaseapp.com / *.web.app.
-    `connect-src 'self' https://*.googleapis.com https://apis.google.com https://accounts.google.com https://*.firebaseapp.com https://*.web.app https://connect.facebook.net https://www.facebook.com https://analytics.tiktok.com${USES_EMULATORS ? " http://127.0.0.1:* ws://127.0.0.1:*" : ""}`,
-    "frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.web.app https://www.gstatic.com",
+    `connect-src 'self' https://*.googleapis.com https://apis.google.com https://accounts.google.com https://*.firebaseapp.com https://*.web.app https://connect.facebook.net https://www.facebook.com https://analytics.tiktok.com https://vercel.live wss://vercel.live${USES_EMULATORS ? " http://127.0.0.1:* ws://127.0.0.1:*" : ""}`,
+    "frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.web.app https://www.gstatic.com https://vercel.live",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

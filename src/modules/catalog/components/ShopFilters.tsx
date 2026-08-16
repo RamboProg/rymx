@@ -3,9 +3,16 @@
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Select } from "@/components/ui/Select";
+import type { CatalogSortMode } from "@/modules/settings/schema";
 import type { Category } from "../schema";
 
-export function ShopFilters({ categories }: { categories: Category[] }) {
+export function ShopFilters({
+  categories,
+  defaultSort = "newest",
+}: {
+  categories: Category[];
+  defaultSort?: CatalogSortMode;
+}) {
   const t = useTranslations("shop");
   const router = useRouter();
   const pathname = usePathname();
@@ -35,18 +42,20 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
           ]}
         />
       </div>
-      <div className="w-48">
+      <div className="w-56">
         <label htmlFor="shop-filter-sort" className="sr-only">
           {t("sortProducts")}
         </label>
         <Select
           id="shop-filter-sort"
-          value={searchParams.get("sort") ?? "newest"}
+          value={searchParams.get("sort") ?? defaultSort}
           onValueChange={(value) => updateParam("sort", value)}
           options={[
             { value: "newest", label: t("sortNewest") },
+            { value: "best-selling", label: t("sortBestSelling") },
             { value: "price-asc", label: t("sortPriceAsc") },
             { value: "price-desc", label: t("sortPriceDesc") },
+            { value: "manual", label: t("sortManual") },
           ]}
         />
       </div>

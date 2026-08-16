@@ -43,3 +43,21 @@ export const emailTemplatesSchema = z.object({
   promoCodeIntro: z.string().default(""),
 });
 export type EmailTemplates = z.infer<typeof emailTemplatesSchema>;
+
+// Controls how products are ordered on /shop when the customer hasn't picked
+// a sort. "manual" uses manualOrderIds (product ids, first = shown first).
+export const CATALOG_SORT_MODES = [
+  "newest",
+  "best-selling",
+  "price-asc",
+  "price-desc",
+  "manual",
+] as const;
+export const catalogSortModeSchema = z.enum(CATALOG_SORT_MODES);
+export type CatalogSortMode = z.infer<typeof catalogSortModeSchema>;
+
+export const catalogDisplaySchema = z.object({
+  defaultSort: catalogSortModeSchema.default("newest"),
+  manualOrderIds: z.array(z.string().min(1)).default([]),
+});
+export type CatalogDisplay = z.infer<typeof catalogDisplaySchema>;

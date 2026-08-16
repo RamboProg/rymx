@@ -29,6 +29,7 @@
   "nav": {
     "dashboard": "لوحة التحكم",
     "products": "المنتجات",
+    "merchandising": "الترتيب والعرض",
     "categories": "الفئات",
     "collections": "المجموعات",
     "inventory": "المخزون",
@@ -156,6 +157,38 @@
     "colStatus": "الحالة",
     "colCategory": "الفئة",
     "colPrice": "السعر"
+  },
+  "merchandising": {
+    "title": "الترتيب والعرض",
+    "description": "اختر ترتيب المنتجات الافتراضي في المتجر، ومعاينة ما يظهر أولًا للعملاء.",
+    "modeLabel": "ترتيب المتجر الافتراضي",
+    "modes": {
+      "newest": "الأحدث",
+      "bestSelling": "الأكثر مبيعًا",
+      "priceAsc": "السعر: من الأقل",
+      "priceDesc": "السعر: من الأعلى",
+      "manual": "يدوي"
+    },
+    "modeHelp": {
+      "newest": "أحدث المنتجات تظهر أولًا داخل كل فئة.",
+      "bestSelling": "المنتجات الأكثر مبيعًا تظهر أولًا.",
+      "priceAsc": "أرخص المنتجات تظهر أولًا.",
+      "priceDesc": "أغلى المنتجات تظهر أولًا.",
+      "manual": "تحدد الترتيب بنفسك بالأسهم أدناه."
+    },
+    "manualHint": "استخدم الأسهم لتحريك المنتجات. الرقم 1 يظهر أولًا في المتجر.",
+    "empty": "لا توجد منتجات نشِطة بعد.",
+    "colPosition": "#",
+    "colReorder": "إعادة الترتيب",
+    "colTitle": "الاسم",
+    "colStatus": "الحالة",
+    "colPrice": "السعر",
+    "colSold": "المبيعات",
+    "moveUp": "تحريك لأعلى",
+    "moveDown": "تحريك لأسفل",
+    "saving": "جارٍ الحفظ…",
+    "saved": "تم الحفظ — تحدّث ترتيب المتجر.",
+    "save": "حفظ ترتيب المتجر"
   },
   "productForm": {
     "newTitle": "منتج جديد",
@@ -355,8 +388,10 @@
     "allCategories": "كل الفئات",
     "sortProducts": "ترتيب المنتجات",
     "sortNewest": "الأحدث",
+    "sortBestSelling": "الأكثر مبيعًا",
     "sortPriceAsc": "السعر: من الأقل إلى الأعلى",
     "sortPriceDesc": "السعر: من الأعلى إلى الأقل",
+    "sortManual": "ترتيب مخصص",
     "previous": "السابق",
     "next": "التالي",
     "pageNumber": "صفحة {page}"

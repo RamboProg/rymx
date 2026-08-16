@@ -2,7 +2,10 @@ import "server-only";
 
 import type { DocumentData } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase/admin";
-import { toDate } from "@/lib/firebase/toDate";
+import { toDate, toDateFallback } from "@/lib/firebase/toDate";
+import { listAllOrders } from "@/modules/orders/server";
+import { getCatalogDisplay } from "@/modules/settings/server";
+import type { CatalogSortMode } from "@/modules/settings/schema";
 import {
   categorySchema,
   productSchema,
@@ -11,14 +14,26 @@ import {
   type Category,
   type Product,
   type ShopSearchParams,
+  type ShopSort,
   type Variant,
 } from "../schema";
 
 export function parseProduct(id: string, data: DocumentData): Product {
+  // Normalize Firestore quirks before Zod: null arrays, missing sale field,
+  // and Timestamps that aren't Date instances yet.
+  const compareAt =
+    typeof data.compareAtMinor === "number" && Number.isFinite(data.compareAtMinor)
+      ? Math.round(data.compareAtMinor)
+      : null;
+
   return productSchema.parse({
     id,
     ...data,
-    createdAt: toDate(data.createdAt),
+    tags: Array.isArray(data.tags) ? data.tags : [],
+    media: Array.isArray(data.media) ? data.media : [],
+    options: Array.isArray(data.options) ? data.options : [],
+    compareAtMinor: compareAt,
+    createdAt: toDate(data.createdAt) ?? toDateFallback(data.createdAt),
     publishAt: toDate(data.publishAt),
   });
 }
@@ -38,7 +53,15 @@ export async function listCategories(): Promise<Category[]> {
 // which needs every public URL, not a shop-page's worth.
 export async function listAllActiveProducts(): Promise<Product[]> {
   const snap = await adminDb.collection("products").where("status", "==", "active").get();
-  return snap.docs.map((d) => parseProduct(d.id, d.data()));
+  const products: Product[] = [];
+  for (const d of snap.docs) {
+    try {
+      products.push(parseProduct(d.id, d.data()));
+    } catch (err) {
+      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
+    }
+  }
+  return products;
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -122,7 +145,14 @@ export async function listShopProducts(
   productIdFilter?: readonly string[] | null,
 ): Promise<ShopPage> {
   const snap = await adminDb.collection("products").where("status", "==", "active").get();
-  let products = snap.docs.map((d) => parseProduct(d.id, d.data()));
+  let products: Product[] = [];
+  for (const d of snap.docs) {
+    try {
+      products.push(parseProduct(d.id, d.data()));
+    } catch (err) {
+      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
+    }
+  }
 
   if (productIdFilter) {
     const allowed = new Set(productIdFilter);
@@ -133,36 +163,75 @@ export async function listShopProducts(
   }
 
   products = await enrichProductsWithSalePricing(products);
-  products = sortProducts(products, params.sort);
+  const sortCtx = await resolveSortContext(params.sort);
+  products = sortProducts(products, params.sort, sortCtx);
   return paginate(products, params.page);
 }
 
 export type ShopCategorySection = { category: Category; products: Product[] };
 
+export type SortContext = {
+  soldByProductId: Map<string, number>;
+  manualOrderIds: readonly string[];
+};
+
+export async function getProductSoldQuantities(): Promise<Map<string, number>> {
+  const orders = await listAllOrders();
+  const map = new Map<string, number>();
+  for (const order of orders) {
+    if (order.status === "cancelled") continue;
+    for (const item of order.items) {
+      map.set(item.productId, (map.get(item.productId) ?? 0) + item.quantity);
+    }
+  }
+  return map;
+}
+
+async function resolveSortContext(sort: ShopSort): Promise<SortContext> {
+  const display = await getCatalogDisplay();
+  const soldByProductId =
+    sort === "best-selling" ? await getProductSoldQuantities() : new Map<string, number>();
+  return { soldByProductId, manualOrderIds: display.manualOrderIds };
+}
+
 // Groups every active product under its category, for the default /shop view
-// (one heading + grid per category, in the categories' `order`). Within each
-// category, newest products always come first — the global price sort only
-// applies when a single category is selected (listShopProducts).
-export async function listShopProductsByCategory(): Promise<ShopCategorySection[]> {
-  const [snap, categories] = await Promise.all([
+// (one heading + grid per category, in the categories' `order`). Product order
+// inside each section follows the store's catalog display default (or an
+// explicit ?sort= override from the shop page).
+export async function listShopProductsByCategory(
+  sort: ShopSort = "newest",
+): Promise<ShopCategorySection[]> {
+  const [snap, categories, sortCtx] = await Promise.all([
     adminDb.collection("products").where("status", "==", "active").get(),
     listCategories(),
+    resolveSortContext(sort),
   ]);
-  const products = await enrichProductsWithSalePricing(
-    snap.docs.map((d) => parseProduct(d.id, d.data())),
-  );
+  const products: Product[] = [];
+  for (const d of snap.docs) {
+    try {
+      products.push(parseProduct(d.id, d.data()));
+    } catch (err) {
+      console.error(`[catalog] Skipping invalid product doc ${d.id}`, err);
+    }
+  }
+  const enriched = await enrichProductsWithSalePricing(products);
   return categories
     .map((category) => ({
       category,
       products: sortProducts(
-        products.filter((p) => p.category === category.slug),
-        "newest",
+        enriched.filter((p) => p.category === category.slug),
+        sort,
+        sortCtx,
       ),
     }))
     .filter((section) => section.products.length > 0);
 }
 
-function sortProducts(products: Product[], sort: ShopSearchParams["sort"]): Product[] {
+export function sortProducts(
+  products: Product[],
+  sort: ShopSort | CatalogSortMode,
+  ctx: SortContext = { soldByProductId: new Map(), manualOrderIds: [] },
+): Product[] {
   const sorted = [...products];
   if (sort === "price-asc") {
     sorted.sort(
@@ -172,9 +241,21 @@ function sortProducts(products: Product[], sort: ShopSearchParams["sort"]): Prod
     sorted.sort(
       (a, b) => b.minPriceMinor - a.minPriceMinor || b.createdAt.getTime() - a.createdAt.getTime(),
     );
+  } else if (sort === "best-selling") {
+    sorted.sort(
+      (a, b) =>
+        (ctx.soldByProductId.get(b.id) ?? 0) - (ctx.soldByProductId.get(a.id) ?? 0) ||
+        b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+  } else if (sort === "manual") {
+    const index = new Map(ctx.manualOrderIds.map((id, i) => [id, i]));
+    sorted.sort((a, b) => {
+      const ai = index.has(a.id) ? index.get(a.id)! : Number.MAX_SAFE_INTEGER;
+      const bi = index.has(b.id) ? index.get(b.id)! : Number.MAX_SAFE_INTEGER;
+      if (ai !== bi) return ai - bi;
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
   } else {
-    // Newest first; slug tie-break keeps order stable when timestamps match
-    // (e.g. rapid CSV import).
     sorted.sort(
       (a, b) => b.createdAt.getTime() - a.createdAt.getTime() || a.slug.localeCompare(b.slug),
     );
