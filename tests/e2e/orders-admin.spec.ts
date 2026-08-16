@@ -11,9 +11,14 @@ const AUTH_EMULATOR_HOST = process.env.FIREBASE_AUTH_EMULATOR_HOST ?? "127.0.0.1
 
 async function loginAs(page: Page, email: string) {
   await page.goto("/login");
+  // The submit button is disabled until the form hydrates — waiting for it to be
+  // enabled is a deterministic hydration signal, so the controlled inputs aren't
+  // reset to empty after we fill them.
+  const signIn = page.getByRole("button", { name: "Sign in" });
+  await expect(signIn).toBeEnabled();
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(PASSWORD);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await signIn.click();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
 }
 
@@ -106,7 +111,9 @@ test.describe("order fulfillment & returns (admin)", () => {
 
     await page.goto(`/admin/orders/${orderId}`);
     await page.getByRole("spinbutton").first().fill("1");
-    await page.getByPlaceholder("Reason").fill("Wrong size");
+    // Reason is a Radix Select (labelled "Reason for <item>"), not a text input.
+    await page.getByLabel(/Reason for/).click();
+    await page.getByRole("option", { name: "Wrong size", exact: true }).click();
     await page.getByLabel("Refund amount (EGP)").fill("1950");
     await page.getByRole("button", { name: "Log return" }).click();
     await expect(page.getByText("requested", { exact: true })).toBeVisible();

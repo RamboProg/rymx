@@ -6,6 +6,7 @@ import { type FormEvent, useState } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 import { auth } from "@/lib/firebase/client";
 import { registerSchema } from "../schema";
 
@@ -23,6 +24,7 @@ export function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const hydrated = useHydrated();
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -61,8 +63,11 @@ export function RegisterForm() {
     }
   }
 
+  // method="post" + hydration-gated submit so credentials never end up in the
+  // URL via a native (pre-hydration) form submission — OWASP: never transmit
+  // credentials in a URL.
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-4" noValidate>
+    <form onSubmit={onSubmit} method="post" className="flex w-full flex-col gap-4" noValidate>
       <Field
         id="email"
         label="Email"
@@ -71,6 +76,8 @@ export function RegisterForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+      {/* Password inputs must never have a `name` — a native submit would then
+          serialize them into the URL. React state only. */}
       <Field
         id="password"
         label="Password"
@@ -92,7 +99,7 @@ export function RegisterForm() {
           {error}
         </p>
       )}
-      <Button type="submit" disabled={pending} className="justify-center">
+      <Button type="submit" disabled={pending || !hydrated} className="justify-center">
         {pending ? "Creating account…" : "Create account"}
       </Button>
     </form>

@@ -129,11 +129,12 @@ test.describe("checkout", () => {
     await expect(page).toHaveURL(/\/checkout\/confirmation\?order=/);
 
     // Desert Cargo Pants 30/Sand started at stock 6. If the double-submit only
-    // decremented once, exactly 5 should remain (visible as 5 quantity options).
+    // decremented once, exactly 5 should remain — the cart quantity picker (a
+    // Radix Select) then offers 5 options. Open it and count them.
     await addToCart(page, "desert-cargo-pants", ["30", "Sand"]);
     await page.goto("/cart");
-    const qtyOptions = page.locator('select[id^="qty-"] option');
-    await expect(qtyOptions).toHaveCount(5);
+    await page.getByLabel(/Quantity for/).click();
+    await expect(page.getByRole("option")).toHaveCount(5);
   });
 
   test("rejects an oversell under concurrent checkout", async ({ browser }) => {
@@ -146,13 +147,15 @@ test.describe("checkout", () => {
     // together that's 6, more than is available.
     await addToCart(pageA, "cairo-bomber-jacket", ["L"]);
     await pageA.goto("/cart");
-    await pageA.getByLabel(/Quantity for/).selectOption("3");
+    await pageA.getByLabel(/Quantity for/).click();
+    await pageA.getByRole("option", { name: "3", exact: true }).click();
     await pageA.getByRole("link", { name: "Continue to checkout" }).click();
     await fillShipping(pageA, `race-a-${Date.now()}@rymx.test`);
 
     await addToCart(pageB, "cairo-bomber-jacket", ["L"]);
     await pageB.goto("/cart");
-    await pageB.getByLabel(/Quantity for/).selectOption("3");
+    await pageB.getByLabel(/Quantity for/).click();
+    await pageB.getByRole("option", { name: "3", exact: true }).click();
     await pageB.getByRole("link", { name: "Continue to checkout" }).click();
     await fillShipping(pageB, `race-b-${Date.now()}@rymx.test`);
 

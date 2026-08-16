@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 import { auth } from "@/lib/firebase/client";
 import { roleSchema } from "@/modules/rbac/schema";
 import { isStaff } from "@/modules/rbac/services/permissions";
@@ -32,6 +33,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const hydrated = useHydrated();
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -69,8 +71,12 @@ export function LoginForm() {
     }
   }
 
+  // method="post" so that if the form is ever submitted natively (e.g. before
+  // hydration attaches onSubmit), credentials go in the request body, never the
+  // URL query string — OWASP: never transmit credentials in a URL. The submit
+  // is also gated on `hydrated` so the native path effectively can't fire.
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-4" noValidate>
+    <form onSubmit={onSubmit} method="post" className="flex w-full flex-col gap-4" noValidate>
       <Field
         id="email"
         label="Email"
@@ -79,6 +85,8 @@ export function LoginForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+      {/* Never give the password input a `name`: a native submit would then
+          serialize it into the URL. It's driven by React state only. */}
       <Field
         id="password"
         label="Password"
@@ -92,7 +100,7 @@ export function LoginForm() {
           {error}
         </p>
       )}
-      <Button type="submit" disabled={pending} className="justify-center">
+      <Button type="submit" disabled={pending || !hydrated} className="justify-center">
         {pending ? "Signing in…" : "Sign in"}
       </Button>
       <button

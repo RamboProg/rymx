@@ -4,6 +4,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { type FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Input";
+import { useHydrated } from "@/lib/hooks/useHydrated";
 import { auth } from "@/lib/firebase/client";
 import { resetSchema } from "../schema";
 
@@ -12,6 +13,7 @@ export function ResetForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [sent, setSent] = useState(false);
+  const hydrated = useHydrated();
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -42,8 +44,10 @@ export function ResetForm() {
     );
   }
 
+  // method="post" + hydration-gated submit so the email is never placed in the
+  // URL by a native (pre-hydration) submission.
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-4" noValidate>
+    <form onSubmit={onSubmit} method="post" className="flex w-full flex-col gap-4" noValidate>
       <Field
         id="email"
         label="Email"
@@ -57,7 +61,7 @@ export function ResetForm() {
           {error}
         </p>
       )}
-      <Button type="submit" disabled={pending} className="justify-center">
+      <Button type="submit" disabled={pending || !hydrated} className="justify-center">
         {pending ? "Sending…" : "Send reset link"}
       </Button>
     </form>

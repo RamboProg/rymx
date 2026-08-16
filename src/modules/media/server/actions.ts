@@ -13,9 +13,16 @@ const UPLOAD_FOLDER = "rymx/media";
 
 export type UploadMediaResult = { ok: true; asset: MediaAsset } | { ok: false; error: string };
 
-// Configured once from server-only env vars. The API secret never leaves the
-// server — uploads are signed by the SDK, so there's no unsigned preset to abuse.
+// Configured from server-only env vars. The API secret never leaves the server
+// — uploads are signed by the SDK, so there's no unsigned preset to abuse.
+// Prefers CLOUDINARY_URL (the SDK reads it automatically) and falls back to the
+// three discrete vars; either form works.
 function configureCloudinary(): boolean {
+  if (process.env.CLOUDINARY_URL) {
+    cloudinary.config({ secure: true });
+    return true;
+  }
+
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;
   const apiSecret = process.env.CLOUDINARY_API_SECRET;

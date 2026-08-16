@@ -46,6 +46,7 @@ export function ReturnItemPicker({
         className="sm:w-24"
       />
       <Select
+        ariaLabel={`Reason for ${title}`}
         value={value.reasonCategory}
         onValueChange={(reasonCategory) => onChange({ ...value, reasonCategory })}
         options={REASON_OPTIONS}

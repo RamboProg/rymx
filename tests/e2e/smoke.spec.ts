@@ -8,7 +8,10 @@ test("home page loads without console errors", async ({ page }) => {
   });
 
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "RYMX" })).toBeVisible();
+  // The landing page hides the site header (HideOnLanding), so assert the hero
+  // (the h1 headline + its "shop" CTA) rather than the header's RYMX link.
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator('a[href="/shop"]').first()).toBeVisible();
   expect(consoleErrors).toEqual([]);
 });
 

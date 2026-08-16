@@ -28,13 +28,14 @@ function slugify(input: string): string {
 
 async function loginAs(page: Page, email: string) {
   await page.goto("/login");
-  // Wait for the client bundle to settle so the form's onSubmit handler is
-  // attached before we click — otherwise the click can trigger a native form
-  // submit (a page reload that never signs in).
-  await page.waitForLoadState("networkidle");
+  // The submit button is disabled until the form hydrates, so waiting for it to
+  // be enabled is a deterministic "React is wired up" signal — fill only after
+  // that, or the controlled inputs get reset to empty state on hydration.
+  const signIn = page.getByRole("button", { name: "Sign in" });
+  await expect(signIn).toBeEnabled();
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(PASSWORD);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await signIn.click();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible({ timeout: 15000 });
 }
 
@@ -94,13 +95,15 @@ test.describe("admin", () => {
     await chooseOption(page, "status", "active");
     await page.getByRole("button", { name: "Create product" }).click();
 
-    await expect(page).toHaveURL(new RegExp(`/admin/products/${slug}$`));
+    await expect(page).toHaveURL((url) => url.pathname.endsWith(`/admin/products/${slug}`));
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
 
     // Media is uploaded to Cloudinary (signed, server-side), so this portion
     // only runs when CLOUDINARY_* creds are present — offline/CI without creds
     // still exercises the rest of the create → variant → shop flow.
-    const cloudinaryConfigured = Boolean(process.env.CLOUDINARY_CLOUD_NAME);
+    const cloudinaryConfigured = Boolean(
+      process.env.CLOUDINARY_URL || process.env.CLOUDINARY_CLOUD_NAME,
+    );
     if (cloudinaryConfigured) {
       await page.locator('input[type="file"]').setInputFiles({
         name: "swatch.png",
@@ -144,7 +147,7 @@ test.describe("admin", () => {
     await chooseOption(page, "category", "Tops");
     await chooseOption(page, "status", "active");
     await page.getByRole("button", { name: "Create product" }).click();
-    await expect(page).toHaveURL(new RegExp(`/admin/products/${slug}$`));
+    await expect(page).toHaveURL((url) => url.pathname.endsWith(`/admin/products/${slug}`));
 
     const sku = `E2E-LEDGER-${Date.now()}`;
     await page.getByLabel("SKU").fill(sku);

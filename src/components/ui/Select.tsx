@@ -12,6 +12,7 @@ export function Select({
   error,
   description,
   disabled,
+  ariaLabel,
 }: {
   id?: string;
   label?: string;
@@ -22,6 +23,9 @@ export function Select({
   error?: string;
   description?: string;
   disabled?: boolean;
+  // Accessible name for selects that have no visible <label> (e.g. inline
+  // pickers). Applied to the trigger so assistive tech and tests can address it.
+  ariaLabel?: string;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
@@ -36,6 +40,7 @@ export function Select({
       <RadixSelect.Root value={value} onValueChange={onValueChange} disabled={disabled}>
         <RadixSelect.Trigger
           id={id}
+          aria-label={ariaLabel}
           aria-invalid={error ? true : undefined}
           aria-describedby={error && id ? `${id}-error` : undefined}
           className="border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold data-[placeholder]:text-rymx-cream/40 flex w-full items-center justify-between gap-2 rounded-md border px-4 py-3 text-left text-sm outline-none disabled:opacity-50"

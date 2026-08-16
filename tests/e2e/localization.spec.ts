@@ -9,12 +9,14 @@ const PASSWORD = "password123";
 
 async function loginAsOwner(page: Page) {
   await page.goto("/login");
-  // Let the client bundle settle so the form's onSubmit handler is attached
-  // before clicking (a pre-hydration click triggers a native submit instead).
-  await page.waitForLoadState("networkidle");
+  // The submit button is disabled until the form hydrates — waiting for it to be
+  // enabled is a deterministic "React is wired up" signal, so the controlled
+  // inputs won't be reset to empty on hydration after we fill them.
+  const signIn = page.getByRole("button", { name: "Sign in" });
+  await expect(signIn).toBeEnabled();
   await page.getByLabel("Email").fill(OWNER_EMAIL);
   await page.getByLabel("Password").fill(PASSWORD);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await signIn.click();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible({ timeout: 15000 });
 }
 

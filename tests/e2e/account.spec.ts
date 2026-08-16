@@ -10,9 +10,14 @@ const DEMO_PASSWORD = "password123";
 
 async function loginAsDemoCustomer(page: Page) {
   await page.goto("/login");
+  // The submit button is disabled until the form hydrates — waiting for it to be
+  // enabled is a deterministic hydration signal, so the controlled inputs aren't
+  // reset to empty after we fill them.
+  const signIn = page.getByRole("button", { name: "Sign in" });
+  await expect(signIn).toBeEnabled();
   await page.getByLabel("Email").fill(DEMO_EMAIL);
   await page.getByLabel("Password").fill(DEMO_PASSWORD);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await signIn.click();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
 }
 
@@ -88,10 +93,12 @@ test.describe("account", () => {
 
     const otherEmail = `other-${Date.now()}@rymx.test`;
     await otherPage.goto("/register");
+    const createAccount = otherPage.getByRole("button", { name: /create account/i });
+    await expect(createAccount).toBeEnabled();
     await otherPage.getByLabel("Email").fill(otherEmail);
     await otherPage.getByLabel("Password", { exact: true }).fill("password123");
     await otherPage.getByLabel("Confirm password").fill("password123");
-    await otherPage.getByRole("button", { name: /create account/i }).click();
+    await createAccount.click();
     await expect(otherPage.getByRole("button", { name: "Sign out" })).toBeVisible();
 
     await otherPage.goto("/shop/nile-tee");
