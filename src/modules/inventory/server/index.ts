@@ -47,6 +47,18 @@ export async function listLowStock(threshold = LOW_STOCK_THRESHOLD): Promise<Var
   return all.filter((row) => row.stock <= threshold);
 }
 
+// Dashboard-only: one collection-group query instead of N per-product variant
+// reads (listVariantsAcrossProducts). Requires a single-field index on
+// `variants.stock` which Firestore usually auto-suggests on first use.
+export async function countLowStockVariants(threshold = LOW_STOCK_THRESHOLD): Promise<number> {
+  const snap = await adminDb
+    .collectionGroup("variants")
+    .where("stock", "<=", threshold)
+    .select()
+    .get();
+  return snap.size;
+}
+
 export async function listAdjustments(limit = 50): Promise<StockAdjustment[]> {
   const snap = await adminDb
     .collection("inventoryAdjustments")

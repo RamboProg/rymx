@@ -3,23 +3,30 @@ import { getTranslations } from "next-intl/server";
 import { StatTile } from "@/components/admin/StatTile";
 import { formatEGP } from "@/lib/money";
 import { listAllProducts } from "@/modules/catalog/server/admin";
-import { listLowStock } from "@/modules/inventory/server";
+import { countLowStockVariants } from "@/modules/inventory/server";
 import { listAllOrders } from "@/modules/orders/server";
 
 export const metadata: Metadata = { title: "Admin — RYMX" };
 
 export default async function AdminDashboardPage() {
-  const [products, orders, lowStock, t] = await Promise.all([
+  // One products pass + one orders pass + one collection-group stock scan —
+  // avoid listLowStock()'s old pattern (re-fetch every product, then every
+  // variants subcollection), which burned Firestore read quota fast.
+  const [products, orders, lowStockCount, t] = await Promise.all([
     listAllProducts(),
     listAllOrders(),
-    listLowStock(),
+    countLowStockVariants(),
     getTranslations("dashboard"),
   ]);
 
-  const revenueMinor = orders.reduce((sum, order) => sum + order.totalMinor, 0);
+  const revenueMinor = orders.reduce(
+    (sum, order) => (order.status === "cancelled" ? sum : sum + order.totalMinor),
+    0,
+  );
 
   const salesByTitle = new Map<string, number>();
   for (const order of orders) {
+    if (order.status === "cancelled") continue;
     for (const item of order.items) {
       salesByTitle.set(item.title, (salesByTitle.get(item.title) ?? 0) + item.quantity);
     }
@@ -37,7 +44,7 @@ export default async function AdminDashboardPage() {
         <StatTile label={t("statProducts")} value={String(products.length)} />
         <StatTile label={t("statOrders")} value={String(orders.length)} />
         <StatTile label={t("statRevenue")} value={formatEGP(revenueMinor)} />
-        <StatTile label={t("statLowStock")} value={String(lowStock.length)} />
+        <StatTile label={t("statLowStock")} value={String(lowStockCount)} />
       </div>
 
       <section className="flex flex-col gap-4">
