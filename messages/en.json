@@ -303,6 +303,8 @@
       "publishAt": "Publish at (optional — leave blank to go live immediately)",
       "active": "Active",
       "products": "Products",
+      "productsHelp": "Only active products are listed. Already-selected inactive ones stay visible so you can remove them.",
+      "inactiveProduct": "inactive",
       "media": "Media"
     },
     "saving": "Saving…",
@@ -362,7 +364,8 @@
   "collectionsPublic": {
     "title": "Collections",
     "empty": "No collections are live yet.",
-    "notFoundTitle": "Collection not found — RYMX"
+    "notFoundTitle": "Collection not found — RYMX",
+    "sale": "Sale"
   },
   "productCard": {
     "addedToCart": "Added to cart",

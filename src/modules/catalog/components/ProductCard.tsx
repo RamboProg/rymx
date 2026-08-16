@@ -29,14 +29,16 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="text-rymx-cream font-sans text-sm">{product.title}</h3>
-        <div className="flex flex-wrap items-baseline gap-2">
-          <p className="text-rymx-gold font-mono text-xs">{formatEGP(product.minPriceMinor)}</p>
-          {onSale && (
-            <p className="text-rymx-cream/40 font-mono text-xs line-through">
+        {onSale ? (
+          <div className="flex flex-wrap items-baseline gap-2">
+            <p className="text-rymx-cream/50 font-mono text-xs line-through decoration-rymx-cream/50">
               {formatEGP(product.compareAtMinor!)}
             </p>
-          )}
-        </div>
+            <p className="text-rymx-gold font-mono text-xs">{formatEGP(product.minPriceMinor)}</p>
+          </div>
+        ) : (
+          <p className="text-rymx-gold font-mono text-xs">{formatEGP(product.minPriceMinor)}</p>
+        )}
       </div>
     </Link>
   );

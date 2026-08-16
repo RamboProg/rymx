@@ -78,6 +78,42 @@ export async function getVariantById(
 
 export type ShopPage = { products: Product[]; total: number };
 
+// Fills product.compareAtMinor from variants when the denormalized field is
+// missing (e.g. sale set only on variants, or before product-level sale sync).
+// So shop cards can always show the original price struck through.
+async function enrichProductsWithSalePricing(products: Product[]): Promise<Product[]> {
+  const needsEnrichment = products.filter(
+    (p) => p.compareAtMinor == null || p.compareAtMinor <= p.minPriceMinor,
+  );
+  if (needsEnrichment.length === 0) return products;
+
+  const byId = new Map(products.map((p) => [p.id, p]));
+  await Promise.all(
+    needsEnrichment.map(async (product) => {
+      const snap = await adminDb.collection(`products/${product.id}/variants`).get();
+      if (snap.empty) return;
+      const variants = snap.docs.map((d) => d.data());
+      const first = variants[0]!;
+      const compareAt = first.compareAtMinor as number | null | undefined;
+      const price = first.priceMinor as number;
+      if (
+        typeof compareAt === "number" &&
+        compareAt > price &&
+        variants.every(
+          (v) => v.priceMinor === price && v.compareAtMinor === compareAt,
+        )
+      ) {
+        byId.set(product.id, {
+          ...product,
+          minPriceMinor: Math.min(product.minPriceMinor, price),
+          compareAtMinor: compareAt,
+        });
+      }
+    }),
+  );
+  return products.map((p) => byId.get(p.id) ?? p);
+}
+
 // Catalog-scale simplification: fetch all active products with one query and
 // filter/sort/paginate in memory. Fine at MVP scale; revisit with composite
 // indexes + Firestore-side pagination if the catalog grows large.
@@ -96,6 +132,7 @@ export async function listShopProducts(
     products = products.filter((p) => p.category === params.category);
   }
 
+  products = await enrichProductsWithSalePricing(products);
   products = sortProducts(products, params.sort);
   return paginate(products, params.page);
 }
@@ -111,7 +148,9 @@ export async function listShopProductsByCategory(): Promise<ShopCategorySection[
     adminDb.collection("products").where("status", "==", "active").get(),
     listCategories(),
   ]);
-  const products = snap.docs.map((d) => parseProduct(d.id, d.data()));
+  const products = await enrichProductsWithSalePricing(
+    snap.docs.map((d) => parseProduct(d.id, d.data())),
+  );
   return categories
     .map((category) => ({
       category,

@@ -124,16 +124,23 @@ export function CollectionForm({
         <span className="text-rymx-cream/60 font-mono text-xs tracking-[0.1em] uppercase">
           {t("fields.products")}
         </span>
+        <p className="text-rymx-cream/40 -mt-1 font-sans text-xs">{t("fields.productsHelp")}</p>
         <div className="border-rymx-cream/10 flex max-h-64 flex-col gap-1 overflow-y-auto rounded-md border p-3">
-          {products.map((product) => (
-            <Checkbox
-              key={product.id}
-              id={`product-${product.id}`}
-              label={product.title}
-              checked={productIds.includes(product.id)}
-              onChange={() => toggleProduct(product.id)}
-            />
-          ))}
+          {products
+            .filter((product) => product.status === "active" || productIds.includes(product.id))
+            .map((product) => (
+              <Checkbox
+                key={product.id}
+                id={`product-${product.id}`}
+                label={
+                  product.status === "active"
+                    ? product.title
+                    : `${product.title} (${t("fields.inactiveProduct")})`
+                }
+                checked={productIds.includes(product.id)}
+                onChange={() => toggleProduct(product.id)}
+              />
+            ))}
         </div>
       </div>
 
