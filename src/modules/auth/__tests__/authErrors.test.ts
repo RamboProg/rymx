@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { authErrorMessage } from "../authErrors";
+import { authErrorMessage } from "../lib/authErrors";
 
 describe("authErrorMessage", () => {
   it("returns null when the user closes the popup", () => {
