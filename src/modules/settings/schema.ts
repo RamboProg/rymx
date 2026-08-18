@@ -40,6 +40,10 @@ export type Policies = z.infer<typeof policiesSchema>;
 // the human copy without touching code.
 export const emailTemplatesSchema = z.object({
   orderConfirmationIntro: z.string().default(""),
+  orderConfirmedIntro: z.string().default(""),
+  orderShippedIntro: z.string().default(""),
+  orderDeliveredIntro: z.string().default(""),
+  orderCancelledIntro: z.string().default(""),
   promoCodeIntro: z.string().default(""),
 });
 export type EmailTemplates = z.infer<typeof emailTemplatesSchema>;

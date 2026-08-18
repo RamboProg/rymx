@@ -4,7 +4,11 @@ import { revalidatePath } from "next/cache";
 import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
 import { applyStockDeltasInTransaction } from "@/modules/inventory/server";
-import { sendOrderConfirmationEmail } from "@/modules/notifications/server";
+import {
+  sendOrderCancelledEmail,
+  sendOrderConfirmationEmail,
+  sendOrderConfirmedEmail,
+} from "@/modules/notifications/server";
 import { requireAdminPermission } from "@/modules/rbac/server";
 import { addOrderNoteInputSchema, type Order } from "../schema";
 import { getOrderById, listOrderNotes } from "./index";
@@ -30,7 +34,9 @@ export async function confirmOrderAction(orderId: string): Promise<OrderActionRe
   invalidateCacheTags(CACHE_TAGS.orders);
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/orders");
-  return { ok: true, order: { ...order, status: "confirmed" } };
+  const updated: Order = { ...order, status: "confirmed" };
+  await sendOrderConfirmedEmail(updated);
+  return { ok: true, order: updated };
 }
 
 export async function cancelOrderAction(orderId: string): Promise<OrderActionResult> {
@@ -61,7 +67,9 @@ export async function cancelOrderAction(orderId: string): Promise<OrderActionRes
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/orders");
   revalidatePath("/admin/inventory");
-  return { ok: true, order: { ...order, status: "cancelled" } };
+  const updated: Order = { ...order, status: "cancelled" };
+  await sendOrderCancelledEmail(updated);
+  return { ok: true, order: updated };
 }
 
 export async function resendConfirmationAction(orderId: string): Promise<VoidActionResult> {

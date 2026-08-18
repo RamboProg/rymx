@@ -745,6 +745,10 @@
   },
   "emailTemplates": {
     "orderConfirmationIntro": "بريد تأكيد الطلب — سطر تمهيدي (اختياري)",
+    "orderConfirmedIntro": "بريد اعتماد الطلب — سطر تمهيدي (اختياري)",
+    "orderShippedIntro": "بريد شحن الطلب — سطر تمهيدي (اختياري)",
+    "orderDeliveredIntro": "بريد تسليم الطلب — سطر تمهيدي (اختياري)",
+    "orderCancelledIntro": "بريد إلغاء الطلب — سطر تمهيدي (اختياري)",
     "promoCodeIntro": "بريد كود الخصم — سطر تمهيدي (اختياري)",
     "saveEmailTemplates": "حفظ قوالب البريد"
   },

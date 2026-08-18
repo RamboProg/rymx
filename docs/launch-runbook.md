@@ -28,7 +28,7 @@ Firebase Auth's Authorized Domains list doesn't support wildcards, and Vercel pr
   - `NEXT_PUBLIC_USE_FIREBASE_EMULATORS` → **unset** (or `false`) on every Vercel environment. Never `true` outside local dev.
   - `FIREBASE_SERVICE_ACCOUNT_BASE64` → base64-encoded service-account JSON for the matching project (`rymx-dev` for Dev/Preview, `rymx-prod` for Production). Generate with `[Convert]::ToBase64String([IO.File]::ReadAllBytes("service-account.json"))` (PowerShell) or `base64 -w0 service-account.json` (Linux/macOS).
   - `CRON_SECRET` → a random secret, matching what `vercel.json`'s cron hits (`/api/cron/publish`) checks.
-  - `RESEND_API_KEY` → from the Resend dashboard. The app runs fine (logs a no-op instead of sending) if this is left unset, but real customers won't get order-confirmation emails without it.
+  - `GMAIL_USER` / `GMAIL_APP_PASSWORD` → Gmail SMTP sender for order/status/promo emails, via a Gmail App Password (see `.env.example` for the setup steps). The app runs fine (logs a no-op instead of sending) if these are left unset, but real customers won't get order emails without them.
   - `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` / `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` → from the Sentry project, once created. Same no-op-if-unset behavior.
   - `NEXT_PUBLIC_SITE_URL` → the real production domain (no trailing slash), once known. Used by the sitemap, robots.txt, and Open Graph metadata.
 - Run one throwaway PR and confirm the Vercel Preview build succeeds (Turbopack build, all env vars resolving) before doing anything else.

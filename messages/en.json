@@ -745,6 +745,10 @@
   },
   "emailTemplates": {
     "orderConfirmationIntro": "Order confirmation email — intro line (optional)",
+    "orderConfirmedIntro": "Order confirmed email — intro line (optional)",
+    "orderShippedIntro": "Order shipped email — intro line (optional)",
+    "orderDeliveredIntro": "Order delivered email — intro line (optional)",
+    "orderCancelledIntro": "Order cancelled email — intro line (optional)",
     "promoCodeIntro": "Promo code email — intro line (optional)",
     "saveEmailTemplates": "Save email templates"
   },

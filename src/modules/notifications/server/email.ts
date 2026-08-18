@@ -1,27 +1,48 @@
 import "server-only";
 
-import { Resend } from "resend";
+import nodemailer, { type Transporter } from "nodemailer";
 
-const FROM_ADDRESS = "RYMX <orders@rymx.test>";
+const FROM_NAME = "RYMX";
 
-// No-op (console-log only) when there's no real API key configured — true in
-// local dev/emulator use and in this project before a Resend account is
-// wired up. Never throws: an email failure should never fail the action that
-// triggered it (checkout, promo issuance, etc).
+// No-op (console-log only) when Gmail creds aren't configured — true in local
+// dev/emulator use before GMAIL_USER/GMAIL_APP_PASSWORD are set. Never
+// throws: an email failure should never fail the action that triggered it
+// (checkout, promo issuance, etc).
+let transporter: Transporter | null = null;
+
+function getTransporter(): Transporter | null {
+  if (transporter) return transporter;
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !pass) return null;
+
+  // Gmail SMTP via an App Password (not the account password — see
+  // .env.example for the setup steps). Requires 2-Step Verification enabled
+  // on the sending account.
+  transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user, pass },
+  });
+  return transporter;
+}
+
 export async function sendEmail(params: {
   to: string;
   subject: string;
   html: string;
 }): Promise<void> {
-  if (!process.env.RESEND_API_KEY) {
-    console.log(`[email:skipped, no RESEND_API_KEY] to=${params.to} subject="${params.subject}"`);
+  const user = process.env.GMAIL_USER;
+  const client = getTransporter();
+  if (!client || !user) {
+    console.log(
+      `[email:skipped, no GMAIL_USER/GMAIL_APP_PASSWORD] to=${params.to} subject="${params.subject}"`,
+    );
     return;
   }
 
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
-      from: FROM_ADDRESS,
+    await client.sendMail({
+      from: `${FROM_NAME} <${user}>`,
       to: params.to,
       subject: params.subject,
       html: params.html,

@@ -17,7 +17,10 @@ import {
   discountIneligibleMessage,
   validateDiscountEligibility,
 } from "@/modules/discounts/services/discount";
-import { sendOrderConfirmationEmail } from "@/modules/notifications/server";
+import {
+  sendNewOrderAdminNotification,
+  sendOrderConfirmationEmail,
+} from "@/modules/notifications/server";
 import { getSessionClaims } from "@/modules/rbac/server";
 import { getShippingSettings, getStoreSettings } from "@/modules/settings/server";
 import { resolveShippingFeeMinor } from "@/modules/settings/services/shipping";
@@ -226,6 +229,7 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
     if (isNew) {
       invalidateCacheTags(CACHE_TAGS.orders, CACHE_TAGS.inventory, CACHE_TAGS.products);
       await sendOrderConfirmationEmail(order);
+      await sendNewOrderAdminNotification(order);
     }
     return { ok: true, order };
   } catch (err) {

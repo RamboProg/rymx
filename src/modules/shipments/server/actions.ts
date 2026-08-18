@@ -3,6 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { CACHE_TAGS, invalidateCacheTags } from "@/lib/cache/tags";
 import { adminDb } from "@/lib/firebase/admin";
+import {
+  sendOrderConfirmedEmail,
+  sendOrderDeliveredEmail,
+  sendOrderShippedEmail,
+} from "@/modules/notifications/server";
 import { getOrderById } from "@/modules/orders/server";
 import { requireAdminPermission } from "@/modules/rbac/server";
 import {
@@ -66,6 +71,7 @@ export async function createShipmentAction(rawInput: unknown): Promise<ShipmentA
 
   if (order.status === "pending") {
     await adminDb.doc(`orders/${orderId}`).update({ status: "confirmed" });
+    await sendOrderConfirmedEmail({ ...order, status: "confirmed" });
   }
 
   invalidateCacheTags(CACHE_TAGS.orders);
@@ -96,12 +102,18 @@ export async function markShippedAction(rawInput: unknown): Promise<ShipmentActi
     await adminDb.doc(`orders/${shipment.orderId}`).update({ status: "shipped" });
   }
 
+  const updatedShipment: Shipment = {
+    ...shipment,
+    status: "shipped",
+    shippedAt,
+    carrier,
+    trackingNumber,
+  };
+  if (order) await sendOrderShippedEmail(order, updatedShipment);
+
   invalidateCacheTags(CACHE_TAGS.orders);
   revalidatePath(`/admin/orders/${shipment.orderId}`);
-  return {
-    ok: true,
-    shipment: { ...shipment, status: "shipped", shippedAt, carrier, trackingNumber },
-  };
+  return { ok: true, shipment: updatedShipment };
 }
 
 export async function markDeliveredAction(shipmentId: string): Promise<ShipmentActionResult> {
@@ -123,6 +135,7 @@ export async function markDeliveredAction(shipmentId: string): Promise<ShipmentA
     const withUpdate = allShipments.map((s) => (s.id === shipmentId ? updatedShipment : s));
     if (isOrderFullyDelivered(order.items, withUpdate)) {
       await adminDb.doc(`orders/${shipment.orderId}`).update({ status: "delivered" });
+      await sendOrderDeliveredEmail({ ...order, status: "delivered" });
     }
   }
 
