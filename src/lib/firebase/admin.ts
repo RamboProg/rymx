@@ -34,6 +34,9 @@ function getAdminApp(): App {
 
 const adminApp = getAdminApp();
 const adminAuth = getAuth(adminApp);
-const adminDb = getFirestore(adminApp);
+// Optional non-default Firestore database (e.g. a "rymx-dev" database in the
+// same project as prod, used for local dev/e2e/security testing without
+// touching prod data). Unset = "(default)", today's behavior, unchanged.
+const adminDb = getFirestore(adminApp, process.env.FIRESTORE_DATABASE_ID || "(default)");
 
 export { adminAuth, adminDb };

@@ -6,9 +6,8 @@
 // already exists in Firebase Auth, its claims/Firestore doc get re-stamped
 // to owner without touching its password.
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 import { DEFAULT_ROLE_PERMISSIONS } from "../src/modules/rbac/services/permissions";
-import { getScriptAdminApp } from "./lib/firebaseAdmin";
+import { getScriptAdminApp, getScriptDb } from "./lib/firebaseAdmin";
 
 const [, , email, password, displayName] = process.argv;
 
@@ -20,7 +19,7 @@ if (!email || !password) {
 async function main() {
   const app = getScriptAdminApp();
   const adminAuth = getAuth(app);
-  const db = getFirestore(app);
+  const db = getScriptDb(app);
 
   const existing = await adminAuth.getUserByEmail(email!).catch(() => null);
   let uid: string;
