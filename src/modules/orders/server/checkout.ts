@@ -25,6 +25,7 @@ import { getSessionClaims } from "@/modules/rbac/server";
 import { getShippingSettings, getStoreSettings } from "@/modules/settings/server";
 import { resolveShippingFeeMinor } from "@/modules/settings/services/shipping";
 import { checkoutInputSchema, orderSchema, type Order, type OrderItem } from "../schema";
+import { formatOrderId, getCairoDateKey } from "../services/orderNumber";
 import { computeSubtotalMinor, computeTaxMinor, computeTotalMinor } from "../services/pricing";
 
 export type CheckoutResult = { ok: true; order: Order } | { ok: false; error: string };
@@ -63,10 +64,16 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
 
   try {
     const { order, isNew } = await adminDb.runTransaction(async (tx) => {
-      const orderRef = adminDb.doc(`orders/${input.idempotencyKey}`);
-      const existing = await tx.get(orderRef);
-      if (existing.exists) {
+      // Order doc ID is now a human-readable YYYYMMDD-NNN sequence (Cairo
+      // business day), not the idempotency key — so double-submit dedup
+      // moves to its own deterministic lookup doc (same style as
+      // discounts/schema.ts's discountRedemptionId composite keys).
+      const idempotencyRef = adminDb.doc(`orderIdempotency/${input.idempotencyKey}`);
+      const idempotencySnap = await tx.get(idempotencyRef);
+      if (idempotencySnap.exists) {
         // Idempotent replay: same key already produced an order, no-op.
+        const existingOrderId = idempotencySnap.data()!.orderId as string;
+        const existing = await tx.get(adminDb.doc(`orders/${existingOrderId}`));
         return {
           isNew: false,
           order: orderSchema.parse({
@@ -76,6 +83,13 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
           }),
         };
       }
+
+      const dateKey = getCairoDateKey(new Date());
+      const counterRef = adminDb.doc(`counters/orders-${dateKey}`);
+      const counterSnap = await tx.get(counterRef);
+      const nextCount = ((counterSnap.data()?.count as number | undefined) ?? 0) + 1;
+      const orderId = formatOrderId(dateKey, nextCount);
+      const orderRef = adminDb.doc(`orders/${orderId}`);
 
       const productRefs = input.items.map((i) => adminDb.doc(`products/${i.productId}`));
       const variantRefs = input.items.map((i) =>
@@ -187,6 +201,8 @@ export async function checkoutAction(rawInput: unknown): Promise<CheckoutResult>
       });
 
       tx.set(orderRef, newOrder);
+      tx.set(counterRef, { count: nextCount });
+      tx.set(idempotencyRef, { orderId, createdAt: new Date() });
       variantRefs.forEach((ref, idx) => {
         // eslint-disable-next-line security/detect-object-injection -- idx is this forEach's own index, not user input
         const item = orderItems[idx]!;

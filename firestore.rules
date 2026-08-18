@@ -67,6 +67,14 @@ service cloud.firestore {
       }
     }
 
+    match /counters/{counterId} {
+      allow read, write: if false;
+    }
+
+    match /orderIdempotency/{key} {
+      allow read, write: if false;
+    }
+
     // --- shipments module (src/modules/shipments/rules.md) ---
     match /shipments/{shipmentId} {
       allow read: if request.auth != null &&

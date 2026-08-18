@@ -14,3 +14,14 @@ client-readable at all (not even by the order's own customer) — written by
 `addOrderNoteAction`, gated by the `orders:fulfill` permission check in
 `src/modules/orders/server/actions.ts` (there's nothing for a Firestore rule
 to gate here either, same reasoning as catalog/collections in Phase 6).
+
+`counters/{counterId}`: internal only — per-day order sequence counters
+(`counters/orders-{YYYYMMDD}`) that back the human-readable `YYYYMMDD-NNN`
+order ID scheme. Written exclusively inside the checkout transaction
+(`src/modules/orders/server/checkout.ts`), never client-readable.
+
+`orderIdempotency/{key}`: internal only — deterministic lookup docs keyed by
+the checkout `idempotencyKey`, mapping it to the order ID it produced. Now
+that the order document ID is a sequence number rather than the idempotency
+key itself, this is what checkout re-checks to detect a double-submit and
+replay the original order instead of creating a duplicate.

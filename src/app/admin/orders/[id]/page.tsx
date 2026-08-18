@@ -35,7 +35,7 @@ export default async function AdminOrderDetailPage({
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <h1 className="font-display text-rymx-cream text-2xl font-bold">
-          {t("orderNumber", { id: order.id.slice(0, 8) })}
+          {t("orderNumber", { id: order.id })}
         </h1>
         <p className="text-rymx-cream/50 font-mono text-xs">
           {t("placedMeta", {
