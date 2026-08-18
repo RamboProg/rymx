@@ -57,10 +57,14 @@ function buildCsp(nonce: string): string {
     // follow-up call, fired after ttq.load() — not documented anywhere in
     // TikTok's base-code snippet, only discoverable by the CSP violation.
     `connect-src 'self' https://*.googleapis.com https://apis.google.com https://accounts.google.com https://*.firebaseapp.com https://*.web.app https://connect.facebook.net https://www.facebook.com https://analytics.tiktok.com https://analytics-ipv6.tiktokw.us https://vercel.live wss://vercel.live${USES_EMULATORS ? " http://127.0.0.1:* ws://127.0.0.1:*" : ""}`,
-    "frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.web.app https://www.gstatic.com https://vercel.live",
+    // https://www.facebook.com: the Meta pixel's own tracking fallback
+    // (form POST / iframe beacon it falls back to in some browsers) — not
+    // documented in Meta's base-code snippet, only surfaced as CSP
+    // violations in production.
+    "frame-src https://accounts.google.com https://*.google.com https://*.firebaseapp.com https://*.web.app https://www.gstatic.com https://vercel.live https://www.facebook.com",
     "object-src 'none'",
     "base-uri 'self'",
-    "form-action 'self'",
+    "form-action 'self' https://www.facebook.com",
     "frame-ancestors 'none'",
     "upgrade-insecure-requests",
   ];
