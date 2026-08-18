@@ -22,6 +22,7 @@
     "test:security:headers": "playwright test --config playwright.security.config.ts",
     "audit": "pnpm audit --prod",
     "role:set": "tsx --env-file=.env.local scripts/setRole.ts",
+    "owner:create": "tsx --env-file=.env.local scripts/createOwner.ts",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "prepare": "husky"
   },
