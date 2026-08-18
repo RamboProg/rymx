@@ -5,12 +5,13 @@ import type { Order } from "@/modules/orders/schema";
 import type { Shipment } from "@/modules/shipments/schema";
 import { getEmailTemplates, getStoreSettings } from "@/modules/settings/server";
 import { sendEmail } from "./email";
+import { renderEmailShell } from "./emailTemplate";
 
 function itemRows(order: Order): string {
   return order.items
     .map(
       (item) =>
-        `<li>${item.title} × ${item.quantity} — ${formatEGP(item.unitPriceMinor * item.quantity)}</li>`,
+        `<li style="margin-bottom:4px;">${item.title} × ${item.quantity} — ${formatEGP(item.unitPriceMinor * item.quantity)}</li>`,
     )
     .join("");
 }
@@ -29,7 +30,10 @@ export async function sendPromoCodeEmail(params: {
   await sendEmail({
     to: params.to,
     subject: `A promo code just for you — ${params.code}`,
-    html: `<p>${intro}</p><p style="font-size:1.5em;font-weight:bold;">${params.code}</p><p>${params.description}</p>`,
+    html: renderEmailShell({
+      title: "Your Promo Code",
+      bodyHtml: `<p>${intro}</p><p style="font-size:1.5em;font-weight:bold;color:#e8c170;">${params.code}</p><p>${params.description}</p>`,
+    }),
   });
 }
 
@@ -42,7 +46,10 @@ export async function sendStaffInviteEmail(params: {
   await sendEmail({
     to: params.to,
     subject: `You've been invited to the ${storeName} admin`,
-    html: `<p>You've been added as <strong>${params.role}</strong> on the ${storeName} admin.</p><p>Temporary password: <strong>${params.tempPassword}</strong></p><p>Sign in and reset your password as soon as possible.</p>`,
+    html: renderEmailShell({
+      title: "Admin Invitation",
+      bodyHtml: `<p>You've been added as <strong>${params.role}</strong> on the ${storeName} admin.</p><p>Temporary password: <strong>${params.tempPassword}</strong></p><p>Sign in and reset your password as soon as possible.</p>`,
+    }),
   });
 }
 
@@ -59,7 +66,10 @@ export async function sendOrderConfirmationEmail(order: Order): Promise<void> {
   await sendEmail({
     to: order.email,
     subject: `Order confirmed — #${order.id}`,
-    html: `<p>${intro}</p><ul>${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Cash on delivery.</p><p>— ${storeName}</p>`,
+    html: renderEmailShell({
+      title: "Order Received",
+      bodyHtml: `<p>${intro}</p><ul style="padding-left:20px;margin:16px 0;">${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Cash on delivery.</p><p>— ${storeName}</p>`,
+    }),
   });
 }
 
@@ -73,7 +83,10 @@ export async function sendNewOrderAdminNotification(order: Order): Promise<void>
   await sendEmail({
     to: supportEmail,
     subject: `New order received — #${order.id}`,
-    html: `<p>New order from ${order.shipping.fullName} (${order.email ?? "guest, no email"}).</p><ul>${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Shipping to: ${order.shipping.addressLine}, ${order.shipping.city}, ${order.shipping.governorate}. Phone: ${order.shipping.phone}</p><p>— ${storeName} admin</p>`,
+    html: renderEmailShell({
+      title: "New Order",
+      bodyHtml: `<p>New order from ${order.shipping.fullName} (${order.email ?? "guest, no email"}).</p><ul style="padding-left:20px;margin:16px 0;">${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Shipping to: ${order.shipping.addressLine}, ${order.shipping.city}, ${order.shipping.governorate}. Phone: ${order.shipping.phone}</p><p>— ${storeName} admin</p>`,
+    }),
   });
 }
 
@@ -92,7 +105,10 @@ export async function sendOrderConfirmedEmail(order: Order): Promise<void> {
   await sendEmail({
     to: order.email,
     subject: `Order confirmed — #${order.id}`,
-    html: `<p>${intro}</p><p>— ${storeName}</p>`,
+    html: renderEmailShell({
+      title: "Order Confirmed",
+      bodyHtml: `<p>${intro}</p><p>— ${storeName}</p>`,
+    }),
   });
 }
 
@@ -110,7 +126,10 @@ export async function sendOrderShippedEmail(order: Order, shipment: Shipment): P
   await sendEmail({
     to: order.email,
     subject: `Order shipped — #${order.id}`,
-    html: `<p>${intro}</p><p>Carrier: ${shipment.carrier}</p><p>Tracking number: ${shipment.trackingNumber}</p><p>— ${storeName}</p>`,
+    html: renderEmailShell({
+      title: "Order Shipped",
+      bodyHtml: `<p>${intro}</p><p>Carrier: ${shipment.carrier}</p><p>Tracking number: ${shipment.trackingNumber}</p><p>— ${storeName}</p>`,
+    }),
   });
 }
 
@@ -127,7 +146,10 @@ export async function sendOrderDeliveredEmail(order: Order): Promise<void> {
   await sendEmail({
     to: order.email,
     subject: `Order delivered — #${order.id}`,
-    html: `<p>${intro}</p><p>— ${storeName}</p>`,
+    html: renderEmailShell({
+      title: "Order Delivered",
+      bodyHtml: `<p>${intro}</p><p>— ${storeName}</p>`,
+    }),
   });
 }
 
@@ -144,6 +166,9 @@ export async function sendOrderCancelledEmail(order: Order): Promise<void> {
   await sendEmail({
     to: order.email,
     subject: `Order cancelled — #${order.id}`,
-    html: `<p>${intro}</p><p>— ${storeName}</p>`,
+    html: renderEmailShell({
+      title: "Order Cancelled",
+      bodyHtml: `<p>${intro}</p><p>— ${storeName}</p>`,
+    }),
   });
 }
