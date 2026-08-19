@@ -6,21 +6,13 @@ import { Table, Td, Th } from "@/components/admin/Table";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Field, NumberField } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { isSizeOptionKey, sizeFromOptions } from "@/lib/options";
 import { adjustStockAction } from "../server/actions";
 import { LOW_STOCK_THRESHOLD, type VariantStockRow } from "../schema";
 
-const SIZE_KEYS = new Set(["size", "sizes", "المقاس", "مقاس"]);
-
-function sizeFromOptions(optionValues: Record<string, string>): string {
-  for (const [key, value] of Object.entries(optionValues)) {
-    if (SIZE_KEYS.has(key.trim().toLowerCase())) return value;
-  }
-  return "—";
-}
-
 function otherOptions(optionValues: Record<string, string>): string {
   const rest = Object.entries(optionValues)
-    .filter(([key]) => !SIZE_KEYS.has(key.trim().toLowerCase()))
+    .filter(([key]) => !isSizeOptionKey(key))
     .map(([, value]) => value);
   return rest.length > 0 ? rest.join(" / ") : "—";
 }

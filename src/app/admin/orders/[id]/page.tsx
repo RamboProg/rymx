@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Table, Td, Th } from "@/components/admin/Table";
 import { formatEGP } from "@/lib/money";
+import { sizeFromOptions } from "@/lib/options";
 import { OrderNotes } from "@/modules/orders/components/admin/OrderNotes";
 import { OrderStatusActions } from "@/modules/orders/components/admin/OrderStatusActions";
 import { getOrderById, listOrderNotes } from "@/modules/orders/server";
@@ -54,6 +55,7 @@ export default async function AdminOrderDetailPage({
             <tr>
               <Th>{t("colItem")}</Th>
               <Th>{t("colSku")}</Th>
+              <Th>{t("colSize")}</Th>
               <Th>{t("colQty")}</Th>
               <Th>{t("colPrice")}</Th>
             </tr>
@@ -63,6 +65,7 @@ export default async function AdminOrderDetailPage({
               <tr key={item.variantId}>
                 <Td>{item.title}</Td>
                 <Td>{item.sku}</Td>
+                <Td>{sizeFromOptions(item.optionValues)}</Td>
                 <Td>{item.quantity}</Td>
                 <Td>{formatEGP(item.unitPriceMinor)}</Td>
               </tr>

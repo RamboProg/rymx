@@ -694,6 +694,7 @@
     "itemsHeading": "Items",
     "colItem": "Item",
     "colSku": "SKU",
+    "colSize": "Size",
     "colQty": "Qty",
     "colPrice": "Price",
     "shippingAddressHeading": "Shipping address",
