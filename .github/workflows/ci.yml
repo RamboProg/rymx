@@ -144,7 +144,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Wait for Vercel preview deployment
         id: wait-for-preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
@@ -191,7 +191,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Wait for Vercel preview deployment
         id: wait-for-preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
@@ -229,7 +229,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Wait for Vercel preview deployment
         id: wait-for-preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
@@ -248,7 +248,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Wait for Vercel preview deployment
         id: wait-for-preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
