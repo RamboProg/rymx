@@ -2,6 +2,8 @@ import "server-only";
 
 import { formatEGP } from "@/lib/money";
 import type { Order } from "@/modules/orders/schema";
+import { listStaffUsers } from "@/modules/rbac/server/admin";
+import { hasPermission } from "@/modules/rbac/services/permissions";
 import type { Shipment } from "@/modules/shipments/schema";
 import { getEmailTemplates, getStoreSettings } from "@/modules/settings/server";
 import { sendEmail } from "./email";
@@ -73,21 +75,39 @@ export async function sendOrderConfirmationEmail(order: Order): Promise<void> {
   });
 }
 
-// Sent to the store's supportEmail (Settings -> Store) the moment a new
-// order is placed. Silently skipped if no supportEmail is configured — a
-// missing admin address is a config gap, not a send failure.
+// Sent to every account that can actually fulfill orders (owner/admin, or
+// anyone explicitly granted orders:fulfill) the moment a new order is
+// placed — not just a single manually-configured address. Settings ->
+// Store's supportEmail (if set) is included too, as an extra recipient (e.g.
+// a shared inbox that isn't itself a staff login). Relying on supportEmail
+// alone silently dropped every notification whenever nobody had ever saved
+// the Store settings form — the doc doesn't exist until then, so
+// getStoreSettings() defaults it to null.
 export async function sendNewOrderAdminNotification(order: Order): Promise<void> {
-  const { storeName, supportEmail } = await getStoreSettings();
-  if (!supportEmail) return;
+  const [{ storeName, supportEmail }, staff] = await Promise.all([
+    getStoreSettings(),
+    listStaffUsers(),
+  ]);
 
-  await sendEmail({
-    to: supportEmail,
-    subject: `New order received — #${order.id}`,
-    html: renderEmailShell({
-      title: "New Order",
-      bodyHtml: `<p>New order from ${order.shipping.fullName} (${order.email ?? "guest, no email"}).</p><ul style="padding-left:20px;margin:16px 0;">${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Shipping to: ${order.shipping.addressLine}, ${order.shipping.city}, ${order.shipping.governorate}. Phone: ${order.shipping.phone}</p><p>— ${storeName} admin</p>`,
-    }),
+  // Keyed by lowercased email to dedupe, valued by the original casing to
+  // send with.
+  const recipients = new Map<string, string>();
+  if (supportEmail) recipients.set(supportEmail.toLowerCase(), supportEmail);
+  for (const member of staff) {
+    if (!member.email) continue;
+    if (!hasPermission({ role: member.role, permissions: member.permissions }, "orders:fulfill"))
+      continue;
+    recipients.set(member.email.toLowerCase(), member.email);
+  }
+  if (recipients.size === 0) return;
+
+  const html = renderEmailShell({
+    title: "New Order",
+    bodyHtml: `<p>New order from ${order.shipping.fullName} (${order.email ?? "guest, no email"}).</p><ul style="padding-left:20px;margin:16px 0;">${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Shipping to: ${order.shipping.addressLine}, ${order.shipping.city}, ${order.shipping.governorate}. Phone: ${order.shipping.phone}</p><p>— ${storeName} admin</p>`,
   });
+  const subject = `New order received — #${order.id}`;
+
+  await Promise.all([...recipients.values()].map((to) => sendEmail({ to, subject, html })));
 }
 
 // Sent to the customer once staff review the order (manual confirmOrderAction,
