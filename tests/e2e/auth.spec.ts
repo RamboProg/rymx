@@ -1,9 +1,24 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 
 // CI's e2e job runs Playwright against a real deployed Vercel preview (see
 // .github/workflows/ci.yml) — a real Firebase project, not the local
 // emulator. Locally, point NEXT_PUBLIC_USE_FIREBASE_EMULATORS at whichever
 // project `pnpm exec next start` is actually serving.
+
+// Below the `sm` breakpoint, HeaderNav's account controls (incl. "Sign out")
+// only render inside MobileMenu's collapsed hamburger — this runs on both
+// the chromium and mobile-chromium projects, so toggle it open before
+// checking visibility. No-op on desktop, where the hamburger toggle doesn't
+// render at all. It's a plain toggle, so calling this again closes it — do
+// that once done, or the open dropdown overlay can cover page content
+// underneath it.
+async function toggleAccountControls(page: Page) {
+  const menuToggle = page.getByRole("button", { name: "Main" });
+  if (await menuToggle.isVisible()) {
+    await menuToggle.click();
+  }
+}
+
 test.describe("auth", () => {
   test("redirects an unauthenticated visitor away from /admin", async ({ page }) => {
     await page.goto("/admin");
@@ -30,7 +45,9 @@ test.describe("auth", () => {
     await expect(page).toHaveURL(/\/verify-email/);
     await expect(page.getByRole("heading", { name: "Verify your email" })).toBeVisible();
     await expect(page.getByText(/spam or junk folder/i)).toBeVisible();
+    await toggleAccountControls(page);
     await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    await toggleAccountControls(page); // close again — see helper comment
 
     // Not gated: the account area is reachable immediately, just nagged.
     await page.getByRole("link", { name: "Continue to your account" }).click();
@@ -40,6 +57,7 @@ test.describe("auth", () => {
     // Sign out redirects to the landing page (where the header — and its Sign in
     // link — is deliberately hidden), so assert the logout by URL + absence of
     // the signed-in control rather than by the hidden link.
+    await toggleAccountControls(page);
     await page.getByRole("button", { name: "Sign out" }).click();
     await expect(page).toHaveURL((url) => url.pathname === "/");
     await expect(page.getByRole("button", { name: "Sign out" })).toHaveCount(0);
@@ -51,6 +69,7 @@ test.describe("auth", () => {
     await page.getByLabel("Password").fill(password);
     await signIn.click();
 
+    await toggleAccountControls(page);
     await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
   });
 

@@ -27,7 +27,10 @@ export function ReturnItemPicker({
   onChange: (value: ReturnItemPickerValue) => void;
 }) {
   const t = useTranslations("returns");
-  const reasonOptions = RETURN_REASONS.map((r) => ({ value: r.value, label: t(`reasons.${r.value}`) }));
+  const reasonOptions = RETURN_REASONS.map((r) => ({
+    value: r.value,
+    label: t(`reasons.${r.value}`),
+  }));
 
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-end">

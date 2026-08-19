@@ -99,6 +99,13 @@ jobs:
   sast-and-audit:
     name: SAST, secret scan, dependency audit
     runs-on: ubuntu-latest
+    # gitleaks-action lists the PR's commits via the API (GET
+    # /pulls/{n}/commits) to scan them — needs pull-requests:read on top of
+    # the default contents:read, or it 403s with "Resource not accessible
+    # by integration" on every PR run.
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@v7
         with:

@@ -144,7 +144,12 @@ export function DiscountForm({ discount }: { discount?: Discount }) {
           value={startsAt}
           onChange={setStartsAt}
         />
-        <DateTimePicker id="endsAt" label={t("fields.endsAt")} value={endsAt} onChange={setEndsAt} />
+        <DateTimePicker
+          id="endsAt"
+          label={t("fields.endsAt")}
+          value={endsAt}
+          onChange={setEndsAt}
+        />
       </div>
 
       <Field

@@ -99,7 +99,9 @@ export function IssuePromoForm({ uid, email }: { uid: string; email: string | nu
           {error}
         </p>
       )}
-      {issuedCode && <p className="text-rymx-gold font-mono text-sm">{t("issued", { code: issuedCode })}</p>}
+      {issuedCode && (
+        <p className="text-rymx-gold font-mono text-sm">{t("issued", { code: issuedCode })}</p>
+      )}
       <Button type="submit" disabled={saving} className="w-fit justify-center">
         {saving ? t("issuing") : t("issuePromoCode")}
       </Button>

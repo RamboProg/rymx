@@ -92,7 +92,7 @@ test.describe("admin", () => {
     await page.getByLabel("Title", { exact: true }).fill(title);
     await page.getByLabel("Description", { exact: true }).fill(xssMarker);
     await chooseOption(page, "category", "Tops");
-    await chooseOption(page, "status", "active");
+    await chooseOption(page, "status", "Active");
     await page.getByRole("button", { name: "Create product" }).click();
 
     await expect(page).toHaveURL((url) => url.pathname.endsWith(`/admin/products/${slug}`));
@@ -120,7 +120,12 @@ test.describe("admin", () => {
     await page.getByLabel("Price (EGP)").fill("500");
     await page.getByLabel("Stock", { exact: true }).fill("10");
     await page.getByRole("button", { name: "Add variant" }).click();
-    await expect(page.getByText(slug)).toBeVisible();
+    // Scoped to the variants table specifically — the page also permanently
+    // shows "/shop/{slug}" elsewhere, so a bare getByText(slug) matches that
+    // decoy too and resolves before the variant mutation actually lands,
+    // racing the /shop navigation below against a write that hasn't
+    // committed yet.
+    await expect(page.getByRole("table").getByText(slug)).toBeVisible();
 
     await page.goto(`/shop/${slug}`);
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
@@ -145,7 +150,7 @@ test.describe("admin", () => {
     await page.goto("/admin/products/new");
     await page.getByLabel("Title", { exact: true }).fill(title);
     await chooseOption(page, "category", "Tops");
-    await chooseOption(page, "status", "active");
+    await chooseOption(page, "status", "Active");
     await page.getByRole("button", { name: "Create product" }).click();
     await expect(page).toHaveURL((url) => url.pathname.endsWith(`/admin/products/${slug}`));
 
@@ -154,7 +159,9 @@ test.describe("admin", () => {
     await page.getByLabel("Price (EGP)").fill("300");
     await page.getByLabel("Stock", { exact: true }).fill("8");
     await page.getByRole("button", { name: "Add variant" }).click();
-    await expect(page.getByText(slug)).toBeVisible();
+    // See the comment on the same pattern in the previous test — scoped to
+    // the variants table to actually wait for the mutation, not a decoy.
+    await expect(page.getByRole("table").getByText(slug)).toBeVisible();
 
     await page.goto("/admin/inventory");
     const ledgerRow = page.locator("tr", { hasText: slug }).filter({ hasText: "initial stock" });

@@ -1,0 +1,7 @@
+# Normalize line endings to LF in the repository regardless of the checkout
+# OS's core.autocrlf setting — Windows checkouts (core.autocrlf=true) were
+# converting every text file to CRLF on disk, which made `prettier --check`
+# (LF by default) flag ~146 files that only differ by line ending, not
+# content. `text=auto` still lets git's own binary-detection leave real
+# binary files (images, the .stl model, etc.) untouched.
+* text=auto eol=lf

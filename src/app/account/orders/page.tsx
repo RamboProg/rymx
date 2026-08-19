@@ -8,10 +8,7 @@ export const metadata: Metadata = { title: "Order history — RYMX" };
 
 export default async function OrderHistoryPage() {
   const claims = await getSessionClaims();
-  const [orders, t] = await Promise.all([
-    listOrdersByUid(claims!.uid),
-    getTranslations("account"),
-  ]);
+  const [orders, t] = await Promise.all([listOrdersByUid(claims!.uid), getTranslations("account")]);
 
   return (
     <div className="flex flex-col gap-6">

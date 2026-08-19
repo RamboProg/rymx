@@ -50,7 +50,6 @@
     "react-dom": "19.2.4",
     "server-only": "^0.0.1",
     "three": "^0.185.1",
-    "vercel": "^59.1.4",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -81,6 +80,7 @@
     "tailwindcss": "^4",
     "tsx": "^4.23.1",
     "typescript": "^5",
+    "vercel": "^59.1.4",
     "vitest": "^4.1.10"
   }
 }

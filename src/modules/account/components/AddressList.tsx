@@ -82,7 +82,7 @@ export function AddressList({ addresses: initialAddresses }: { addresses: Addres
                   type="button"
                   disabled={defaultingId === address.id}
                   onClick={() => onSetDefault(address.id)}
-                  className="text-rymx-cream/50 font-mono text-xs tracking-[0.1em] uppercase hover:text-rymx-gold"
+                  className="text-rymx-cream/50 hover:text-rymx-gold font-mono text-xs tracking-[0.1em] uppercase"
                 >
                   {t("setAsDefault")}
                 </button>

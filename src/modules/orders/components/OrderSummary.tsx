@@ -49,7 +49,9 @@ export function OrderSummary({ order }: { order: OrderTotals }) {
         )}
         <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">
           <span>{t("shipping")}</span>
-          <span>{order.shippingFeeMinor === 0 ? t("free") : formatEGP(order.shippingFeeMinor)}</span>
+          <span>
+            {order.shippingFeeMinor === 0 ? t("free") : formatEGP(order.shippingFeeMinor)}
+          </span>
         </div>
         {order.taxMinor > 0 && (
           <div className="text-rymx-cream/70 flex justify-between font-mono text-sm">

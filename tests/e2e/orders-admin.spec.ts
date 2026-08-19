@@ -93,18 +93,23 @@ test.describe("order fulfillment & returns (admin)", () => {
 
     await page.getByRole("spinbutton").first().fill("1");
     await page.getByRole("button", { name: "Create shipment" }).click();
-    await expect(page.getByText("pending", { exact: true })).toBeVisible();
+    await expect(page.getByText("Pending", { exact: true })).toBeVisible();
 
     await page.getByLabel("Carrier").fill("Bosta");
     await page.getByLabel("Tracking number").fill("BOSTA-E2E-1");
     await page.getByRole("button", { name: "Mark shipped" }).click();
     // The order status panel is a sibling client component that only updates
     // via an explicit router.refresh() from this action — asserting it here
-    // (no page.reload()) is regression coverage for that fix.
-    await expect(page.getByText("Shipped", { exact: true })).toBeVisible();
+    // (no page.reload()) is regression coverage for that fix. Scoped to the
+    // status-panel badge specifically (`OrderStatusActions.tsx`'s
+    // `text-rymx-gold font-mono text-sm` span) — a plain text match against
+    // "Shipped"/"Delivered" is ambiguous once the shipment row below shows
+    // the same word for its own (correctly separate) status.
+    const orderStatusBadge = page.locator("span.text-rymx-gold.font-mono.text-sm");
+    await expect(orderStatusBadge).toHaveText("Shipped");
 
     await page.getByRole("button", { name: "Mark delivered" }).click();
-    await expect(page.getByText("Delivered", { exact: true })).toBeVisible();
+    await expect(orderStatusBadge).toHaveText("Delivered");
 
     await page.goto("/admin/inventory");
     const stockBeforeReturn = await getStock(page, "DCP-30-BLACK");
@@ -116,13 +121,13 @@ test.describe("order fulfillment & returns (admin)", () => {
     await page.getByRole("option", { name: "Wrong size", exact: true }).click();
     await page.getByLabel("Refund amount (EGP)").fill("1950");
     await page.getByRole("button", { name: "Log return" }).click();
-    await expect(page.getByText("requested", { exact: true })).toBeVisible();
+    await expect(page.getByText("Requested", { exact: true })).toBeVisible();
 
     await page.getByRole("button", { name: "Approve" }).click();
-    await expect(page.getByText("approved", { exact: true })).toBeVisible();
+    await expect(page.getByText("Approved", { exact: true })).toBeVisible();
 
     await page.getByRole("button", { name: "Restock & record refund" }).click();
-    await expect(page.getByText("restocked", { exact: true })).toBeVisible();
+    await expect(page.getByText("Restocked", { exact: true })).toBeVisible();
 
     await page.goto("/admin/inventory");
     const stockAfterReturn = await getStock(page, "DCP-30-BLACK");

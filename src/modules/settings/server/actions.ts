@@ -78,9 +78,7 @@ export async function updateEmailTemplatesAction(rawInput: unknown): Promise<Set
   return { ok: true };
 }
 
-export async function updateCatalogDisplayAction(
-  rawInput: unknown,
-): Promise<SettingsActionResult> {
+export async function updateCatalogDisplayAction(rawInput: unknown): Promise<SettingsActionResult> {
   if (!(await requireProductsWrite())) return { ok: false, error: "Forbidden" };
   const parsed = catalogDisplaySchema.safeParse(rawInput);
   if (!parsed.success)

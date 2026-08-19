@@ -1,10 +1,9 @@
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
 import { DEFAULT_ROLE_PERMISSIONS } from "../src/modules/rbac/services/permissions";
-import { getScriptAdminApp } from "./lib/firebaseAdmin";
+import { getScriptAdminApp, getScriptDb } from "./lib/firebaseAdmin";
 
 const app = getScriptAdminApp();
-const db = getFirestore(app);
+const db = getScriptDb(app);
 const auth = getAuth(app);
 
 export const DEMO_CUSTOMER_EMAIL = "demo-customer@rymx.test";

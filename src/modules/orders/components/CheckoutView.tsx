@@ -199,9 +199,7 @@ export function CheckoutView({
             onValueChange={onSelectAddress}
             options={addresses.map((a) => ({
               value: a.id,
-              label: a.isDefault
-                ? t("addressOptionDefault", { name: a.fullName })
-                : a.fullName,
+              label: a.isDefault ? t("addressOptionDefault", { name: a.fullName }) : a.fullName,
             }))}
           />
         )}

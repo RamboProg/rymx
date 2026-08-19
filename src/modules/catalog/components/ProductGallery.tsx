@@ -65,7 +65,7 @@ export function ProductGallery({ media, title }: { media: MediaAsset[]; title: s
         <div
           ref={scrollerRef}
           onScroll={onScroll}
-          className="flex h-full w-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex h-full w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden"
         >
           {media.map((asset, i) => (
             <div key={`${asset.url}-${i}`} className="relative h-full w-full shrink-0 snap-center">

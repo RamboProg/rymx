@@ -95,9 +95,7 @@ export default async function AdminCustomerDetailPage({
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">
-          {t("issuePromoHeading")}
-        </h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("issuePromoHeading")}</h2>
         <IssuePromoForm uid={uid} email={customer.email} />
       </section>
 

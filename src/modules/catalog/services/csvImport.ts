@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { parseCsvRecords } from "@/lib/csv";
-import { mediaAssetSchema, productOptionSchema, type MediaAsset, type ProductOption } from "../schema";
+import {
+  mediaAssetSchema,
+  productOptionSchema,
+  type MediaAsset,
+  type ProductOption,
+} from "../schema";
 
 // Handles the columns Shopify's own "Export products" CSV produces — the
 // same file format staff already have from a previous store, so import
@@ -107,7 +112,10 @@ function collectOptions(rows: Record<string, string>[], names: (string | null)[]
   return options;
 }
 
-function collectVariants(rows: Record<string, string>[], names: (string | null)[]): ParsedVariant[] {
+function collectVariants(
+  rows: Record<string, string>[],
+  names: (string | null)[],
+): ParsedVariant[] {
   return rows
     .filter((row) => row["Variant Price"]?.trim())
     .map((row) => {
@@ -120,9 +128,7 @@ function collectVariants(rows: Record<string, string>[], names: (string | null)[
       });
       const priceMinor = Math.round(Number.parseFloat(row["Variant Price"]) * 100);
       const compareRaw = row["Variant Compare At Price"]?.trim();
-      const compareAtMinor = compareRaw
-        ? Math.round(Number.parseFloat(compareRaw) * 100)
-        : null;
+      const compareAtMinor = compareRaw ? Math.round(Number.parseFloat(compareRaw) * 100) : null;
       const stock = Number.parseInt(row["Variant Inventory Qty"] || "0", 10) || 0;
       return { optionValues, priceMinor, compareAtMinor, stock };
     })

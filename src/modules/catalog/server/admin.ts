@@ -144,8 +144,7 @@ async function recomputeMinPrice(productId: string): Promise<void> {
       typeof first.compareAtMinor === "number" &&
       first.compareAtMinor > (first.priceMinor as number) &&
       variants.every(
-        (v) =>
-          v.priceMinor === first.priceMinor && v.compareAtMinor === first.compareAtMinor,
+        (v) => v.priceMinor === first.priceMinor && v.compareAtMinor === first.compareAtMinor,
       );
     if (shared) compareAtMinor = first.compareAtMinor as number;
   }
