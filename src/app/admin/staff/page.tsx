@@ -30,16 +30,12 @@ export default async function AdminStaffPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">
-          {t("inviteHeading")}
-        </h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("inviteHeading")}</h2>
         <InviteStaffForm />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-display text-rymx-cream text-lg font-bold">
-          {t("auditLogHeading")}
-        </h2>
+        <h2 className="font-display text-rymx-cream text-lg font-bold">{t("auditLogHeading")}</h2>
         {auditLog.length === 0 ? (
           <p className="text-rymx-cream/50 font-mono text-sm">{t("noAuditLog")}</p>
         ) : (

@@ -116,7 +116,8 @@ export function InventoryTable({ rows: initialRows }: { rows: VariantStockRow[] 
     const query = search.trim().toLowerCase();
     return rows.filter((row) => {
       if (query) {
-        const haystack = `${row.productTitle} ${row.sku} ${sizeFromOptions(row.optionValues)}`.toLowerCase();
+        const haystack =
+          `${row.productTitle} ${row.sku} ${sizeFromOptions(row.optionValues)}`.toLowerCase();
         if (!haystack.includes(query)) return false;
       }
       if (categoryFilter !== "all" && row.category !== categoryFilter) return false;

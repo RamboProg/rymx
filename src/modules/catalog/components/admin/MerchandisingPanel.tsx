@@ -35,11 +35,13 @@ function orderProducts(
   const sorted = [...products];
   if (mode === "price-asc") {
     sorted.sort(
-      (a, b) => a.minPriceMinor - b.minPriceMinor || createdAtMs(b.createdAt) - createdAtMs(a.createdAt),
+      (a, b) =>
+        a.minPriceMinor - b.minPriceMinor || createdAtMs(b.createdAt) - createdAtMs(a.createdAt),
     );
   } else if (mode === "price-desc") {
     sorted.sort(
-      (a, b) => b.minPriceMinor - a.minPriceMinor || createdAtMs(b.createdAt) - createdAtMs(a.createdAt),
+      (a, b) =>
+        b.minPriceMinor - a.minPriceMinor || createdAtMs(b.createdAt) - createdAtMs(a.createdAt),
     );
   } else if (mode === "best-selling") {
     sorted.sort(

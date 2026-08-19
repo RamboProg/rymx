@@ -21,15 +21,15 @@ export function MobileMenu({ label, children }: { label: string; children: React
       >
         <span
           aria-hidden="true"
-          className={`bg-current block h-0.5 w-5 transition-transform ${open ? "translate-y-2 rotate-45" : ""}`}
+          className={`block h-0.5 w-5 bg-current transition-transform ${open ? "translate-y-2 rotate-45" : ""}`}
         />
         <span
           aria-hidden="true"
-          className={`bg-current block h-0.5 w-5 transition-opacity ${open ? "opacity-0" : ""}`}
+          className={`block h-0.5 w-5 bg-current transition-opacity ${open ? "opacity-0" : ""}`}
         />
         <span
           aria-hidden="true"
-          className={`bg-current block h-0.5 w-5 transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`}
+          className={`block h-0.5 w-5 bg-current transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`}
         />
       </button>
       {open && (

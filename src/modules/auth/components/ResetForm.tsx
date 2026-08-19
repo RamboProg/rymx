@@ -39,11 +39,7 @@ export function ResetForm() {
   }
 
   if (sent) {
-    return (
-      <p className="text-rymx-cream/70 font-mono text-sm">
-        {t("sentMessage", { email })}
-      </p>
-    );
+    return <p className="text-rymx-cream/70 font-mono text-sm">{t("sentMessage", { email })}</p>;
   }
 
   // method="post" + hydration-gated submit so the email is never placed in the

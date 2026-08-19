@@ -34,8 +34,7 @@ type VariantActionResult = { ok: true; variant: Variant } | { ok: false; error: 
 type VoidActionResult = { ok: true } | { ok: false; error: string };
 type CategoryActionResult = { ok: true; category: Category } | { ok: false; error: string };
 type CsvImportProductActionResult =
-  | { ok: true; result: CsvImportProductResult }
-  | { ok: false; error: string };
+  { ok: true; result: CsvImportProductResult } | { ok: false; error: string };
 
 // Returns the caller's claims when they may write products (and passes the
 // rate-limit), else null — so actions can both authorize and read staffUid.

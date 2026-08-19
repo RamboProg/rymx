@@ -152,9 +152,7 @@ export default async function AdminAnalyticsPage() {
 
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-rymx-cream text-lg font-bold">
-            {t("lowStockHeading")}
-          </h2>
+          <h2 className="font-display text-rymx-cream text-lg font-bold">{t("lowStockHeading")}</h2>
           <ExportLink report="inventory" label={t("exportCsv")} />
         </div>
         {lowStock.length === 0 ? (

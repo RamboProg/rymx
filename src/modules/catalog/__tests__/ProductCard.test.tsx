@@ -30,9 +30,7 @@ describe("ProductCard", () => {
 
   it("shows the compare-at price struck through when the product is on sale", () => {
     render(
-      <ProductCard
-        product={{ ...baseProduct, minPriceMinor: 200000, compareAtMinor: 285000 }}
-      />,
+      <ProductCard product={{ ...baseProduct, minPriceMinor: 200000, compareAtMinor: 285000 }} />,
     );
 
     expect(screen.getByText(/^EGP\s2,000\.00$/)).toBeInTheDocument();

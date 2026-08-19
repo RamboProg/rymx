@@ -93,10 +93,14 @@ async function fetchActiveProductsRaw(): Promise<CachedProduct[]> {
   return enriched.map(dehydrateProduct);
 }
 
-const getCachedActiveProducts = unstable_cache(fetchActiveProductsRaw, ["catalog-active-products"], {
-  revalidate: 60,
-  tags: [CACHE_TAGS.products],
-});
+const getCachedActiveProducts = unstable_cache(
+  fetchActiveProductsRaw,
+  ["catalog-active-products"],
+  {
+    revalidate: 60,
+    tags: [CACHE_TAGS.products],
+  },
+);
 
 // Every live product, unpaginated/unfiltered — for the sitemap generator,
 // which needs every public URL, not a shop-page's worth.

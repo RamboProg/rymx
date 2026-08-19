@@ -9,9 +9,7 @@ import { establishSession } from "./establishSession";
 
 const provider = new GoogleAuthProvider();
 
-export type GoogleSignInResult =
-  | { kind: "session"; destination: string }
-  | { kind: "redirecting" };
+export type GoogleSignInResult = { kind: "session"; destination: string } | { kind: "redirecting" };
 
 // Completes a redirect-based Google sign-in if the user just returned from
 // Google. Returns the post-login destination, or null when there was no

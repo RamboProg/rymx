@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useState } from "react";

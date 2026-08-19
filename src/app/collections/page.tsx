@@ -7,10 +7,7 @@ import { listLiveCollections } from "@/modules/collections/server";
 
 export const metadata: Metadata = { title: "Collections — RYMX" };
 
-function productOnSale(product: {
-  compareAtMinor: number | null;
-  minPriceMinor: number;
-}): boolean {
+function productOnSale(product: { compareAtMinor: number | null; minPriceMinor: number }): boolean {
   return product.compareAtMinor != null && product.compareAtMinor > product.minPriceMinor;
 }
 

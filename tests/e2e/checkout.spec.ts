@@ -68,9 +68,7 @@ test.describe("checkout", () => {
     await expect(page.getByRole("heading", { name: /Thank you, Sara Ahmed/ })).toBeVisible();
   });
 
-  test("prefills checkout from a signed-in customer's saved default address", async ({
-    page,
-  }) => {
+  test("prefills checkout from a signed-in customer's saved default address", async ({ page }) => {
     const email = `checkout-prefill-${Date.now()}@rymx.test`;
     await page.goto("/register");
     await page.getByLabel("Email").fill(email);

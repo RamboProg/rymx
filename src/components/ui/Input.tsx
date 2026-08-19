@@ -54,7 +54,7 @@ export function NumberField({
           className={`border-rymx-cream/20 bg-rymx-card text-rymx-cream focus:border-rymx-gold w-full appearance-none rounded-md border px-4 py-3 pe-9 text-sm outline-none [-moz-appearance:textfield] ${className ?? ""}`}
           {...props}
         />
-        <div className="absolute top-1/2 end-1.5 flex -translate-y-1/2 flex-col">
+        <div className="absolute end-1.5 top-1/2 flex -translate-y-1/2 flex-col">
           <button
             type="button"
             tabIndex={-1}

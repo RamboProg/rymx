@@ -5,8 +5,7 @@ import type { Product } from "../schema";
 
 export function ProductCard({ product }: { product: Product }) {
   const image = product.media[0];
-  const onSale =
-    product.compareAtMinor != null && product.compareAtMinor > product.minPriceMinor;
+  const onSale = product.compareAtMinor != null && product.compareAtMinor > product.minPriceMinor;
 
   return (
     <Link href={`/shop/${product.slug}`} className="group flex flex-col gap-3">
@@ -31,7 +30,7 @@ export function ProductCard({ product }: { product: Product }) {
         <h3 className="text-rymx-cream font-sans text-sm">{product.title}</h3>
         {onSale ? (
           <div className="flex flex-wrap items-baseline gap-2">
-            <p className="text-rymx-cream/50 font-mono text-xs line-through decoration-rymx-cream/50">
+            <p className="text-rymx-cream/50 decoration-rymx-cream/50 font-mono text-xs line-through">
               {formatEGP(product.compareAtMinor!)}
             </p>
             <p className="text-rymx-gold font-mono text-xs">{formatEGP(product.minPriceMinor)}</p>
