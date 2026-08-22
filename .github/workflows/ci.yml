@@ -56,7 +56,7 @@ jobs:
       # Cache the downloaded Firestore/Auth emulator JARs so emulators:exec
       # doesn't re-fetch them on every run.
       - name: Cache Firebase emulators
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/firebase/emulators
           key: firebase-emulators-${{ runner.os }}
@@ -160,7 +160,7 @@ jobs:
       # cache hits; only the (fast) OS deps still install.
       - name: Cache Playwright browsers
         id: pw-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
@@ -205,7 +205,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Cache Playwright browsers
         id: pw-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
