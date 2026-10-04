@@ -1,6 +1,8 @@
 import "server-only";
 
 import { formatEGP } from "@/lib/money";
+import { getSiteUrl } from "@/lib/siteUrl";
+import { getProductById } from "@/modules/catalog/server";
 import type { Order } from "@/modules/orders/schema";
 import { listStaffUsers } from "@/modules/rbac/server/admin";
 import { hasPermission } from "@/modules/rbac/services/permissions";
@@ -16,6 +18,44 @@ function itemRows(order: Order): string {
         `<li style="margin-bottom:4px;">${item.title} × ${item.quantity} — ${formatEGP(item.unitPriceMinor * item.quantity)}</li>`,
     )
     .join("");
+}
+
+// Order items don't snapshot an image, so look up each product's first media
+// asset at send time. A failed lookup (product deleted, bad doc) just drops
+// that thumbnail — it must never block the notification itself.
+async function getItemImageUrls(order: Order): Promise<Map<string, string>> {
+  const productIds = [...new Set(order.items.map((item) => item.productId))];
+  const entries = await Promise.all(
+    productIds.map(async (productId): Promise<[string, string] | null> => {
+      try {
+        const url = (await getProductById(productId))?.media[0]?.url;
+        if (!url) return null;
+        return [productId, url.startsWith("/") ? `${getSiteUrl()}${url}` : url];
+      } catch (err) {
+        console.error(`[notifications] Couldn't load image for product ${productId}`, err);
+        return null;
+      }
+    }),
+  );
+  return new Map(entries.filter((entry) => entry !== null));
+}
+
+// Table layout (not flex/grid) so the thumbnail sits beside the text in every
+// mail client.
+function itemRowsWithImages(order: Order, imageUrls: Map<string, string>): string {
+  const rows = order.items
+    .map((item) => {
+      const imageUrl = imageUrls.get(item.productId);
+      const options = Object.entries(item.optionValues)
+        .map(([name, value]) => `${name}: ${value}`)
+        .join(", ");
+      const imageCell = imageUrl
+        ? `<img src="${imageUrl}" alt="${item.title}" width="80" height="80" style="display:block;width:80px;height:80px;object-fit:cover;border-radius:6px;" />`
+        : "";
+      return `<tr><td style="padding:8px 12px 8px 0;width:80px;vertical-align:top;">${imageCell}</td><td style="padding:8px 0;vertical-align:top;"><strong>${item.title}</strong>${options ? `<br /><span style="font-size:0.9em;opacity:0.8;">${options}</span>` : ""}<br />SKU: ${item.sku}<br />× ${item.quantity} — ${formatEGP(item.unitPriceMinor * item.quantity)}</td></tr>`;
+    })
+    .join("");
+  return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:16px 0;border-collapse:collapse;">${rows}</table>`;
 }
 
 export async function sendPromoCodeEmail(params: {
@@ -84,9 +124,10 @@ export async function sendOrderConfirmationEmail(order: Order): Promise<void> {
 // the Store settings form — the doc doesn't exist until then, so
 // getStoreSettings() defaults it to null.
 export async function sendNewOrderAdminNotification(order: Order): Promise<void> {
-  const [{ storeName, supportEmail }, staff] = await Promise.all([
+  const [{ storeName, supportEmail }, staff, imageUrls] = await Promise.all([
     getStoreSettings(),
     listStaffUsers(),
+    getItemImageUrls(order),
   ]);
 
   // Keyed by lowercased email to dedupe, valued by the original casing to
@@ -103,7 +144,7 @@ export async function sendNewOrderAdminNotification(order: Order): Promise<void>
 
   const html = renderEmailShell({
     title: "New Order",
-    bodyHtml: `<p>New order from ${order.shipping.fullName} (${order.email ?? "guest, no email"}).</p><ul style="padding-left:20px;margin:16px 0;">${itemRows(order)}</ul><p>Total: ${formatEGP(order.totalMinor)}</p><p>Shipping to: ${order.shipping.addressLine}, ${order.shipping.city}, ${order.shipping.governorate}. Phone: ${order.shipping.phone}</p><p>— ${storeName} admin</p>`,
+    bodyHtml: `<p>New order from ${order.shipping.fullName} (${order.email ?? "guest, no email"}).</p>${itemRowsWithImages(order, imageUrls)}<p>Total: ${formatEGP(order.totalMinor)}</p><p>Shipping to: ${order.shipping.addressLine}, ${order.shipping.city}, ${order.shipping.governorate}. Phone: ${order.shipping.phone}</p><p>— ${storeName} admin</p>`,
   });
   const subject = `New order received — #${order.id}`;
 
