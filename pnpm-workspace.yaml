@@ -1,18 +1,25 @@
 overrides:
   postcss: ">=8.5.23"
   uuid: ">=11.1.1"
-  fast-uri: ">=3.1.5"
+  fast-uri: ">=4.1.5"
   nanoid: "^3.3.18"
-  sharp: ">=0.35.0"
+  sharp: ">=0.35.4"
+  browserslist: ">=4.28.7"
+  baseline-browser-mapping: ">=2.11.0"
+  "@fastify/busboy": ">=3.2.1"
+  # @grpc/grpc-js getAuthContext / error-message leak (GHSA-m9gg-hp2v-232j,
+  # GHSA-f596-whhp-79r4): firebase client pins ~1.9, firebase-admin uses 1.14.
+  "@grpc/grpc-js@<1.14.5": "^1.14.5"
   # jwks-rsa (via firebase-admin) still does require('jose'); jose@6 is ESM-only
   # and crashes SSR on Vercel with ERR_REQUIRE_ESM. Pin to dual CJS/ESM jose@5.
   "jwks-rsa>jose": "5.10.0"
-  # brace-expansion DoS (GHSA-mh99-v99m-4gvg), pulled in transitively via
+  # brace-expansion DoS (GHSA-mh99-v99m-4gvg, GHSA-qhr7-859c-m2p7,
+  # GHSA-6j4f-fj2g-mc7p, GHSA-q2hr-2g5m-vwhr), pulled in transitively via
   # firebase-admin's google-auth-library chain (v2 line) and @sentry/nextjs's
   # bundler plugin (v4 line) — both build/tooling-time paths, not app
   # runtime, but patched versions exist so pin to them.
-  "brace-expansion@>=2.0.0 <2.1.3": "^2.1.3"
-  "brace-expansion@>=4.0.0 <5.0.8": "^5.0.8"
+  "brace-expansion@>=2.0.0 <2.1.7": "^2.1.7"
+  "brace-expansion@>=4.0.0 <5.0.12": "^5.0.12"
 
 allowBuilds:
   "@firebase/util": true
@@ -32,3 +39,5 @@ onlyBuiltDependencies:
   - re2
   - esbuild
   - "@sentry/cli"
+minimumReleaseAgeExclude:
+  - nodemailer@10.0.14
